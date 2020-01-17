@@ -1,0 +1,429 @@
+// ======================================================
+// Page :: User PC
+// ======================================================
+
+%user-title {
+  color: $blue-light;
+  font-weight: $font-weight-bold;
+  line-height: 24px;
+}
+
+.user {
+  $this: &;
+
+  &__profile {
+    align-items: center;
+    background: $white;
+    border-radius: $border-radius-normal;
+    box-shadow: 0 0 15px rgba($black, .05);
+    display: flex;
+    flex-direction: column;
+    min-height: 420px;
+    padding: 30px 35px;
+    position: relative;
+    width: 100%;
+
+    &--have-pj {
+      box-shadow: 0 0 15px rgba($black, .1);
+    }
+  }
+
+  &__avatar {
+    @include circle(156px);
+    border: 6px solid $snow;
+    margin-top: 30px;
+    position: relative;
+  }
+
+  &__edit-avatar {
+    @include abs-center-hoz;
+    bottom: 10px;
+
+    .icon-fonts {
+      color: $white;
+      font-size: $font-size-large + 4;
+      opacity: .7;
+    }
+  }
+
+  &__upload {
+    @include position(absolute, 0, 0, 0, 0);
+    @include size(100%, 100%);
+    cursor: pointer;
+    opacity: 0;
+    z-index: 1;
+  }
+
+  &__img {
+    @include circle(100%);
+  }
+
+  &__name {
+    color: $blue-light;
+    font-size: $font-size-large;
+    line-height: 28px;
+    margin-top: 35px;
+    text-align: center;
+    width: 100%;
+  }
+
+  &__link {
+    color: $blue-light;
+    font-weight: $font-weight-bold;
+  }
+
+  &__age {
+    flex-shrink: 0;
+    font-weight: $font-weight-regular;
+    padding-left: 5px;
+    white-space: nowrap;
+  }
+
+  &__age,
+  &__company {
+    color: $gray-medium;
+  }
+
+  &__company {
+    font-size: $font-size-medium;
+  }
+
+  &__icon {
+    @include position(absolute, 25px, 35px, null, null);
+    color: $blue-light;
+    font-size: $font-size-large + 12;
+    transition: .3s ease-in-out;
+  }
+
+  &__list {
+    @include position(absolute, 75px, 25px, auto, auto);
+    background: $gray-medium;
+    border-radius: $border-radius-normal;
+    box-shadow: 0 0 20px $box-shadow-normal;
+    display: none;
+    padding: 4px 0;
+    width: calc(100% - 50px);
+    z-index: 9;
+
+    &:before {
+      @include position(absolute, -9px, 17px, auto, auto);
+      border-bottom: 9px solid $gray-medium;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      content: '';
+    }
+  }
+
+  &__item {
+    padding: 0 20px;
+
+    .icon-fonts {
+      font-size: $font-size-large + 12;
+      padding-right: 15px;
+
+      &--edit-30 {
+        font-size: $font-size-large + 7;
+      }
+    }
+
+    &:not(:last-child) #{$this}__sub-item {
+      border-bottom: 1px solid rgba($white, .1);
+    }
+  }
+
+  &__sub-item {
+    align-items: center;
+    color: $white;
+    display: flex;
+    font-size: $font-size-medium;
+    line-height: 30px;
+    padding: 13px 0 12px;
+    transition: .3s ease-in-out;
+
+    &:hover {
+      color: rgba($white, .6);
+    }
+  }
+
+  &__setting {
+    &.show #{$this}__list {
+      display: block;
+    }
+  }
+
+  &__change-email {
+    margin-top: 21px;
+  }
+
+  &__title,
+  &__email {
+    @extend %user-title;
+    font-size: $font-size-medium;
+  }
+
+  &__title {
+    margin: 34px 0 14px;
+  }
+
+  &__email {
+    margin-bottom: 37px;
+  }
+}
+
+.user-change-email {
+  &__icon {
+    margin-top: 21px;
+
+    .icon-fonts {
+      font-size: $font-size-large + 2;
+    }
+
+    &--completed {
+      .icon-fonts {
+        font-size: $font-size-large + 15;
+      }
+    }
+  }
+
+  &__title {
+    @extend %user-title;
+    font-size: $font-size-medium;
+    margin: 35px 0 28px;
+  }
+
+  &__message {
+    color: $gray-medium;
+    font-weight: $font-weight-regular;
+    text-align: center;
+    padding: 0 15px;
+    margin-bottom: 108px;
+
+    &--completed {
+      margin: 41px 0 21px;
+      padding: 0 7px;
+    }
+  }
+}
+
+.user-change-password {
+  &__icon {
+    background: $blue-lighter;
+
+    &:after {
+      border-top-color: $blue-lighter;
+    }
+  }
+
+  .circle-icon .icon-fonts {
+    font-size: $font-size-extra-small * 4;
+  }
+}
+
+.user-content {
+  align-items: center;
+  background: $white;
+  border-radius: $border-radius-normal;
+  box-shadow: 0 0 10px rgba($black, .05);
+  display: flex;
+  flex-direction: column;
+  min-height: 420px;
+  padding: 45px 0 35px;
+
+  &__title {
+    @extend %user-title;
+    font-size: $font-size-large + 2;
+    margin-bottom: 9px;
+    margin-top: 64px;
+    text-align: center;
+  }
+
+  &__des {
+    color: $gray-medium;
+    font-weight: $font-weight-regular;
+    line-height: 24px;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+}
+
+.todo-ongoing {
+  &__row {
+    display: flex;
+
+    &:not(:nth-last-child(-n+2)) {
+      margin-bottom: 20px;
+    }
+  }
+
+  &__item {
+    background: $white;
+    border-radius: $border-radius-normal;
+    box-shadow: 0 0 10px rgba($black, .1);
+    display: flex;
+    flex-direction: column;
+    padding: 25px 16px 20px;
+    width: 100%;
+  }
+
+  &__sub-title {
+    @include text-truncate;
+    color: $blue-light;
+    font-size: $font-size-medium;
+    font-weight: $font-weight-bold;
+    transition: .3s ease-in-out;
+  }
+
+  &__day,
+  &__time,
+  &__sum {
+    color: $gray-medium;
+    font-size: $font-size-base;
+  }
+
+  &__sum {
+    padding-left: 20px;
+    position: relative;
+
+    &:before {
+      @include abs-center-ver;
+      @include circle(3px);
+      background: $gray-medium;
+      content: '';
+      left: 5px;
+    }
+  }
+
+  &__next-task {
+    color: $blue-light;
+    font-size: $font-size-small;
+    font-weight: $font-weight-regular;
+    line-height: 18px;
+
+    .sending {
+      color: $royalblue;
+    }
+  }
+
+  &__noti {
+    padding-left: 15px;
+
+    .noti-status {
+      color: $blue-light;
+      font-weight: $font-weight-bold;
+    }
+
+    .noti-message {
+      color: $orange;
+      font-weight: $font-weight-regular;
+      margin-left: 5px;
+    }
+  }
+
+  &__check {
+    margin-top: 8px;
+    padding-left: 15px;
+  }
+
+  &__check-link {
+    color: $blue-lighter;
+    font-size: $font-size-small;
+    font-weight: $font-weight-regular;
+    line-height: 18px;
+  }
+
+  &__more {
+    @include square(100%);
+    align-items: center;
+    background: $slategray;
+    border-radius: $border-radius-normal;
+    display: flex;
+    justify-content: center;
+
+    .icon-fonts {
+      color: $blue-medium;
+      font-size: $font-size-extra-small * 6;
+      transition: .3s ease-in-out;
+
+      &:hover {
+        opacity: .9;
+      }
+    }
+  }
+}
+
+.progress {
+  background: $silver;
+  border-radius: $border-radius-normal + 1;
+  height: 4px;
+  margin: 35px 0 18px;
+  overflow: visible;
+
+  .progress-bar {
+    background: $blue-medium;
+    border-radius: $border-radius-regular 0 0 $border-radius-regular;
+    position: relative;
+
+    &__complete {
+      @include position(absolute, auto, 0, 10px, auto);
+      @include size(24px, 24px);
+      // background: url('#{$path-image}/icon-flag.png') no-repeat;
+    }
+
+    &--complete {
+      border-radius: $border-radius-normal + 1;
+    }
+
+    &--remain {
+      background: none;
+      border-radius: 0 $border-radius-regular $border-radius-regular 0;
+    }
+  }
+
+  .sr-only {
+    @include abs-center-hoz;
+    @include size(61px, 23px);
+    background: $silver;
+    border-radius: $border-radius-small + 1;
+    clip: auto;
+    color: $gray-medium;
+    overflow: visible;
+    padding: 2px;
+    top: -34px;
+    z-index: 9;
+
+    &:before {
+      @include abs-center-hoz;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 7px solid $silver;
+      bottom: -5px;
+      content: '';
+    }
+  }
+}
+
+.todo-completed {
+  background: $white;
+  border-radius: 0 0 $border-radius-normal $border-radius-normal;
+  box-shadow: 0 0 10px rgba($black, .1);
+  margin-bottom: 20px;
+  padding: 24px 15px 21px;
+
+  &__item {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__sub-title {
+    color: $blue-light;
+    font-size: $font-size-medium;
+    font-weight: $font-weight-bold;
+    transition: .3s ease-in-out;
+  }
+
+  &__time {
+    margin-top: 5px;
+    text-align: right;
+  }
+}

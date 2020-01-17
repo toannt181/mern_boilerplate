@@ -1,0 +1,21 @@
+header.header-pc
+  .header-pc__nav
+    .container
+      .row
+        .col-12
+          .header-pc__menu.d-flex.justify-content-between
+            .menu.d-flex.align-items-center
+              a.menu__logo(href='#')
+                h1.logo
+                  //- img.menu__logo-img(src='../images/logo-pc-2.png' alt='')
+                  |MOVIE PUSHER
+              - var menuList = [{ name: 'Dashboard', link: '/admin/dashboard' }, { name: 'Movies', link: '/admin/movies' }, { name: 'Categories', link: '/admin/categories' }, { name: 'Genres', link: '/admin/genres' }, { name: 'Logout', link: '/admin/logout' }, ]
+              ul.menu__list
+                each menu in menuList
+                  li.menu__item.js-menu-item(class=page == menu.name ? 'active' : '')
+                    a(href=menu.link)= menu.name
+              
+            .menu-user
+              a.menu-user__avatar.d-flex.align-items-center.justify-content-between(href='/admin/profile')
+                img.menu-user__img(src=personal.avatar alt='')
+                .menu-user__name= `${personal.firstName} ${personal.lastName}`

@@ -1,0 +1,34 @@
+extends ../layouts/default
+
+block menu
+  - var page = 'Movies'
+
+block breadcumb
+  li.breadcrumb-item
+    a(href='/admin') Home
+  li.breadcrumb-item.active(aria-current='page')
+    a(href='/admin/movies') Movies
+
+block main
+  .d-flex.justify-content-between.flex-start
+    div= `Total item: ${total}`
+
+    div
+      a(href='/admin/movies/create')
+        i.fa.fa-plus
+
+  .todo
+    ul.todo__list.js-sortable.ui-sortable
+    each movie in movies
+      li.todo__item.d-flex.align-items-center.justify-content-between.js-todo-list-item
+        .d-flex.align-items-center.js-todo-title
+          a.title(href='/admin/movies/' + movie.id)= movie.title
+        .todo__box-item.js-todo-item.d-flex.align-items-center.justify-content-end
+          span.todo__day= `${movie.createdAt} (by ToanNguyen)`
+          a.btn-delete-movie.ml-1(href=`/admin/movies/${movie.id}/delete` data-id=movie.id)
+            i.fa.fa-close
+ 
+  .pagination
+    - var n = 0
+    while ++n <= numberPage
+      a.pagination__item(href=`?p=${n}` class=n == page ? 'active' : '')= n

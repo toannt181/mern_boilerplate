@@ -1,0 +1,76 @@
+// ======================================================
+// Layout :: Header PC
+// ======================================================
+
+.header-pc {
+  // background: url('#{$path-image}/bg-header-pc.png') no-repeat center center;
+  min-height: 80px;
+
+  &__nav {
+    background: rgba($blue-medium, .8);
+    min-height: 60px;
+  }
+
+  &__menu {
+    width: 100%;
+  }
+}
+
+.menu {
+  // height: 60px;
+
+  &__logo {
+    margin-right: 35px;
+
+    .logo {
+      font-size: 20px;
+      color: $white;
+    }
+  }
+
+  &__item {
+    display: inline-block;
+
+    a {
+      padding: 19px 17px;
+      color: $white;
+      line-height: 21px;
+      border-bottom: 4px solid transparent;
+      font-weight: $font-weight-bold;
+    }
+
+    &.active,
+    &:hover {
+      a {
+        border-bottom: 4px solid $white;
+        transition: border-bottom .5s ease-out;
+      }
+    }
+  }
+}
+
+.menu-user {
+  &__img {
+    @include circle(43px);
+    border: 1px solid $white;
+  }
+
+  &__name {
+    color: $white;
+    font-weight: $font-weight-bold;
+    margin: 0 5px 0 13px;
+  }
+
+  &__list {
+    display: none;
+  }
+
+  &__icon {
+    font-size: $font-size-large + 12;
+    color: $white;
+  }
+
+  &__avatar {
+    padding: 8px 0;
+  }
+}
