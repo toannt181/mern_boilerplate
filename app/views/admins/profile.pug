@@ -1,0 +1,36 @@
+extends ../layouts/default
+
+block main
+  .row
+    form.col-12(method='POST' action='/admin/profile' enctype='multipart/form-data')
+      .project
+        .row.row--custom
+          .col-md-4
+            .user.user-pc
+              .user__profile.user__profile--have-pj
+                .user__setting.js-setting
+                  a.user__icon.js-setting-icon(href='#!')
+                    i.icon-fonts.icon-fonts--setting
+                a.user__avatar(href='#!')
+                  img.user__img(src=personal.avatar)
+                  .user__edit-avatar
+                    i.icon-fonts.icon-fonts--camera
+                  input.user__upload(type='file', name='image')
+                .user__name
+                  span.user__link= personal.email
+                .user__company= personal.updatedAt
+      
+          .col-md-8
+            .row
+              .form-group.form-customize.form-customize--has-value.col-md-6
+                label.label-title(for='name')
+                  | First name
+                input#name.form-control(type='text' name='firstName' value=personal.firstName)
+
+              .form-group.form-customize.form-customize--has-value.col-md-6
+                label.label-title(for='name')
+                  | Last name
+                input#name.form-control(type='text' name='lastName' value=personal.lastName)
+
+            button.button.button--primary.button--full Save
+

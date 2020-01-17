@@ -1,0 +1,55 @@
+.nav-tabs {
+  border: 0;
+  width: 100%;
+  @include position(fixed, auto, 0, 0, 0);
+  z-index: 99;
+  background: $white;
+
+  .nav-item {
+    margin: 0;
+    width: 50%;
+
+    ~ .nav-item {
+      .nav-link {
+        &.active,
+        &:hover {
+          border-radius: 22px 0 0 0;
+        }
+      }
+    }
+  }
+
+  .nav-link {
+    color: $gray-medium;
+    font-size: $font-size-base + 1;
+    font-weight: $font-weight-medium;
+    padding: 8px 10px;
+    border-radius: 0;
+    border: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: .3s ease-in-out;
+
+    &.active,
+    &:hover {
+      background: $blue-medium;
+      color: $white;
+      border-radius: 0 22px 0 0;
+    }
+
+    &.active {
+      cursor: none;
+    }
+
+    .icon-fonts {
+      font-size: $font-size-large + 11;
+      padding-right: 10px;
+    }
+  }
+}
+
+.tab {
+  width: 100%;
+}

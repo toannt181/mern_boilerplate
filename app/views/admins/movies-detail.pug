@@ -1,0 +1,138 @@
+extends ../layouts/default
+
+block menu
+  - var page = 'Movies'
+
+block breadcumb
+  li.breadcrumb-item
+    a(href='/admin') Home
+  li.breadcrumb-item.active(aria-current='page')
+    a(href='/admin/movies') Movies
+  li.breadcrumb-item.active(aria-current='page')
+    a(href='#')= data.title
+
+block main
+  .row
+    .col-12
+      .project
+        h2.project__title= isCreateMovie ? 'Create new movie' : 'Edit movie'
+        p.project__des= data.title
+        .project__content
+          form.movie-form.row(method='POST' action= isCreateMovie ? `/admin/movies` : `/admin/movies/${data.id}`)
+            .col-md-6
+              .form-group.form-customize.form-customize--has-value
+                label.label-title(for='name')
+                  | Title
+                input#name.form-control(type='text' name='title' value=data.title)
+
+              .form-group.form-customize.form-customize--has-value
+                input.input-genre-hidden(value=data.genreIds name='genreIds' type='hidden')
+                label.label-title(for='name')
+                  | Genre
+                select#name.form-control.input-genre(type='text' multiple='multiple')
+                  each genre in genres
+                    option(value=genre.id)= genre.title
+
+              .form-group.form-customize.form-customize--has-value
+                label.label-title(for='name')
+                  | Keyword
+                input#name.form-control(type='text' name='keywords' value=data.keywords placeholder='kịch tính, mới, 18+')
+
+              .form-group.form-customize.form-customize--has-value
+                label.label-title(for='name')
+                  | Cast
+                input#name.form-control(type='text' value=data.casts name='casts')
+
+              .form-group.form-customize.form-customize--has-value
+                label.label-title(for='name')
+                  | Release date
+                input#name.form-control(type='text' value=data.releaseDate)
+
+            .col-md-6
+              .form-group.form-customize.form-customize--textarea.form-customize--has-value
+                label.label-title(for='text-area1')
+                  | Overview
+                textarea#text-area1.form-control.form-control--textarea(rows="8" name='description')= data.description
+
+              .form-group.form-customize.form-customize--has-value
+                label.label-title(for='posterPath')
+                  | Poster path
+                input#posterPath.form-control(type='text' name='posterPath' value=data.posterPath)
+              
+              .form-group.form-customize.form-customize--has-value
+                label.label-title(for='backdropPath')
+                  | Backdrop Path
+                input#backdropPath.form-control(type='text' name='backdropPath' value=data.backdropPath)
+
+              .preview-img
+                img.mr-4(src=data.posterPath)
+                img(src=data.backdropPath)
+
+            .col-md-12
+              .movie-part-label
+                | Movie part
+                button.d-inline.button.btn-add-part.button--medium(type='button' data-id='')
+                  i.fa.fa-plus
+                input.link-part-hidden(value=data.chunks name='chunks' type='hidden')
+                .movie-part
+                  each fieldId, index in JSON.parse(data.chunks || '[""]')
+                    .movie-part__item
+                      .movie-part__id= index + 1
+                      .movie-part__link
+                        input#name.form-control(type='text' value=fieldId)
+                      .movie-part__action.d-flex
+                        button.button.btn-delete-part.button--medium.ml-1(type='button' data-id='')
+                          i.fa.fa-close
+                
+            .col-md-12
+              .button-group.d-flex.justify-content-center
+                button.button.button--bg-white.button--medium.mr-3 Back
+                button.button.button--blue.button--medium.ml-1 Save
+
+block js
+  script.
+    $(document).ready(function() {
+      const inputGenre = $('.input-genre')
+      const inputGenreHidden = $('.input-genre-hidden')
+      const linkPartHidden = $('.link-part-hidden')
+      const addPartBtn = $('.btn-add-part')
+      const moviePartContainer = $('.movie-part')
+      const deletePartBtn = $('.btn-delete-part')
+
+      inputGenre.select2();
+      const genres = inputGenreHidden.val().split(',')
+      inputGenre.val(genres).trigger('change')
+
+      $('.movie-form').submit(function(e) {
+        e.preventDefault()
+        const inputGenreVal = inputGenre.val() || []
+        inputGenreHidden.val(inputGenreVal.join())
+
+        const chunks = $('.movie-part__link input')
+        const chunksParts = []
+        chunks.each(function() {
+          chunksParts.push($(this).val())
+        })
+        linkPartHidden.val(JSON.stringify(chunksParts))
+
+        this.submit()
+      })
+
+      addPartBtn.click(function() {
+        const moviePartItemRoot = $('.movie-part__item').last()
+        const cloneItem = moviePartItemRoot.clone()
+        const idItem = cloneItem.find('.movie-part__id')
+        idItem.text(Number(idItem.text()) + 1)
+        cloneItem.find('.movie-part__link input').val('')
+        moviePartContainer.append(cloneItem)
+
+        const deletePartBtn = $('.btn-delete-part')
+        deletePartBtn.click(function() {
+          $(this).parent().parent().remove()
+        })
+      })
+
+      deletePartBtn.click(function() {
+        $(this).parent().parent().remove()
+      })
+    });

@@ -1,0 +1,78 @@
+// 2. Abstracts
+// ------------
+@import 'abstracts/variables';
+@import 'abstracts/mixins';
+@import 'abstracts/functions';
+
+// 3. Base
+// -------
+@import 'base/global';
+@import 'base/typography';
+@import 'base/colors';
+@import 'base/images';
+
+// 4. Layout
+// ---------
+@import 'layout/header-pc';
+
+// 5. Components
+// -------------
+@import 'components/buttons-pc';
+@import 'components/pagination';
+@import 'components/tab';
+
+// 6. Pages
+// --------
+@import 'pages/todo-pc';
+@import 'pages/project-pc';
+@import 'pages/user-pc';
+
+.login,
+.image {
+  min-height: 100vh;
+}
+
+.bg-image {
+  background-image: url('https://source.unsplash.com/WEQbe2jBg40/600x1200');
+  background-size: cover;
+  background-position: center;
+}
+
+.login-heading {
+  font-weight: 300;
+}
+
+.btn-login {
+  font-size: 0.9rem;
+  letter-spacing: 0.05rem;
+  padding: 0.75rem 1rem;
+  border-radius: 2rem;
+}
+
+.movie-part {
+  &__item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    margin-top: 8px;
+  }
+
+  &__id {
+    width: 40px;
+    font-weight: bold;
+  }
+
+  &__link {
+    flex: 1;
+  }
+}
+
+.select2.select2-container.select2-container--default {
+  width: 100% !important;
+}
+
+.preview-img {
+  img {
+    width: 150px;
+  }
+}

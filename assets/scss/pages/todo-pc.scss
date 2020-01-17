@@ -1,0 +1,272 @@
+// ======================================================
+// Page :: Todo PC
+// ======================================================
+
+.todo {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  $this: &;
+
+  &__list {
+    padding-top: 18px;
+  }
+
+  &__title {
+    font-size: $font-size-medium;
+    color: $blue-light;
+    font-weight: $font-weight-medium;
+    margin-bottom: 37px;
+  }
+
+  &__item {
+    background: $white;
+    padding: 11px 20px;
+    box-shadow: 0 0 10px $box-shadow-medium;
+    border-radius: $border-radius-normal;
+    margin-bottom: 10px;
+
+    .title {
+      color: $blue-light;
+      font-weight: $font-weight-medium;
+      line-height: 18px;
+      @include text-truncate;
+      font-size: $font-size-medium;
+    }
+  }
+
+  &__box-item {
+    white-space: nowrap;
+  }
+
+  &__sort {
+    font-size: $font-size-medium * 2;
+    line-height: 1;
+    color: $gray-light-3;
+    margin-left: 30px;
+    cursor: move;
+  }
+
+  &__finder {
+    color: $gray-medium;
+    font-size: $font-size-small;
+    padding: 19px 0;
+    border-top: 1px solid $white-dark;
+    line-height: 23px;
+    display: none;
+
+    &.show {
+      display: block;
+    }
+  }
+
+  &__day {
+    color: $gray-medium;
+    font-size: $font-size-small;
+  }
+
+  &__more {
+    margin: 40px 0 0;
+
+    .icon-fonts {
+      font-size: $font-size-small * 5;
+      color: $blue-medium;
+    }
+  }
+
+  &__choose {
+    width: 100%;
+    padding-bottom: 10px;
+  }
+
+  &__sub-title {
+    font-size: $font-size-large + 2;
+    color: $blue-light;
+    font-weight: $font-weight-medium;
+    margin-bottom: 20px;
+  }
+
+  &__deadline-group {
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px;
+    border: 1px solid $gray-small;
+    border-top: 0;
+    border-radius: 0 0 $border-radius-normal $border-radius-normal;
+  }
+
+  &__condition {
+    margin: 30px 0;
+  }
+
+  &__condition-title {
+    font-size: $font-size-medium;
+    color: $blue-light;
+    font-weight: $font-weight-bold;
+    margin-bottom: 20px;
+  }
+
+  &__condition-sub-title {
+    margin-bottom: 15px;
+    color: $blue-light;
+    font-weight: $font-weight-regular;
+  }
+
+  &__button-group {
+    margin: 30px 0;
+
+    .button--full-large {
+      margin-bottom: 15px;
+    }
+  }
+
+  .drop-select__label {
+    font-size: $font-size-base;
+    margin-left: 0;
+    font-weight: $font-weight-regular;
+  }
+
+  &__add {
+    // background: url('#{$path-image}/bg-add.png') no-repeat center center;
+    min-height: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &--set {
+      background: none;
+      margin-top: 40px;
+      min-height: inherit;
+    }
+
+    // &--gif {
+    //   background: url('#{$path-image}/bg-gif.png') no-repeat center center;
+    // }
+
+    // &--invi {
+    //   background: url('#{$path-image}/bg-invi.png') no-repeat center center;
+    //   margin-top: 50px;
+    // }
+
+    // &--no-item {
+    //   background: url('#{$path-image}/bg-no-item.png') no-repeat center center;
+    //   min-height: 375px;
+    // }
+  }
+
+  &--no-item {
+    padding: 20px 0 0;
+  }
+
+  &__see-more {
+    background: $blue-medium;
+    @include circle(50px);
+
+    .icon-fonts {
+      color: $white;
+      font-size: $font-size-base * 3 + 8;
+    }
+
+    &--no-item {
+      @include circle(60px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .icon-fonts {
+        font-size: $font-size-base * 3 - 6;
+      }
+    }
+  }
+}
+
+.box-invitation {
+  color: $gray-medium;
+  position: relative;
+  margin-bottom: 30px;
+  line-height: 30px;
+  padding: 40px 32px 31px;
+  border-radius: $border-radius-normal 0 $border-radius-normal $border-radius-normal;
+  box-shadow: 0 0 10px $box-shadow-large;
+
+  &:after {
+    content: '';
+    @include position(absolute, -15px, -6px, auto, auto);
+    @include size(41px, 40px);
+    // background: url('#{$path-image}/icon-triagle.png');
+    border-radius: 0 0 0 $border-radius-normal;
+    background-color: $white;
+  }
+
+  &:before {
+    content: '';
+    @include position(absolute, -10px, -10px, auto, auto);
+    @include size(40px, 35px);
+    background: $white;
+  }
+
+  &__item {
+    margin-left: 35px;
+  }
+
+  &__title {
+    color: $blue-light;
+    font-weight: $font-weight-bold;
+    margin: 0 0 16px;
+  }
+
+  &__icon {
+    font-size: $font-size-base * 3 + 2;
+    color: $orange;
+    margin-top: 8px;
+
+    &--gif {
+      font-size: $font-size-base * 2 + 5;
+      margin-top: 2px;
+    }
+  }
+}
+
+.modal-todo {
+  .modal-dialog {
+    max-width: 971px;
+    width: 100%;
+  }
+
+  &--receipt {
+    .modal-dialog {
+      max-width: 520px;
+    }
+
+    .modal-content {
+      min-height: 660px;
+    }
+  }
+
+  .modal-body {
+    text-align: left;
+    padding: 28px 50px 18px;
+  }
+
+  .modal-header {
+    border: 0;
+    padding: 23px;
+  }
+}
+
+.modal-todo-attendees {
+  .modal-header {
+    padding: 25px;
+  }
+
+  .modal-body,
+  .modal-footer {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+
+  .modal-footer {
+    padding-bottom: 50px;
+    padding-top: 30px;
+  }
+}

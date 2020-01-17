@@ -1,0 +1,65 @@
+extends ../layouts/default
+
+block menu
+  - var page = 'Genres'
+
+block breadcumb
+  li.breadcrumb-item
+    a(href='/admin') Home
+  li.breadcrumb-item.active(aria-current='page')
+    a(href='/admin/genres') Genres
+
+block main
+  div= `Total item: ${total}`
+
+  .project__content
+    form.row(method='POST' action='/admin/genres')
+      .col-md-12
+        .form-group.form-customize.form-customize--has-value
+          label.label-title(for='name')
+            | Genre title
+          input#name.form-control(type='text' name='title' value='' required)
+      .col-md-12
+        .button-group.d-flex.justify-content-center
+          button.button.button--blue.button--medium.ml-1 Add
+
+  .todo
+    ul.todo__list.js-sortable.ui-sortable
+    each genre in genres
+      li.todo__item.d-flex.align-items-center.justify-content-between.js-todo-list-item
+        .d-flex.align-items-center.js-todo-title
+          span.todo__item__title.title(data-id=genre.id)= genre.title
+          .todo__form__wrapper.hide(data-id=genre.id)
+            form.d-flex.align-items-center(method='POST' action=`/admin/genres/${genre.id}`)
+              input.form-control(type='text' name='title' value=genre.title required)
+              button.button.btn-save-genre.button--medium.ml-1(type='submit' data-id=genre.id)
+                i.fa.fa-check
+              button.button.btn-cancel-edit-genre.button--medium.ml-1(type='button' data-id=genre.id)
+                i.fa.fa-close
+        .todo__box-item.js-todo-item.d-flex.align-items-center.justify-content-end
+          span.todo__day= `${genre.createdAt} (by ToanNguyen)`
+          a.ml-2.edit-icon(href='#' data-id=genre.id)
+            i.fa.fa-pencil
+          a.ml-2(href=`/admin/genres/${genre.id}/delete`)
+            i.fa.fa-trash
+
+block js
+  script.
+    $('a.edit-icon').click(function (e) {
+      const id = this.getAttribute('data-id')
+      const input = $(`.todo__form__wrapper[data-id=${id}]`)
+      const label = $(`.todo__item__title[data-id=${id}]`)
+      input.show()
+      label.hide()
+    })
+
+    function cancelEdit(e) {
+      const id = this.getAttribute('data-id')
+      const input = $(`.todo__form__wrapper[data-id=${id}]`)
+      const label = $(`.todo__item__title[data-id=${id}]`)
+      input.hide()
+      label.show()
+    }
+
+    $('.btn-save-genre').click(cancelEdit)
+    $('.btn-cancel-edit-genre').click(cancelEdit)

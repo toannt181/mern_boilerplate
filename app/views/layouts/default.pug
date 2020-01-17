@@ -1,0 +1,20 @@
+doctype html
+html(lang="en")
+  include ../includes/head.pug
+  body
+    block menu
+    include ../includes/header.pug
+    .container
+      .row
+        .col-12
+          nav(aria-label='breadcrumb')
+            ol.breadcrumb
+              block breadcumb
+
+      while message = flash.shift()
+        .alert(class='alert-' + message.type)
+          p= message.message
+      block main
+
+  include ../includes/foot.pug
+  block js

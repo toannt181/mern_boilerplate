@@ -1,0 +1,143 @@
+// ======================================================
+// Base :: Global like html, body, img, a, ul
+// ======================================================
+
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  -webkit-font-smoothing: antialiased;
+  font-weight: $font-weight-light;
+  min-height: 100vh;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+img {
+  vertical-align: middle;
+}
+
+a {
+  color: $blue-lighter;
+
+  &:hover,
+  &:focus,
+  &:active {
+    box-shadow: none;
+    outline: 0;
+    text-decoration: none;
+  }
+}
+
+ul,
+ol {
+  list-style: none;
+  padding: 0;
+}
+
+input,
+textarea,
+button {
+  outline: 0;
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+button {
+  border: 0;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+ul {
+  margin: 0;
+}
+
+.unstyled {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+strong {
+  font-weight: $font-weight-bold;
+}
+
+::-webkit-scrollbar {
+  height: 3px;
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  border: solid 3px transparent;
+  border-radius: $border-radius-small;
+}
+
+::-webkit-scrollbar-thumb {
+  border: solid 3px $gainsboro;
+  border-radius: $border-radius-medium + 2;
+}
+
+.circle-icon {
+  @include circle(84px);
+  align-items: center;
+  background: $red;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  position: relative;
+
+  .icon-fonts {
+    color: $white;
+    font-size: $font-size-large + 15;
+  }
+
+  &:after {
+    @include position(absolute, auto, auto, -2px, 4px);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 14px solid $red;
+    content: '';
+    transform: rotate(45deg);
+  }
+
+  &__noti {
+    @include size(100%, 100%);
+    display: block;
+    position: relative;
+
+    &:after {
+      @include position(absolute, 27px, auto, auto, 36px);
+      @include size(16px, 26px);
+      border: 1px solid $white;
+      border-width: 0 7px 7px 0;
+      content: '';
+      transform: rotate(45deg);
+    }
+  }
+}
+
+.main {
+  display: flex;
+  flex: 1;
+}
+
+.row {
+  &--custom {
+    margin-left: -10px;
+    margin-right: -10px;
+
+    > .col,
+    > [class*='col-'] {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  }
+}
