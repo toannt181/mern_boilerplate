@@ -11,6 +11,7 @@ import { actions } from './slice'
 import { selectUsername } from './selectors'
 import GlobalStyle from './globalStyle'
 import Main from '../Main'
+import LoginPage from '../LoginPage'
 
 function App({ user, fetchUser, fullname }) {
   return (
@@ -18,6 +19,7 @@ function App({ user, fetchUser, fullname }) {
       <GlobalStyle />
       <Router>
         <Switch>
+          <Route path="/login" component={LoginPage} />
           <Route component={Main} />
         </Switch>
       </Router>

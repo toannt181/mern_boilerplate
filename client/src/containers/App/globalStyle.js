@@ -8,6 +8,7 @@ export default createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: ${({ theme }) => theme.colors.white};
+    font-size: 16px;
   }
 
   code {
@@ -27,5 +28,42 @@ export default createGlobalStyle`
     &:focus {
       outline: none;
     }
+  }
+
+  .btn {
+    border-radius: 4px;
+    color: ${({ theme }) => theme.colors.white};
+    font-size: ${({ theme }) => theme.colors.regular};
+    font-weight: ${({ theme }) => theme.fontWeight.bold};
+    padding: 10px 20px;
+    text-align: center;
+    transition: all .4s ease;
+
+    &:focus {
+      box-shadow: none;
+    }
+
+    &.primary {
+      background-color: ${({ theme }) => theme.colors.primary};
+      color: ${({ theme }) => theme.colors.white};
+
+      &:hover {
+        background-color: ${({ theme }) => theme.colors.blue2};
+        color: $white;
+      }
+    }
+
+    &.block {
+      display: block;
+      width: 100%;
+    }
+  }
+  
+  .input {
+    border-radius: 4px;
+    background: ${({ theme }) => theme.colors.blue3};
+    padding: 8px 12px;
+    display: block;
+    width: 100%;
   }
 `
