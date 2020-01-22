@@ -1,18 +1,27 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from 'react-router-dom'
 
 import { actions } from './slice'
 import { selectUsername } from './selectors'
 import GlobalStyle from './globalStyle'
+import Main from '../Main'
 
 function App({ user, fetchUser, fullname }) {
   return (
-    <div>
+    <>
       <GlobalStyle />
-      <h1>Run ok {user}</h1>
-      <h2>fullname {fullname}</h2>
-      <button onClick={fetchUser}>OK</button>
-    </div>
+      <Router>
+        <Switch>
+          <Route component={Main} />
+        </Switch>
+      </Router>
+    </>
   )
 }
 

@@ -1,0 +1,33 @@
+import styled from 'styled-components'
+
+export const RoomContainerWrapper = styled.div`
+  position: relative;
+  height: 100vh;
+  overflow: auto;
+  padding: 12px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: ${({ theme }) => theme.colors.gray2};
+`
+
+export const ChatInputWrapper = styled.div`
+  background: ${({ theme }) => theme.colors.gray3};
+  padding: 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  position: fixed;
+  bottom: 12px;
+  left: 316px;
+  right: 12px;
+
+  .chat-input {
+    color: ${({ theme }) => theme.colors.gray14};
+    width: 100%;
+  }
+`
+
+export const MessageList = styled.div`
+  flex: 1;
+  padding-bottom: 36px;
+`
