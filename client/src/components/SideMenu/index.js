@@ -5,7 +5,7 @@ import { SideMenuWrapper } from './styles'
 function SideMenu() {
   return (
     <SideMenuWrapper>
-      {Array(10).fill().map((_, i) => <LetterAvatar letter={i} />)}
+      {Array(10).fill().map((_, i) => <LetterAvatar key={i} letter={i} />)}
     </SideMenuWrapper>
   )
 }

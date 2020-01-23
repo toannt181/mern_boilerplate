@@ -1,9 +1,9 @@
 import React from 'react'
 import { UserStatusWrapper } from './styles'
 
-const UserStatus = () => (
-  <UserStatusWrapper>
-    Toan
+const UserStatus = ({ user }) => (
+  <UserStatusWrapper>{console.log(user)}
+    {user ? user.name : 'Anonymous'}
   </UserStatusWrapper>
 )
 

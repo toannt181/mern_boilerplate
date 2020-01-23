@@ -5,10 +5,11 @@ const slice = createSlice({
   name: 'app',
   initialState: INITIAL_STATE,
   reducers: {
-    setUser(state, action) {
+    dispatchSetUser(state, action) {
       state.user = action.payload
     },
     fetchUser() { },
+    dispatchCreateUser() { },
   },
 })
 

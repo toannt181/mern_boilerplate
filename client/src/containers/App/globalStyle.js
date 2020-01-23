@@ -1,7 +1,11 @@
 import { createGlobalStyle } from 'styled-components'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import 'normalize.css'
 
 export default createGlobalStyle`
+  * {
+    box-sizing: border-box;
+  }
+
   body {
     margin: 0;
     font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;

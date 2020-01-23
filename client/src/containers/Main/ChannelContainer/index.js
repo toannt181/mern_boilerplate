@@ -3,9 +3,9 @@ import { ChannelContainerWrapper } from './styles'
 import UserStatus from './UserStatus'
 import ChannelList from './ChannelList'
 
-const ChannelContainer = () => (
+const ChannelContainer = ({ user }) => (
   <ChannelContainerWrapper>
-    <UserStatus />
+    <UserStatus user={user} />
     <ChannelList />
   </ChannelContainerWrapper>
 )

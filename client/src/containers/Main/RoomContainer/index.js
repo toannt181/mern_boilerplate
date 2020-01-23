@@ -10,7 +10,7 @@ import MessageItem from './MessageItem'
 const RoomContainer = () => (
   <RoomContainerWrapper>
     <MessageList>
-      {Array(100).fill().map(() => <MessageItem />)}
+      {Array(100).fill().map((_, i) => <MessageItem key={i} />)}
     </MessageList>
     <ChatInputWrapper>
       <input className="chat-input" />

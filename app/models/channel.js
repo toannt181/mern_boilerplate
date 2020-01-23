@@ -1,18 +1,9 @@
 const moongose = require('mongoose')
 
-const MODEL_NAME = 'user'
+const MODEL_NAME = 'channel'
 
 const schema = new moongose.Schema({
   name: {
-    type: String,
-  },
-  email: {
-    type: String,
-  },
-  password: {
-    type: String,
-  },
-  avatar: {
     type: String,
   },
 })

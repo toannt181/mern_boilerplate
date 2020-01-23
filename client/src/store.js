@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import createSagaMiddleware from 'redux-saga'
 import { reducer as app } from './containers/App/slice'
-import appSaga from './containers/App/sagas'
+import sagas from './sagas'
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -10,4 +10,4 @@ export default configureStore({
   middleware: [sagaMiddleware],
 })
 
-sagaMiddleware.run(appSaga)
+sagaMiddleware.run(sagas)

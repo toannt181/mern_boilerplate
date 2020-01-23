@@ -19,7 +19,7 @@ export const ChatInputWrapper = styled.div`
   position: fixed;
   bottom: 12px;
   left: 316px;
-  right: 12px;
+  right: 28px;
 
   .chat-input {
     color: ${({ theme }) => theme.colors.gray14};

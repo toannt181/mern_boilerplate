@@ -20,6 +20,7 @@ module.exports = {
       "global-require": 0,
       "semi": 0,
       "camelcase": 0,
-      "arrow-body-style": 0
+      "arrow-body-style": 0,
+      "no-underscore-dangle": 0
     }
 };

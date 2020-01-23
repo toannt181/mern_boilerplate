@@ -1,8 +1,8 @@
 // const users = require('../app/controllers/users')
 const { Router } = require('express')
 const user = require('../app/controllers/user')
-// const admin = require('../app/controllers/admin')
-// const auth = require('./middlewares/authorization')
+const channel = require('../app/controllers/channel')
+const auth = require('../app/middlewares/authorization')
 
 // const articleAuth = [auth.requiresLogin, auth.article.hasAuthorization]
 // const commentAuth = [auth.requiresLogin, auth.comment.hasAuthorization]
@@ -13,6 +13,7 @@ module.exports = function (app) {
   app.use('/api', apiRoute)
 
   apiRoute.use('/users', user)
+  apiRoute.use('/channels', auth, channel)
   // app.get('/signup', users.signup)
   // app.get('/logout', users.logout)
   // app.post('/users', users.create)
