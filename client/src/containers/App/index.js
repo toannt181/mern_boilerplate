@@ -5,6 +5,7 @@ import {
   Switch,
   Route,
 } from 'react-router-dom'
+import AuthenticateRoute from '../../hocs/AuthenticateRoute'
 
 import { actions } from './slice'
 import { selectUsername } from './selectors'
@@ -18,8 +19,8 @@ function App({ user, fetchUser, fullname }) {
       <GlobalStyle />
       <Router>
         <Switch>
-          <Route path="/login" component={LoginPage} />
-          <Route component={Main} />
+          <Route exact path="/login" component={LoginPage} />
+          <AuthenticateRoute component={Main} />
         </Switch>
       </Router>
     </>

@@ -1,7 +1,10 @@
 import { createGlobalStyle } from 'styled-components'
 import 'normalize.css'
+import mixin from './mixin'
 
 export default createGlobalStyle`
+  ${mixin}
+
   * {
     box-sizing: border-box;
   }
@@ -60,6 +63,11 @@ export default createGlobalStyle`
     &.block {
       display: block;
       width: 100%;
+    }
+
+    &.sm {
+      font-size: ${({ theme }) => theme.colors.small};
+      padding: 4px 6px;
     }
   }
   

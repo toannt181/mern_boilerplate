@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
-const INITIAL_STATE = { user: null }
+import { ACCESS_TOKEN } from '../../configs/constants'
+
+const INITIAL_STATE = {
+  user: JSON.parse(localStorage.getItem(ACCESS_TOKEN)) || null,
+}
 
 const slice = createSlice({
   name: 'app',
