@@ -3,10 +3,10 @@ import { ChannelContainerWrapper } from './styles'
 import UserStatus from './UserStatus'
 import ChannelList from './ChannelList'
 
-const ChannelContainer = ({ user, onClickLogout }) => (
+const ChannelContainer = ({ user, onClickLogout, channels, onAddChannel }) => (
   <ChannelContainerWrapper>
     <UserStatus user={user} onClickLogout={onClickLogout} />
-    <ChannelList />
+    <ChannelList channels={channels} onAddChannel={onAddChannel} />
   </ChannelContainerWrapper>
 )
 

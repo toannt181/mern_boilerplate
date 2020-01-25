@@ -1,13 +1,16 @@
 import React from 'react'
 import { ChannelListWrapper, ChannelTitle } from './styles'
 
-const UserStatus = () => (
+const UserStatus = ({ channels, onAddChannel }) => (
   <ChannelListWrapper>
-    <ChannelTitle>Channel</ChannelTitle>
+    <ChannelTitle className="d-center">
+      <div>Channel</div>
+      <button className="ml-auto button is-small is-primary" onClick={onAddChannel}><i className="fa fa-plus" aria-hidden="true" /></button>
+    </ChannelTitle>
     <ul className="channel-list">
-      <li className="channel-item">#general</li>
-      <li className="channel-item">#game</li>
-      <li className="channel-item">#public</li>
+      {channels.map((channel) => (
+        <li className="channel-item" key={channel._id}>#{channel.name}</li>
+      ))}
     </ul>
   </ChannelListWrapper>
 )

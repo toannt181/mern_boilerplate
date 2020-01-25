@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 import 'normalize.css'
+import 'bulma/css/bulma.css'
 import mixin from './mixin'
 
 export default createGlobalStyle`
@@ -71,7 +72,7 @@ export default createGlobalStyle`
     }
   }
   
-  .input {
+  .input2 {
     border-radius: 4px;
     background: ${({ theme }) => theme.colors.blue3};
     padding: 8px 12px;

@@ -9,5 +9,9 @@ export function fetchUser() {
 }
 
 export function fetchChannel() {
-  return Request.post({ url: 'channels' })
+  return Request.get({ url: 'channels' })
+}
+
+export function createChannel(data) {
+  return Request.post({ url: 'channels', data })
 }
