@@ -9,7 +9,20 @@ import RoomContainer from './RoomContainer'
 import ChannelModal from './ChannelModal'
 import { MainWrapper } from './styles'
 
-function Main({ user, dispatchSetUser, channels, dispatchCreateChannel, dispatchFetchChannel }) {
+function Main(props) {
+  const {
+    user,
+    dispatchSetUser,
+    channels,
+    dispatchCreateChannel,
+    dispatchFetchChannel,
+    dispatchSelectChannel,
+    currentChannel,
+    messages,
+    dispatchFetchMessage,
+    dispatchSendMessage,
+  } = props
+
   const [isShowChannelModal, toggleChannelModal] = useState(false)
 
   useEffect(() => {
@@ -30,6 +43,15 @@ function Main({ user, dispatchSetUser, channels, dispatchCreateChannel, dispatch
     toggleChannelModal(false)
   }, [dispatchCreateChannel])
 
+  const onClickChannel = useCallback((channelId) => {
+    dispatchSelectChannel(channelId)
+    dispatchFetchMessage({ channelId })
+  }, [dispatchSelectChannel, dispatchFetchMessage])
+
+  const onSendMessage = useCallback((content) => {
+    dispatchSendMessage({ channelId: currentChannel, content })
+  }, [dispatchSendMessage, currentChannel])
+
   return (
     <MainWrapper>
       <SideMenu />
@@ -38,8 +60,14 @@ function Main({ user, dispatchSetUser, channels, dispatchCreateChannel, dispatch
         onClickLogout={onClickLogout}
         channels={channels}
         onAddChannel={onAddChannel}
+        onClickChannel={onClickChannel}
+        currentChannel={currentChannel}
       />
-      <RoomContainer />
+      <RoomContainer 
+        currentChannel={currentChannel}
+        messages={messages}
+        onSendMessage={onSendMessage}
+      />
       {isShowChannelModal && (
         <ChannelModal
           onCloseModal={onAddChannel}
@@ -54,10 +82,15 @@ export default connect(
   state => ({
     user: state.app.user,
     channels: state.main.channels,
+    currentChannel: state.main.currentChannel,
+    messages: state.main.messages,
   }),
   {
     dispatchSetUser: appActions.dispatchSetUser,
     dispatchCreateChannel: actions.dispatchCreateChannel,
     dispatchFetchChannel: actions.dispatchFetchChannel,
+    dispatchSelectChannel: actions.dispatchSelectChannel,
+    dispatchFetchMessage: actions.dispatchFetchMessage,
+    dispatchSendMessage: actions.dispatchSendMessage,
   }
 )(Main)

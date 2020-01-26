@@ -31,3 +31,9 @@ export const MessageList = styled.div`
   flex: 1;
   padding-bottom: 36px;
 `
+
+export const Title = styled.h3`
+  text-align: center;
+  font-size: ${({ theme }) => theme.size.large};
+  font-weight: ${({ theme }) => theme.fontWeight.bold};
+`

@@ -1,21 +1,47 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   MessageList,
   RoomContainerWrapper,
   ChatInputWrapper,
+  Title,
 } from './styles'
 
 import MessageItem from './MessageItem'
 
-const RoomContainer = () => (
-  <RoomContainerWrapper>
-    <MessageList>
-      {Array(100).fill().map((_, i) => <MessageItem key={i} />)}
-    </MessageList>
-    <ChatInputWrapper>
-      <input className="chat-input" />
-    </ChatInputWrapper>
-  </RoomContainerWrapper>
-)
+const RoomContainer = (props) => {
+  const {
+    currentChannel,
+    messages,
+    onSendMessage,
+  } = props
+  const [content, setContent] = useState('')
+
+  const onKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      onSendMessage(content)
+      setContent('')
+    }
+  }
+
+  const onChange = (e) => {
+    setContent(e.target.value)
+  }
+
+  return (
+    <RoomContainerWrapper>
+      {currentChannel ?
+        <>
+          <MessageList>
+            {messages.map((message, i) => <MessageItem key={i} message={message} />)}
+          </MessageList>
+          <ChatInputWrapper>
+            <input className="chat-input" onKeyDown={onKeyDown} onChange={onChange} value={content} />
+          </ChatInputWrapper>
+        </>
+        : <Title className="is-3">Select channel</Title>
+      }
+    </RoomContainerWrapper>
+  )
+}
 
 export default RoomContainer

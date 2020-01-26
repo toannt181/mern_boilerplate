@@ -12,7 +12,20 @@ function* watchCreateChannel(action) {
   yield put(actions.dispatchFetchChannel())
 }
 
+function* watchFetchMessage(action) {
+  const { channelId } = action.payload
+  const messages = yield UserAPI.fetchMessage(channelId)
+  yield put(actions.dispatchSetMessage(messages))
+}
+
+function* watchSendMessage(action) {
+  yield UserAPI.sendMessage(action.payload)
+  yield put(actions.dispatchFetchMessage({ channelId: action.payload.channelId }))
+}
+
 export default function* sagas() {
   yield takeEvery(actions.dispatchFetchChannel.type, watchFetchChannel)
   yield takeEvery(actions.dispatchCreateChannel.type, watchCreateChannel)
+  yield takeEvery(actions.dispatchFetchMessage.type, watchFetchMessage)
+  yield takeEvery(actions.dispatchSendMessage.type, watchSendMessage)
 }

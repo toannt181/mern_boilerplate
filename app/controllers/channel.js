@@ -1,5 +1,6 @@
 const { Router } = require('express')
 
+const message = require('./message')
 const { model } = require('../db')
 
 const route = new Router()
@@ -52,5 +53,6 @@ async function show(req, res, next) {
 route.get('/', index)
 route.post('/', store)
 route.get('/:id', show)
+route.use('/:id/messages', message)
 
 module.exports = route

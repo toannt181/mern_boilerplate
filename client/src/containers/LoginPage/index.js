@@ -34,7 +34,7 @@ function LoginPage({ dispatchCreateUser, history, user }) {
         <input className="input mb-4" /> */}
         <label className="login-label">Name</label>
         <input className="input mb-2" value={name} onChange={onChangeName} />
-        <button className="btn primary block" onClick={createUser}>Login</button>
+        <button className="button is-primary is-fullwidth" onClick={createUser}>Login</button>
       </div>
     </LoginPageWrapper>
   )
