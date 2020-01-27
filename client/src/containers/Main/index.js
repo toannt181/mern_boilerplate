@@ -21,6 +21,7 @@ function Main(props) {
     messages,
     dispatchFetchMessage,
     dispatchSendMessage,
+    dispatchDeleteChannel,
   } = props
 
   const [isShowChannelModal, toggleChannelModal] = useState(false)
@@ -52,6 +53,12 @@ function Main(props) {
     dispatchSendMessage({ channelId: currentChannel, content })
   }, [dispatchSendMessage, currentChannel])
 
+  const onClickDeleteChannel = useCallback((e) => {
+    e.stopPropagation()
+    const channelId = e.currentTarget.dataset.id
+    dispatchDeleteChannel(channelId)
+  }, [dispatchDeleteChannel])
+
   return (
     <MainWrapper>
       <SideMenu />
@@ -62,11 +69,13 @@ function Main(props) {
         onAddChannel={onAddChannel}
         onClickChannel={onClickChannel}
         currentChannel={currentChannel}
+        onClickDeleteChannel={onClickDeleteChannel}
       />
       <RoomContainer 
         currentChannel={currentChannel}
         messages={messages}
         onSendMessage={onSendMessage}
+        user={user}
       />
       {isShowChannelModal && (
         <ChannelModal
@@ -92,5 +101,6 @@ export default connect(
     dispatchSelectChannel: actions.dispatchSelectChannel,
     dispatchFetchMessage: actions.dispatchFetchMessage,
     dispatchSendMessage: actions.dispatchSendMessage,
+    dispatchDeleteChannel: actions.dispatchDeleteChannel,
   }
 )(Main)

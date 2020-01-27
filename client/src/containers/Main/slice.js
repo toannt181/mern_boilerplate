@@ -23,6 +23,7 @@ const slice = createSlice({
     dispatchCreateChannel() { },
     dispatchFetchMessage() { },
     dispatchSendMessage() { },
+    dispatchDeleteChannel() { },
   },
 })
 

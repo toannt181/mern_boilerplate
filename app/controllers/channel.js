@@ -7,10 +7,11 @@ const route = new Router()
 
 async function index(req, res, next) {
   try {
-    const { _id } = req.user
-    const userChannels = await model.UserChannel.find({ userId: _id })
-    const channelIds = userChannels.map(({ channelId }) => channelId)
-    const channels = await model.Channel.find({ _id: { $in: channelIds } })
+    // const { _id } = req.user
+    // const userChannels = await model.UserChannel.find({ userId: _id })
+    // const channelIds = userChannels.map(({ channelId }) => channelId)
+    // const channels = await model.Channel.find({ _id: { $in: channelIds } })
+    const channels = await model.Channel.find()
     res.json(channels)
   } catch (error) {
     next(error)
@@ -31,19 +32,10 @@ async function store(req, res, next) {
   }
 }
 
-async function show(req, res, next) {
+async function destroy(req, res, next) {
   try {
     const { id } = req.params
-    const data = await model.movies.findOne({
-      where: { id },
-    })
-
-    if (!data) {
-      res.json(null)
-      next(new Error('404'))
-      return
-    }
-
+    const data = await model.Channel.findByIdAndDelete(id)
     res.json(data)
   } catch (error) {
     next(error)
@@ -52,7 +44,7 @@ async function show(req, res, next) {
 
 route.get('/', index)
 route.post('/', store)
-route.get('/:id', show)
+route.delete('/:id', destroy)
 route.use('/:id/messages', message)
 
 module.exports = route

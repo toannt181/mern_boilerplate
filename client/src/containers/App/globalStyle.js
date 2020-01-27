@@ -79,4 +79,15 @@ export default createGlobalStyle`
     display: block;
     width: 100%;
   }
+  
+  .btn-none {
+    background: transparent;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+    }
+  }
 `

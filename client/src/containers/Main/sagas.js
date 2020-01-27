@@ -23,9 +23,15 @@ function* watchSendMessage(action) {
   yield put(actions.dispatchFetchMessage({ channelId: action.payload.channelId }))
 }
 
+function* watchDeleteChannel(action) {
+  yield UserAPI.deleteChannel(action.payload)
+  yield put(actions.dispatchFetchChannel())
+}
+
 export default function* sagas() {
   yield takeEvery(actions.dispatchFetchChannel.type, watchFetchChannel)
   yield takeEvery(actions.dispatchCreateChannel.type, watchCreateChannel)
   yield takeEvery(actions.dispatchFetchMessage.type, watchFetchMessage)
   yield takeEvery(actions.dispatchSendMessage.type, watchSendMessage)
+  yield takeEvery(actions.dispatchDeleteChannel.type, watchDeleteChannel)
 }

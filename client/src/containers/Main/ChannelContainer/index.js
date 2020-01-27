@@ -11,6 +11,7 @@ const ChannelContainer = (props) => {
     onAddChannel,
     onClickChannel,
     currentChannel,
+    onClickDeleteChannel,
   } = props
 
   return (
@@ -21,6 +22,7 @@ const ChannelContainer = (props) => {
         onAddChannel={onAddChannel}
         onClickChannel={onClickChannel}
         currentChannel={currentChannel}
+        onClickDeleteChannel={onClickDeleteChannel}
       />
     </ChannelContainerWrapper>
   )

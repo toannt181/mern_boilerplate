@@ -13,6 +13,7 @@ const RoomContainer = (props) => {
     currentChannel,
     messages,
     onSendMessage,
+    user,
   } = props
   const [content, setContent] = useState('')
 
@@ -32,7 +33,7 @@ const RoomContainer = (props) => {
       {currentChannel ?
         <>
           <MessageList>
-            {messages.map((message, i) => <MessageItem key={i} message={message} />)}
+            {messages.map((message, i) => <MessageItem key={i} message={message} position={message.createdBy === user._id ? 'right' : 'left'} />)}
           </MessageList>
           <ChatInputWrapper>
             <input className="chat-input" onKeyDown={onKeyDown} onChange={onChange} value={content} />

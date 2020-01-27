@@ -14,6 +14,7 @@ export const ChannelTitle = styled.div`
   margin-bottom: 4px;
 `
 export const ChannelItem = styled.div`
+  position: relative;
   background: ${({ theme, active }) => active ? rgba(theme.colors.gray3, 0.32) : 'initial'};
   padding: 4px 8px;
   margin-bottom: 4px;
@@ -22,5 +23,13 @@ export const ChannelItem = styled.div`
 
   &:hover {
     background: ${({ theme }) => rgba(theme.colors.gray3, 0.32)};
+  }
+
+  .btn-delete {
+    position: absolute;
+    right: 4px;
+    top: 10px;
+    color: ${({ theme }) => theme.colors.white};
+    font-size: ${({ theme }) => theme.size.small};
   }
 `

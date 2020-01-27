@@ -2,15 +2,21 @@ import React from 'react'
 import {
   MessageItem,
 } from './styles'
+import MessageAvatar from './MessageAvatar'
+import MessageContent from './MessageContent'
 
-const RoomContainer = ({ message }) => (
-  <MessageItem>
-    <div className="message-avatar">T</div>
-    <div className="message-content">
-      <div className="message-name">toan <span className="message-date">1pm 12/12/2012</span></div>
-      <div className="message-chat">{message.content}</div>
-    </div>
-  </MessageItem>
-)
+const RoomContainer = ({ message, position }) => position === 'left'
+  ? (
+    <MessageItem>
+      <MessageAvatar user={message.user} />
+      <MessageContent message={message} position={position} />
+    </MessageItem>
+  )
+  : (
+    <MessageItem>
+      <MessageContent message={message} position={position} />
+      <MessageAvatar user={message.user} />
+    </MessageItem>
+  )
 
 export default RoomContainer

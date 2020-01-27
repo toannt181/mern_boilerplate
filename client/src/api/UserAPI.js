@@ -16,6 +16,10 @@ export function createChannel(data) {
   return Request.post({ url: 'channels', data })
 }
 
+export function deleteChannel(channelId) {
+  return Request.delete({ url: `channels/${channelId}` })
+}
+
 export function fetchMessage(channelId) {
   return Request.get({ url: `channels/${channelId}/messages` })
 }
