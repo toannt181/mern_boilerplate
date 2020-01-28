@@ -1,11 +1,17 @@
 require('dotenv').config()
 
 const express = require('express')
+const socket = require('socket.io')
 const config = require('./config')
 const { connectDB, model } = require('./app/db')
 
 const { port } = config
 const app = express()
+
+app.get('/', (req, res) => {
+  res.send('Connected')
+})
+
 
 // Bootstrap routes
 require('./config/express')(app)
@@ -13,7 +19,8 @@ require('./config/passport')(app, model)
 require('./config/routes')(app)
 
 function listen() {
-  app.listen(port)
+  const server = app.listen(port)
+  app.io = socket.listen(server)
   console.log(`Express app started on port ${port}`)
 }
 

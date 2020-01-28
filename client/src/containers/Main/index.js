@@ -28,7 +28,7 @@ function Main(props) {
 
   useEffect(() => {
     dispatchFetchChannel()
-  }, [])
+  }, [dispatchFetchChannel])
 
   const onClickLogout = useCallback(() => {
     localStorage.clear()

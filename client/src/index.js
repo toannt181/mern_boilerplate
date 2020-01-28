@@ -6,6 +6,7 @@ import { ThemeProvider } from 'styled-components'
 import { Provider } from 'react-redux'
 import store from './store'
 import theme from './configs/theme'
+import './configs/io'
 
 ReactDOM.render(
   <Provider store={store}>
@@ -15,7 +16,6 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 )
-window.store = store
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
