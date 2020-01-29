@@ -1,4 +1,5 @@
 import Request from './request'
+import socket from '../configs/socket'
 
 export function createUser(data) {
   return Request.post({ url: 'users', data })
@@ -26,4 +27,18 @@ export function fetchMessage(channelId) {
 
 export function sendMessage({ channelId, content }) {
   return Request.post({ url: `channels/${channelId}/messages`, data: { channelId, content } })
+}
+
+export function requestJoinRoom({ channelId }) {
+  socket.emit('join', { channelId })
+}
+
+export function emitNewMessage({ channelId, message }) {
+  socket.emit('send-new-message', { channelId, message })
+}
+
+export function subscribeMessageChannel(callback) {
+  socket.on('receive-new-message', (data) => {
+    callback(data)
+  })
 }

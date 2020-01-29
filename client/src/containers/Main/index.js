@@ -8,6 +8,7 @@ import ChannelContainer from './ChannelContainer'
 import RoomContainer from './RoomContainer'
 import ChannelModal from './ChannelModal'
 import { MainWrapper } from './styles'
+import * as UserAPI from '../../api/UserAPI'
 
 function Main(props) {
   const {
@@ -22,13 +23,19 @@ function Main(props) {
     dispatchFetchMessage,
     dispatchSendMessage,
     dispatchDeleteChannel,
+    dispatchAddMessage,
+    dispatchRequestJoinRoom,
   } = props
 
   const [isShowChannelModal, toggleChannelModal] = useState(false)
 
   useEffect(() => {
     dispatchFetchChannel()
-  }, [dispatchFetchChannel])
+
+    UserAPI.subscribeMessageChannel(function ({ message }) {
+      dispatchAddMessage(message)
+    })
+  }, [dispatchFetchChannel, dispatchAddMessage])
 
   const onClickLogout = useCallback(() => {
     localStorage.clear()
@@ -47,10 +54,11 @@ function Main(props) {
   const onClickChannel = useCallback((channelId) => {
     dispatchSelectChannel(channelId)
     dispatchFetchMessage({ channelId })
-  }, [dispatchSelectChannel, dispatchFetchMessage])
+    dispatchRequestJoinRoom({ channelId })
+  }, [dispatchSelectChannel, dispatchFetchMessage, dispatchRequestJoinRoom])
 
   const onSendMessage = useCallback((content) => {
-    dispatchSendMessage({ channelId: currentChannel, content })
+    dispatchSendMessage({ channelId: currentChannel, content, user })
   }, [dispatchSendMessage, currentChannel])
 
   const onClickDeleteChannel = useCallback((e) => {
@@ -102,5 +110,7 @@ export default connect(
     dispatchFetchMessage: actions.dispatchFetchMessage,
     dispatchSendMessage: actions.dispatchSendMessage,
     dispatchDeleteChannel: actions.dispatchDeleteChannel,
+    dispatchRequestJoinRoom: actions.dispatchRequestJoinRoom,
+    dispatchAddMessage: actions.dispatchAddMessage,
   }
 )(Main)

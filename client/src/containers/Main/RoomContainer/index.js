@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   MessageList,
   RoomContainerWrapper,
@@ -8,6 +8,8 @@ import {
 
 import MessageItem from './MessageItem'
 
+import usePrevious from '../../../utils/usePrevious'
+
 const RoomContainer = (props) => {
   const {
     currentChannel,
@@ -16,6 +18,8 @@ const RoomContainer = (props) => {
     user,
   } = props
   const [content, setContent] = useState('')
+  const prevProps = usePrevious({ messages })
+  const wrapperRef = useRef()
 
   const onKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -28,8 +32,16 @@ const RoomContainer = (props) => {
     setContent(e.target.value)
   }
 
+  useEffect(() => {
+    if (prevProps && messages.length > prevProps.messages.length) {
+      const ref = wrapperRef.current
+
+      ref.scrollTop = ref.scrollHeight - ref.clientHeight
+    }
+  }, [messages])
+
   return (
-    <RoomContainerWrapper>
+    <RoomContainerWrapper ref={wrapperRef}>
       {currentChannel ?
         <>
           <MessageList>

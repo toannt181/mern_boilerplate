@@ -6,7 +6,7 @@ import { ThemeProvider } from 'styled-components'
 import { Provider } from 'react-redux'
 import store from './store'
 import theme from './configs/theme'
-import './configs/io'
+import './configs/socket'
 
 ReactDOM.render(
   <Provider store={store}>

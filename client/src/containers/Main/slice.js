@@ -13,6 +13,9 @@ const slice = createSlice({
     dispatchSetChannel(state, action) {
       state.channels = action.payload
     },
+    dispatchAddMessage(state, action) {
+      state.messages.push(action.payload)
+    },
     dispatchSetMessage(state, action) {
       state.messages = action.payload
     },
@@ -24,6 +27,7 @@ const slice = createSlice({
     dispatchFetchMessage() { },
     dispatchSendMessage() { },
     dispatchDeleteChannel() { },
+    dispatchRequestJoinRoom() { },
   },
 })
 

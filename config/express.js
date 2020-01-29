@@ -39,7 +39,7 @@ module.exports = function (app) {
   app.use(express.static(`${config.root}/storages/public`))
 
   // Use winston on production
-  app.use(morgan('combined'))
+  app.use(morgan('tiny'))
 
   // set views path, template engine and default layout
   app.set('views', `${config.root}/app/views`)

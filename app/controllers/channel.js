@@ -42,8 +42,18 @@ async function destroy(req, res, next) {
   }
 }
 
+async function joinRoom(req, res, next) {
+  try {
+    const { id } = req.params
+    const { socketId } = req.body
+  } catch (error) {
+    next(error)
+  }
+}
+
 route.get('/', index)
 route.post('/', store)
+route.post('/:id/join-room', joinRoom)
 route.delete('/:id', destroy)
 route.use('/:id/messages', message)
 

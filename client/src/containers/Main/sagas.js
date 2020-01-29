@@ -19,13 +19,20 @@ function* watchFetchMessage(action) {
 }
 
 function* watchSendMessage(action) {
-  yield UserAPI.sendMessage(action.payload)
-  yield put(actions.dispatchFetchMessage({ channelId: action.payload.channelId }))
+  const { user, channelId } = action.payload
+  const message = yield UserAPI.sendMessage(action.payload)
+  const newMessage = { ...message, user: { name: user.name } }
+  yield UserAPI.emitNewMessage({ channelId, message: newMessage })
+  yield put(actions.dispatchAddMessage(newMessage))
 }
 
 function* watchDeleteChannel(action) {
   yield UserAPI.deleteChannel(action.payload)
   yield put(actions.dispatchFetchChannel())
+}
+
+function* watchRequestJoinRoom(action) {
+  yield UserAPI.requestJoinRoom(action.payload)
 }
 
 export default function* sagas() {
@@ -34,4 +41,5 @@ export default function* sagas() {
   yield takeEvery(actions.dispatchFetchMessage.type, watchFetchMessage)
   yield takeEvery(actions.dispatchSendMessage.type, watchSendMessage)
   yield takeEvery(actions.dispatchDeleteChannel.type, watchDeleteChannel)
+  yield takeEvery(actions.dispatchRequestJoinRoom.type, watchRequestJoinRoom)
 }
