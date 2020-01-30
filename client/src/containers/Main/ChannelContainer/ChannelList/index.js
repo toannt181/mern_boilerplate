@@ -24,7 +24,8 @@ const UserStatus = (props) => {
             active={currentChannel === channel._id}
             key={channel._id}
           >
-            #{channel.name}
+            <div>#{channel.name}</div>
+            <div className="channel-id">{channel._id}</div>
             <button className="btn-delete btn-none" onClick={onClickDeleteChannel} data-id={channel._id}>
               <i className="fa fa-times-circle" aria-hidden="true" />
             </button>

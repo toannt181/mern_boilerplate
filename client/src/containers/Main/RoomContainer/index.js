@@ -10,6 +10,16 @@ import MessageItem from './MessageItem'
 
 import usePrevious from '../../../utils/usePrevious'
 
+let isOnCompositionStart = false
+
+const onCompositionStart = () => {
+  isOnCompositionStart = true
+}
+
+const onCompositionEnd = () => {
+  isOnCompositionStart = false
+}
+
 const RoomContainer = (props) => {
   const {
     currentChannel,
@@ -22,6 +32,7 @@ const RoomContainer = (props) => {
   const wrapperRef = useRef()
 
   const onKeyDown = (e) => {
+    if (isOnCompositionStart || !content.trim()) return
     if (e.key === 'Enter') {
       onSendMessage(content)
       setContent('')
@@ -38,7 +49,7 @@ const RoomContainer = (props) => {
 
       ref.scrollTop = ref.scrollHeight - ref.clientHeight
     }
-  }, [messages])
+  }, [messages, prevProps])
 
   return (
     <RoomContainerWrapper ref={wrapperRef}>
@@ -48,7 +59,14 @@ const RoomContainer = (props) => {
             {messages.map((message, i) => <MessageItem key={i} message={message} position={message.createdBy === user._id ? 'right' : 'left'} />)}
           </MessageList>
           <ChatInputWrapper>
-            <input className="chat-input" onKeyDown={onKeyDown} onChange={onChange} value={content} />
+            <input
+              className="chat-input"
+              onKeyDown={onKeyDown}
+              onChange={onChange}
+              value={content}
+              onCompositionStart={onCompositionStart}
+              onCompositionEnd={onCompositionEnd}
+            />
           </ChatInputWrapper>
         </>
         : <Title className="is-3">Select channel</Title>

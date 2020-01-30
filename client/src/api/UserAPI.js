@@ -33,6 +33,10 @@ export function requestJoinRoom({ channelId }) {
   socket.emit('join', { channelId })
 }
 
+export function requestLeaveRoom({ channelId }) {
+  socket.emit('leave', { channelId })
+}
+
 export function emitNewMessage({ channelId, message }) {
   socket.emit('send-new-message', { channelId, message })
 }

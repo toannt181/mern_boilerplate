@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { ACCESS_TOKEN } from '../configs/constants'
-axios.defaults.baseURL = 'http://localhost:4000/api'
+axios.defaults.baseURL = `${process.env.REACT_APP_API_URL}/api`
 
 export default async function requestHelper({ method, options }) {
   let token

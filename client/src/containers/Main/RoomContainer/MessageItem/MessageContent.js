@@ -10,8 +10,14 @@ export const MessageContentWrapper = styled.div`
   
 
   .message-name {
+    color: ${({ theme }) => theme.colors.white};
     font-size: ${({ theme }) => theme.size.small};
     font-weight: ${({ theme }) => theme.fontWeight.bold};
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   .message-date {

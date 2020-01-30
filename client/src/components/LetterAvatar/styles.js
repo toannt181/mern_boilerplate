@@ -4,7 +4,7 @@ export const LetterAvatarWrapper = styled.div`
   width: 48px;
   height: 48px;
   color: ${({ theme }) => theme.colors.white};
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.gray2};
   display: flex;
   align-items: center;
   justify-content: center;

@@ -11,11 +11,13 @@ export const MessageAvatarWrapper = styled.div`
   justify-content: center;
   font-weight: ${({ theme }) => theme.fontWeight.bold};
   font-size: ${({ theme }) => theme.size.large};
-  background: ${({ theme }) => theme.colors.primary};
+  background: ${({ color, theme }) => `#${color}` || theme.colors.primary};
+  border: 1px solid;
+  border-color: ${({ color, theme }) => `#${color}` || theme.colors.primary};
 `
 
 const MessageAvatar = ({ user }) => (
-  <MessageAvatarWrapper>{user ? user.name[0] : ''}</MessageAvatarWrapper>
+  <MessageAvatarWrapper color={user.avatar}>{user ? user.name[0] : ''}</MessageAvatarWrapper>
 )
 
 export default MessageAvatar

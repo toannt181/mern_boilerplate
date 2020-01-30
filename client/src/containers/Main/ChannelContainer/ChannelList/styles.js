@@ -27,9 +27,15 @@ export const ChannelItem = styled.div`
 
   .btn-delete {
     position: absolute;
-    right: 4px;
-    top: 10px;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
     color: ${({ theme }) => theme.colors.white};
     font-size: ${({ theme }) => theme.size.small};
+  }
+
+  .channel-id {
+    color: ${({ theme }) => theme.colors.gray14};
+    font-size: ${({ theme }) => theme.size.tiny};
   }
 `

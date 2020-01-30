@@ -25,6 +25,7 @@ function Main(props) {
     dispatchDeleteChannel,
     dispatchAddMessage,
     dispatchRequestJoinRoom,
+    dispatchRequestLeaveRoom,
   } = props
 
   const [isShowChannelModal, toggleChannelModal] = useState(false)
@@ -32,7 +33,7 @@ function Main(props) {
   useEffect(() => {
     dispatchFetchChannel()
 
-    UserAPI.subscribeMessageChannel(function ({ message }) {
+    UserAPI.subscribeMessageChannel(function ({ message, channelId }) {
       dispatchAddMessage(message)
     })
   }, [dispatchFetchChannel, dispatchAddMessage])
@@ -52,14 +53,27 @@ function Main(props) {
   }, [dispatchCreateChannel])
 
   const onClickChannel = useCallback((channelId) => {
+    if (currentChannel) {
+      if (currentChannel === channelId) return
+      dispatchRequestLeaveRoom({ channelId: currentChannel })
+    }
+
     dispatchSelectChannel(channelId)
     dispatchFetchMessage({ channelId })
     dispatchRequestJoinRoom({ channelId })
-  }, [dispatchSelectChannel, dispatchFetchMessage, dispatchRequestJoinRoom])
+  },
+    [
+      currentChannel,
+      dispatchRequestLeaveRoom,
+      dispatchSelectChannel,
+      dispatchFetchMessage,
+      dispatchRequestJoinRoom
+    ]
+  )
 
   const onSendMessage = useCallback((content) => {
     dispatchSendMessage({ channelId: currentChannel, content, user })
-  }, [dispatchSendMessage, currentChannel])
+  }, [dispatchSendMessage, currentChannel, user])
 
   const onClickDeleteChannel = useCallback((e) => {
     e.stopPropagation()
@@ -79,7 +93,7 @@ function Main(props) {
         currentChannel={currentChannel}
         onClickDeleteChannel={onClickDeleteChannel}
       />
-      <RoomContainer 
+      <RoomContainer
         currentChannel={currentChannel}
         messages={messages}
         onSendMessage={onSendMessage}
@@ -112,5 +126,6 @@ export default connect(
     dispatchDeleteChannel: actions.dispatchDeleteChannel,
     dispatchRequestJoinRoom: actions.dispatchRequestJoinRoom,
     dispatchAddMessage: actions.dispatchAddMessage,
+    dispatchRequestLeaveRoom: actions.dispatchRequestLeaveRoom,
   }
 )(Main)

@@ -13,9 +13,10 @@ async function store(req, res, next) {
   try {
     const { name } = req.body
     const user = new model.User({ name })
-    user.save()
+    await user.save()
     res.json(user)
   } catch (error) {
+    console.log(error)
     next(error)
   }
 }

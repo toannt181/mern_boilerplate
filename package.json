@@ -40,6 +40,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "body-parser": "~1.19.0",
+    "chalk": "^3.0.0",
     "compression": "~1.7.4",
     "connect-mongo": "~2.0.3",
     "cookie-parser": "~1.4.4",
@@ -53,6 +54,7 @@
     "flash": "^1.1.0",
     "googleapis": "^39.2.0",
     "helmet": "~3.18.0",
+    "lodash": "^4.17.15",
     "mongoose": "^5.8.7",
     "morgan": "~1.9.1",
     "multer": "~1.4.1",
