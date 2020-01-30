@@ -4,6 +4,7 @@ import { ACCESS_TOKEN } from '../../configs/constants'
 const INITIAL_STATE = {
   user: JSON.parse(localStorage.getItem(ACCESS_TOKEN)) || null,
   warningData: { visible: false },
+  notifiable: false,
 }
 
 const slice = createSlice({
@@ -17,6 +18,9 @@ const slice = createSlice({
     dispatchCreateUser() { },
     dispatchWarningModal(state, action) {
       state.warningData = action.payload
+    },
+    dispatchSetNotificationPermision(state, action) {
+      state.notifiable = action.payload
     },
   },
 })

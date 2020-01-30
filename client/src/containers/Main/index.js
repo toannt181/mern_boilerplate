@@ -10,6 +10,7 @@ import RoomContainer from './RoomContainer'
 import ChannelModal from './ChannelModal'
 import { MainWrapper } from './styles'
 import * as UserAPI from '../../api/UserAPI'
+import { requestNotifyPermission } from '../../utils/notification'
 
 function Main(props) {
   const {
@@ -28,17 +29,23 @@ function Main(props) {
     dispatchRequestJoinRoom,
     dispatchRequestLeaveRoom,
     history,
+    dispatchSetNotificationPermision,
   } = props
 
   const [isShowChannelModal, toggleChannelModal] = useState(false)
 
   useEffect(() => {
     dispatchFetchChannel()
+    requestNotifyPermission()
+      .then((result) => {
+        dispatchSetNotificationPermision(result)
+      })
 
     UserAPI.subscribeMessageChannel(function ({ message }) {
       dispatchAddMessage(message)
+      new Notification(`${message.user.name}: ${message.content}`)
     })
-  }, [dispatchFetchChannel, dispatchAddMessage])
+  }, [dispatchFetchChannel, dispatchAddMessage, dispatchSetNotificationPermision])
 
   const onClickLogout = useCallback(() => {
     localStorage.clear()
@@ -125,6 +132,7 @@ export default withRouter(connect(
   }),
   {
     dispatchSetUser: appActions.dispatchSetUser,
+    dispatchSetNotificationPermision: appActions.dispatchSetNotificationPermision,
     dispatchCreateChannel: actions.dispatchCreateChannel,
     dispatchFetchChannel: actions.dispatchFetchChannel,
     dispatchSelectChannel: actions.dispatchSelectChannel,
