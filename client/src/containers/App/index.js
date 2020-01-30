@@ -12,8 +12,9 @@ import { selectUsername } from './selectors'
 import GlobalStyle from './globalStyle'
 import Main from '../Main'
 import LoginPage from '../LoginPage'
+import WarningModal from './WarningModal'
 
-function App({ user, fetchUser, fullname }) {
+function App({ warningData, dispatchWarningModal }) {
   return (
     <>
       <GlobalStyle />
@@ -22,12 +23,17 @@ function App({ user, fetchUser, fullname }) {
           <Route exact path="/login" component={LoginPage} />
           <AuthenticateRoute component={Main} />
         </Switch>
+        {warningData.visible && <WarningModal {...warningData} dispatchWarningModal={dispatchWarningModal} />}
       </Router>
     </>
   )
 }
 
 export default connect(
-  state => ({ user: state.app.user, fullname: selectUsername(state) }),
+  state => ({
+    user: state.app.user,
+    fullname: selectUsername(state),
+    warningData: state.app.warningData,
+  }),
   actions
 )(App)

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
+import { Route, withRouter } from 'react-router-dom'
 
 import { actions as appActions } from '../App/slice'
 import { actions } from './slice'
@@ -26,6 +27,7 @@ function Main(props) {
     dispatchAddMessage,
     dispatchRequestJoinRoom,
     dispatchRequestLeaveRoom,
+    history,
   } = props
 
   const [isShowChannelModal, toggleChannelModal] = useState(false)
@@ -33,7 +35,7 @@ function Main(props) {
   useEffect(() => {
     dispatchFetchChannel()
 
-    UserAPI.subscribeMessageChannel(function ({ message, channelId }) {
+    UserAPI.subscribeMessageChannel(function ({ message }) {
       dispatchAddMessage(message)
     })
   }, [dispatchFetchChannel, dispatchAddMessage])
@@ -52,12 +54,12 @@ function Main(props) {
     toggleChannelModal(false)
   }, [dispatchCreateChannel])
 
-  const onClickChannel = useCallback((channelId) => {
+  const onFetchMessageChannel = useCallback((channelId) => {
     if (currentChannel) {
       if (currentChannel === channelId) return
       dispatchRequestLeaveRoom({ channelId: currentChannel })
     }
-
+    history.push(`/channels/${channelId}`)
     dispatchSelectChannel(channelId)
     dispatchFetchMessage({ channelId })
     dispatchRequestJoinRoom({ channelId })
@@ -89,15 +91,20 @@ function Main(props) {
         onClickLogout={onClickLogout}
         channels={channels}
         onAddChannel={onAddChannel}
-        onClickChannel={onClickChannel}
+        onClickChannel={onFetchMessageChannel}
         currentChannel={currentChannel}
         onClickDeleteChannel={onClickDeleteChannel}
       />
-      <RoomContainer
-        currentChannel={currentChannel}
-        messages={messages}
-        onSendMessage={onSendMessage}
-        user={user}
+      <Route
+        path="/channels/:id"
+        component={(props) =>
+          <RoomContainer
+            {...props}
+            messages={messages}
+            onSendMessage={onSendMessage}
+            user={user}
+            onFetchMessageChannel={onFetchMessageChannel}
+          />}
       />
       {isShowChannelModal && (
         <ChannelModal
@@ -109,7 +116,7 @@ function Main(props) {
   )
 }
 
-export default connect(
+export default withRouter(connect(
   state => ({
     user: state.app.user,
     channels: state.main.channels,
@@ -128,4 +135,4 @@ export default connect(
     dispatchAddMessage: actions.dispatchAddMessage,
     dispatchRequestLeaveRoom: actions.dispatchRequestLeaveRoom,
   }
-)(Main)
+)(Main))

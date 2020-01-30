@@ -8,7 +8,6 @@ export const RoomContainerWrapper = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: ${({ theme }) => theme.colors.gray2};
 `
 
 export const ChatInputWrapper = styled.div`

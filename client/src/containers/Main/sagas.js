@@ -1,5 +1,6 @@
 import { put, takeEvery } from 'redux-saga/effects'
 import { actions } from './slice'
+import { actions as appActions } from '../App/slice'
 import * as UserAPI from '../../api/UserAPI'
 
 function* watchFetchChannel() {
@@ -13,9 +14,13 @@ function* watchCreateChannel(action) {
 }
 
 function* watchFetchMessage(action) {
-  const { channelId } = action.payload
-  const messages = yield UserAPI.fetchMessage(channelId)
-  yield put(actions.dispatchSetMessage(messages))
+  try {
+    const { channelId } = action.payload
+    const messages = yield UserAPI.fetchMessage(channelId)
+    yield put(actions.dispatchSetMessage(messages))
+  } catch (e) {
+    yield put(appActions.dispatchWarningModal({ message: 'Meet errors when fetching messages', visible: true }))
+  }
 }
 
 function* watchSendMessage(action) {

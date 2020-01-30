@@ -1,14 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, memo } from 'react'
 import {
   MessageList,
   RoomContainerWrapper,
   ChatInputWrapper,
-  Title,
 } from './styles'
 
 import MessageItem from './MessageItem'
-
-import usePrevious from '../../../utils/usePrevious'
 
 let isOnCompositionStart = false
 
@@ -20,16 +17,26 @@ const onCompositionEnd = () => {
   isOnCompositionStart = false
 }
 
+let prevMessageLength
+
 const RoomContainer = (props) => {
   const {
-    currentChannel,
     messages,
     onSendMessage,
     user,
+    onFetchMessageChannel,
+    match: { params },
   } = props
+
+  useEffect(() => {
+    if (params.id) {
+      onFetchMessageChannel(params.id)
+    }
+  }, [])
+
   const [content, setContent] = useState('')
-  const prevProps = usePrevious({ messages })
   const wrapperRef = useRef()
+  const inputRef = useRef()
 
   const onKeyDown = (e) => {
     if (isOnCompositionStart || !content.trim()) return
@@ -44,35 +51,35 @@ const RoomContainer = (props) => {
   }
 
   useEffect(() => {
-    if (prevProps && messages.length > prevProps.messages.length) {
-      const ref = wrapperRef.current
+    const ref = wrapperRef.current
 
+    if (!prevMessageLength || messages.length > prevMessageLength) {
       ref.scrollTop = ref.scrollHeight - ref.clientHeight
     }
-  }, [messages, prevProps])
+
+    return () => { prevMessageLength = 0 }
+  }, [messages])
 
   return (
     <RoomContainerWrapper ref={wrapperRef}>
-      {currentChannel ?
-        <>
-          <MessageList>
-            {messages.map((message, i) => <MessageItem key={i} message={message} position={message.createdBy === user._id ? 'right' : 'left'} />)}
-          </MessageList>
-          <ChatInputWrapper>
-            <input
-              className="chat-input"
-              onKeyDown={onKeyDown}
-              onChange={onChange}
-              value={content}
-              onCompositionStart={onCompositionStart}
-              onCompositionEnd={onCompositionEnd}
-            />
-          </ChatInputWrapper>
-        </>
-        : <Title className="is-3">Select channel</Title>
-      }
+      <>
+        <MessageList>
+          {messages.map((message, i) => <MessageItem key={i} message={message} position={message.createdBy === user._id ? 'right' : 'left'} />)}
+        </MessageList>
+        <ChatInputWrapper>
+          <input
+            ref={inputRef}
+            className="chat-input"
+            onKeyDown={onKeyDown}
+            onChange={onChange}
+            value={content}
+            onCompositionStart={onCompositionStart}
+            onCompositionEnd={onCompositionEnd}
+          />
+        </ChatInputWrapper>
+      </>
     </RoomContainerWrapper>
   )
 }
 
-export default RoomContainer
+export default memo(RoomContainer)

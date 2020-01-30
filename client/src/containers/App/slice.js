@@ -3,6 +3,7 @@ import { ACCESS_TOKEN } from '../../configs/constants'
 
 const INITIAL_STATE = {
   user: JSON.parse(localStorage.getItem(ACCESS_TOKEN)) || null,
+  warningData: { visible: false },
 }
 
 const slice = createSlice({
@@ -14,6 +15,9 @@ const slice = createSlice({
     },
     fetchUser() { },
     dispatchCreateUser() { },
+    dispatchWarningModal(state, action) {
+      state.warningData = action.payload
+    },
   },
 })
 
