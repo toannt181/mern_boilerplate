@@ -23,6 +23,10 @@ export const LoginPageWrapper = styled.div`
     font-size: ${({ theme }) => theme.size.small};
     display: block;
   }
+
+  .btn-group {
+    margin-top: 20px;
+  }
 `
 
 export const ChannelTitle = styled.div`

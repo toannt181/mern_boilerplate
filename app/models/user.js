@@ -1,6 +1,9 @@
 const moongose = require('mongoose')
+const bcrypt = require('bcrypt')
+
 const randomColor = require('../utils/randomColor')
 
+const SALT_ROUND = 10
 const MODEL_NAME = 'user'
 
 const schema = new moongose.Schema({
@@ -9,6 +12,7 @@ const schema = new moongose.Schema({
   },
   email: {
     type: String,
+    unique: true,
   },
   password: {
     type: String,
@@ -16,14 +20,22 @@ const schema = new moongose.Schema({
   avatar: {
     type: String,
   },
+  thumbnail: {
+    type: String,
+  },
 })
 
-schema.pre('save', function (next) {
+schema.pre('save', async function (next) {
   if (!this.avatar) {
     this.avatar = randomColor()
   }
+  this.password = await bcrypt.hash(this.password, SALT_ROUND)
   next()
 })
+
+schema.methods.isValidPassword = function (password) {
+  return bcrypt.compareSync(password, this.password)
+}
 
 const initialize = () => moongose.model(MODEL_NAME, schema)
 
