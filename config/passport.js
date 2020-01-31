@@ -1,22 +1,27 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
+const { ExtractJwt, Strategy: JwtStrategy } = require('passport-jwt')
 
 module.exports = function (app, model) {
   app.use(passport.initialize())
-  app.use(passport.session())
+  // app.use(passport.session())
 
-  passport.serializeUser((user, done) => {
-    done(null, user.id)
-  })
-
-  passport.deserializeUser(async (id, done) => {
-    try {
-      const user = await model.User.findById(id)
-      done(null, user)
-    } catch (err) {
-      done(err)
-    }
-  })
+  passport.use(
+    new JwtStrategy(
+      {
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        secretOrKey: 'secret',
+      },
+      async (jwtPayload, done) => {
+        try {
+          const user = await model.User.findById(jwtPayload._id)
+          done(null, user)
+        } catch (err) {
+          done(err)
+        }
+      },
+    ),
+  )
 
   passport.use(new LocalStrategy(
     {

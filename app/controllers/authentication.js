@@ -1,5 +1,7 @@
 const { Router } = require('express')
 const passport = require('passport')
+const jwt = require('jsonwebtoken')
+
 const { model } = require('../db')
 
 const route = new Router()
@@ -16,11 +18,12 @@ async function signup(req, res, next) {
 }
 
 function login(req, res) {
-  console.log('haha')
-  res.json(req.user)
+  const { name, email, _id } = req.user
+  const token = jwt.sign({ name, email, _id }, 'secret', { expiresIn: 60 })
+  res.json(token)
 }
 
-route.post('/login', passport.authenticate('local'), login)
+route.post('/login', passport.authenticate('local', { session: false }), login)
 route.post('/signup', signup)
 
 module.exports = route

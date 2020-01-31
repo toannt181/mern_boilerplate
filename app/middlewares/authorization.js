@@ -1,21 +1,24 @@
-const { model } = require('../db')
+// const { model } = require('../db')
+const passport = require('passport')
 
-module.exports = async function hasAuthorization(req, res, next) {
-  const { authorization } = req.headers
+module.exports = passport.authenticate('jwt', { session: false })
 
-  try {
-    if (!authorization) {
-      throw new Error('401')
-    }
+// async function hasAuthorization(req, res, next) {
+//     const { authorization } = req.headers
 
-    const user = await model.User.findById(authorization)
-    if (!user) {
-      throw new Error('401')
-    }
+//     try {
+//       if (!authorization) {
+//         throw new Error('401')
+//       }
 
-    req.user = user
-    next()
-  } catch (e) {
-    next(e)
-  }
-}
+//       const user = await model.User.findById(authorization)
+//       if (!user) {
+//         throw new Error('401')
+//       }
+
+//       req.user = user
+//       next()
+//     } catch (e) {
+//       next(e)
+//     }
+//   }

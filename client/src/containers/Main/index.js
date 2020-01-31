@@ -76,7 +76,8 @@ function Main(props) {
       dispatchRequestLeaveRoom,
       dispatchSelectChannel,
       dispatchFetchMessage,
-      dispatchRequestJoinRoom
+      dispatchRequestJoinRoom,
+      history,
     ]
   )
 

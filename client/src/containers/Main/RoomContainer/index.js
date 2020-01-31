@@ -32,7 +32,7 @@ const RoomContainer = (props) => {
     if (params.id) {
       onFetchMessageChannel(params.id)
     }
-  }, [])
+  }, [onFetchMessageChannel, params])
 
   const [content, setContent] = useState('')
   const wrapperRef = useRef()

@@ -1,12 +1,12 @@
 const express = require('express')
-const session = require('express-session')
+// const session = require('express-session')
 const compression = require('compression')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const helmet = require('helmet')
-const FileStore = require('session-file-store')(session)
-const flash = require('flash')
+// const FileStore = require('session-file-store')(session)
+// const flash = require('flash')
 const multer = require('multer')
 // const requireHttps = require('./middlewares/require-https')
 const config = require('.')
@@ -55,12 +55,12 @@ module.exports = function (app) {
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use(upload.single('image'))
-  app.use(session({
-    secret: 'keyboard cat',
-    store: new FileStore({}),
-    resave: false,
-    saveUninitialized: false,
-    duration: 30 * 60 * 1000,
-  }))
-  app.use(flash())
+  // app.use(session({
+  //   secret: 'keyboard cat',
+  //   store: new FileStore({}),
+  //   resave: false,
+  //   saveUninitialized: false,
+  //   duration: 30 * 60 * 1000,
+  // }))
+  // app.use(flash())
 }
