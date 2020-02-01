@@ -5,7 +5,11 @@ const path = require('path')
 const config = require('../../config')
 
 const connectDB = () => {
-  return mongoose.connect(config.mongo.dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+  return mongoose.connect(config.mongo.dbUrl, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  })
 }
 
 const models = path.join(__dirname, '../models')

@@ -1,68 +1,60 @@
+const nodemailer = require('nodemailer')
+const fs = require('fs')
+const path = require('path')
+// const config = require('../../config')
 
-/**
- * Module dependencies.
- */
 
-const Notifier = require('notifier');
-const pug = require('pug');
-const config = require('../../config');
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  secure: false, // true for 465, false for other ports
+  auth: {
+    user: 'ngquyex.s5t@gmail.com', // generated ethereal user
+    pass: '123123aA@', // generated ethereal password
+  },
+})
 
-/**
- * Process the templates using swig - refer to notifier#processTemplate method
- *
- * @param {String} tplPath
- * @param {Object} locals
- * @return {String}
- * @api public
- */
+async function sendMail({
+  to,
+  subject,
+  template,
+  attachments,
+}) {
+  try {
+    await transporter.sendMail({
+      from: 'Move on Flow ✔',
+      to,
+      subject,
+      html: template,
+      attachments,
+    })
+  } catch (e) {
+    console.log(e)
+  }
+}
 
-Notifier.prototype.processTemplate = function (tplPath, locals) {
-  locals.filename = tplPath;
-  return pug.renderFile(tplPath, locals);
-};
-
-/**
- * Expose
- */
+function sendVerifyAccountMail({ verifyLink, email }) {
+  const verifyAccountTemplate = fs.readFileSync(path.resolve(__dirname, 'templates/verifyMail.html'), { encoding: 'utf8' }).replace('##VERIFY_LINK##', verifyLink)
+  const pathImage = path.resolve(__dirname, 'templates/images')
+  sendMail({
+    to: email || 'toantnweb@gmail.com',
+    subject: 'Thank you for verifing your email',
+    template: verifyAccountTemplate,
+    attachments: [
+      {
+        filename: 'reminder-hero-graph.png',
+        path: `${pathImage}/reminder-hero-graph.png`,
+        cid: 'reminder-hero-graph.png',
+      },
+      {
+        filename: 'bg-shade.jpg',
+        path: `${pathImage}/bg-shade.jpg`,
+        cid: 'bg-shade.jpg',
+      },
+    ],
+  })
+}
 
 module.exports = {
-  /**
-   * Comment notification
-   *
-   * @param {Object} options
-   * @param {Function} cb
-   * @api public
-   */
-
-  comment(options, cb) {
-    const { article } = options;
-    const author = article.user;
-    const user = options.currentUser;
-    const notifier = new Notifier(config.notifier);
-
-    const obj = {
-      to: author.email,
-      from: 'your@product.com',
-      subject: `${user.name} added a comment on your article ${article.title}`,
-      alert: `${user.name} says: "${options.comment}`,
-      locals: {
-        to: author.name,
-        from: user.name,
-        body: options.comment,
-        article: article.name,
-      },
-    };
-
-    // for apple push notifications
-    /* notifier.use({
-      APN: true
-      parseChannels: ['USER_' + author._id.toString()]
-    }) */
-
-    try {
-      notifier.send('comment', obj, cb);
-    } catch (err) {
-      console.log(err);
-    }
-  },
-};
+  sendMail,
+  sendVerifyAccountMail,
+}

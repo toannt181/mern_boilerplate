@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const auth = require('../middlewares/authorization')
 const { model } = require('../db')
 const redis = require('../../config/redis')
+const { sendVerifyAccountMail } = require('../mailer')
 
 const route = new Router()
 
@@ -13,6 +14,9 @@ async function signup(req, res, next) {
     const { name, email, password } = req.body
     const user = new model.User({ name, email, password })
     await user.save()
+    const { _id } = user
+    const key = jwt.sign({ email, _id }, 'secret', { expiresIn: 60 * 15 })
+    sendVerifyAccountMail({ to: email, verifyLink: `http://localhost:3000/verfiy-account?code=${key}` })
     res.json(user)
   } catch (error) {
     next(error)
@@ -60,9 +64,21 @@ function renewToken(req, res, next) {
   }
 }
 
+async function verifyAccount(req, res, next) {
+  try {
+    const { code } = req.body
+    const { _id } = jwt.verify(code, 'secret')
+    await model.User.findOneAndUpdate({ _id }, { isVerified: true })
+    res.json({ success: true })
+  } catch (error) {
+    next(error)
+  }
+}
+
 route.post('/login', passport.authenticate('local', { session: false }), login)
 route.post('/signup', signup)
 route.post('/logout', logout)
 route.post('/refresh-token', auth, renewToken)
+route.post('/verify-account', verifyAccount)
 
 module.exports = route

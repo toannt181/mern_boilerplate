@@ -16,6 +16,7 @@ require('./config/express')(app)
 require('./config/passport')(app, model)
 require('./config/routes')(app)
 
+app.mailer = require('./app/mailer')
 app.redis = require('./config/redis')
 
 function listen() {
