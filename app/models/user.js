@@ -23,6 +23,10 @@ const schema = new moongose.Schema({
   thumbnail: {
     type: String,
   },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 schema.pre('save', async function (next) {

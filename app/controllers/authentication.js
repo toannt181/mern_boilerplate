@@ -2,6 +2,7 @@ const { Router } = require('express')
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 
+const auth = require('../middlewares/authorization')
 const { model } = require('../db')
 const redis = require('../../config/redis')
 
@@ -20,8 +21,10 @@ async function signup(req, res, next) {
 
 function login(req, res) {
   const { name, email, _id } = req.user
-  const token = jwt.sign({ name, email, _id }, 'secret', { expiresIn: 60 * 15 })
-  res.json(token)
+  const accessToken = jwt.sign({ name, email, _id }, 'secret', { expiresIn: 60 * 15 })
+  const refreshToken = jwt.sign({ name, email, _id }, 'secret', { expiresIn: 60 * 60 * 24 * 30 })
+
+  res.json({ accessToken, refreshToken })
 }
 
 function logout(req, res, next) {
@@ -40,8 +43,26 @@ function logout(req, res, next) {
   }
 }
 
+function renewToken(req, res, next) {
+  try {
+    const { refreshToken } = req.body
+    const { name, email, _id } = jwt.verify(refreshToken, 'secret')
+    const tokenHeader = req.headers.authorization
+    const accessToken = tokenHeader.split('Bearer ')[1]
+    redis.set(accessToken, true)
+    redis.get(refreshToken, (error, result) => {
+      if (error || result) throw new Error('Refresh token exipre')
+      const newAccessToken = jwt.sign({ name, email, _id }, 'secret', { expiresIn: 60 * 15 })
+      res.json({ accessToken: newAccessToken })
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 route.post('/login', passport.authenticate('local', { session: false }), login)
 route.post('/signup', signup)
 route.post('/logout', logout)
+route.post('/refresh-token', auth, renewToken)
 
 module.exports = route
