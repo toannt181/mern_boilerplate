@@ -16,6 +16,8 @@ require('./config/express')(app)
 require('./config/passport')(app, model)
 require('./config/routes')(app)
 
+app.redis = require('./config/redis')
+
 function listen() {
   const server = app.listen(port)
   app.io = require('./config/socket').config(server)

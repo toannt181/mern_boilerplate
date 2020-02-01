@@ -14,7 +14,7 @@ module.exports = function (app) {
   app.use('/api', apiRoute)
 
   apiRoute.use('/authentication', authentication)
-  apiRoute.use('/users', user)
+  apiRoute.use('/users', auth, user)
   apiRoute.use('/channels', auth, channel)
   // app.get('/signup', users.signup)
   // app.get('/logout', users.logout)
@@ -28,7 +28,7 @@ module.exports = function (app) {
       //   return
       // }
       if (process.env.NODE_ENV === 'development') {
-        res.status(500).json({ error: err.stack })
+        res.status(500).json({ error: err.message })
       } else {
         res.status(500).json({ error: 'Internal error' })
       }
