@@ -20,6 +20,10 @@ export default createGlobalStyle`
     font-size: 16px;
   }
 
+  #root {
+    min-height: 100vh;
+  }
+
   code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
   }

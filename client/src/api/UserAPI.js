@@ -2,7 +2,15 @@ import Request from './request'
 import socket from '../configs/socket'
 
 export function createUser(data) {
-  return Request.post({ url: 'users', data })
+  return Request.post({ url: 'authentication/signup', data })
+}
+
+export function login(data) {
+  return Request.post({ url: 'authentication/login', data })
+}
+
+export function verifyEmail(data) {
+  return Request.post({ url: 'authentication/verify', data })
 }
 
 export function fetchUser() {

@@ -1,3 +1,9 @@
 export default function errorHandler(e) {
-  console.error(e.response)
+  switch (e.response.status) {
+    case 401:
+      localStorage.clear()
+      window.location.href = '/login'
+      break
+    default:
+  }
 }

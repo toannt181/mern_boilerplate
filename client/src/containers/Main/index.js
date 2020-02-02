@@ -11,6 +11,7 @@ import ChannelModal from './ChannelModal'
 import { MainWrapper } from './styles'
 import * as UserAPI from '../../api/UserAPI'
 import { requestNotifyPermission } from '../../utils/notification'
+import '../../configs/socket'
 
 function Main(props) {
   const {

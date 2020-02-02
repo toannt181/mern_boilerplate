@@ -16,7 +16,7 @@ async function signup(req, res, next) {
     await user.save()
     const { _id } = user
     const key = jwt.sign({ email, _id }, 'secret', { expiresIn: 60 * 15 })
-    sendVerifyAccountMail({ to: email, verifyLink: `http://localhost:3000/verfiy-account?code=${key}` })
+    sendVerifyAccountMail({ email, verifyLink: `http://localhost:3000/verify?code=${key}` })
     res.json(user)
   } catch (error) {
     next(error)
@@ -79,6 +79,6 @@ route.post('/login', passport.authenticate('local', { session: false }), login)
 route.post('/signup', signup)
 route.post('/logout', logout)
 route.post('/refresh-token', auth, renewToken)
-route.post('/verify-account', verifyAccount)
+route.post('/verify', verifyAccount)
 
 module.exports = route

@@ -8,9 +8,15 @@ import {
 function AuthenticateRoute(props) {
   const { user } = props
 
-  return user && user._id
-    ? <Route {...props} />
-    : <Redirect to="/login" />
+  if (!user || !user._id) {
+    return <Redirect to="/login" />
+  }
+
+  if (!user.isVerified) {
+    return <Redirect to="/wait-verify" />
+  }
+
+  return <Route {...props} />
 }
 
 export default connect(
