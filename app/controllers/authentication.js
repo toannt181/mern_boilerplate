@@ -16,7 +16,7 @@ async function signup(req, res, next) {
     await user.save()
     const { _id } = user
     const key = jwt.sign({ email, _id }, 'secret', { expiresIn: 60 * 15 })
-    sendVerifyAccountMail({ email, verifyLink: `http://localhost:3000/verify?code=${key}` })
+    sendVerifyAccountMail({ email, verifyLink: `${process.env.CLIENT_URL}/verify?code=${key}` })
     res.json(user)
   } catch (error) {
     next(error)
