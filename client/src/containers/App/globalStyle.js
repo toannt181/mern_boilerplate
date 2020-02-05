@@ -28,10 +28,14 @@ export default createGlobalStyle`
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
   }
 
-  ul,li {
+  ul, li {
     list-style-type: none;
     margin: 0;
     padding: 0;
+  }
+
+  p {
+    margin-bottom: 8px;
   }
 
   input {
@@ -43,48 +47,6 @@ export default createGlobalStyle`
     }
   }
 
-  .btn {
-    border-radius: 4px;
-    color: ${({ theme }) => theme.colors.white};
-    font-size: ${({ theme }) => theme.colors.regular};
-    font-weight: ${({ theme }) => theme.fontWeight.bold};
-    padding: 10px 20px;
-    text-align: center;
-    transition: all .4s ease;
-
-    &:focus {
-      box-shadow: none;
-    }
-
-    &.primary {
-      background-color: ${({ theme }) => theme.colors.primary};
-      color: ${({ theme }) => theme.colors.white};
-
-      &:hover {
-        background-color: ${({ theme }) => theme.colors.blue2};
-        color: $white;
-      }
-    }
-
-    &.block {
-      display: block;
-      width: 100%;
-    }
-
-    &.sm {
-      font-size: ${({ theme }) => theme.colors.small};
-      padding: 4px 6px;
-    }
-  }
-  
-  .input2 {
-    border-radius: 4px;
-    background: ${({ theme }) => theme.colors.blue3};
-    padding: 8px 12px;
-    display: block;
-    width: 100%;
-  }
-  
   .btn-none {
     background: transparent;
     padding: 0;
@@ -94,10 +56,35 @@ export default createGlobalStyle`
     &:focus {
       outline: none;
     }
+
+    &.is-primary {
+      color: ${({ theme }) => theme.colors.primary};
+    }
   }
 
   .title:not(:last-child) {
     margin-bottom: 8px;
+  }
+
+  .subtitle:not(:last-child),
+  .highlight:not(:last-child) {
+    margin-bottom: 0;
+  }
+
+  .title {
+    font-weight: ${({ theme }) => theme.fontWeight.bold};
+
+    &.is-1 {
+      font-size: ${({ theme }) => theme.size.xxlarge};
+    }
+
+    &.is-2 {
+      font-size: ${({ theme }) => theme.size.xlarge};
+    }
+
+    &.is-3 {
+      font-size: ${({ theme }) => theme.size.large};
+    }
   }
 
   .sub-description {
@@ -105,8 +92,22 @@ export default createGlobalStyle`
     font-size: ${({ theme }) => theme.size.small};
   }
 
+  .subtitle {
+    color: ${({ theme }) => theme.colors.gray5};
+    font-size: ${({ theme }) => theme.size.medium};
+    font-weight: ${({ theme }) => theme.fontWeight.bold};
+  }
+
   .label {
     color: ${({ theme }) => theme.colors.gray5};
+  }
+
+  .badge {
+    padding: 0 5px;
+    background: ${({ theme }) => theme.colors.red};
+    color: ${({ theme }) => theme.colors.white};
+    font-size: ${({ theme }) => theme.size.xtiny};
+    border-radius: ${({ theme }) => theme.radius.small};
   }
 
   .button {

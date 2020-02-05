@@ -7,28 +7,35 @@ const colors = {
   gray1: '#2f3136',
   gray2: '#36393f',
   gray3: '#4f545c',
-  gray5: '#72767d',
+  gray5: '#555555',
+  gray7: '#72767d',
   gray9: '#969696',
   gray13: '#dddddd',
   gray14: '#eaeaea',
   gray15: '#f6f6f6',
   black: '#000000',
+  red: '#e15d57',
 }
 
 const size = {
+  xtiny: '0.7rem',
   tiny: '0.8rem',
   small: '0.9rem',
-  regular: '1rem',
+  medium: '1rem',
   large: '1.25rem',
+  xlarge: '1.5rem',
+  xxlarge: '2.5rem',
 }
 
 const fontWeight = {
+  regular: 500,
   bold: 700,
 }
 
 const radius = {
+  small: '15px',
   medium: '20px',
-  large: '20px',
+  large: '30px',
 }
 
 export default {

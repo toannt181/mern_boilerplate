@@ -1,20 +1,37 @@
-import React from 'react'
+import React, { useCallback } from 'react'
+import styled from 'styled-components'
+import { connect } from 'react-redux'
 
-function Navbar() {
+import UserStatus from './UserStatus'
+import { actions as appActions } from 'slices/appSlice'
+
+export const NavWrapper = styled.div`
+`
+
+function Navbar({ user, dispatchSetUser }) {
+  const onClickLogout = useCallback(() => {
+    localStorage.clear()
+    dispatchSetUser(null)
+  }, [dispatchSetUser])
+
   return (
-    <nav className="navbar" role="navigation">
-      <div className="container-fluid">
-        <div className="navbar-header">
-          <a className="navbar-brand" href="/">Mern</a>
-        </div>
-        <div className="navbar-menu">
-          <a href="/users/register" className="btn btn-primary">Register</a>
-          <a href="/users/login" className="btn btn-primary">Login</a>
-          <a href="/users/logout" className="btn btn-primary">Logout</a>
-        </div>
+    <NavWrapper className="d-center">
+      <div className="control has-icons-left has-icons-right mr-auto">
+        <input className="input" type="text" placeholder="Search" />
+        <span className="icon is-small is-left">
+          <i className="fa fa-search" />
+        </span>
       </div>
-    </nav>
+      <UserStatus user={user} onClickLogout={onClickLogout} />
+    </NavWrapper>
   )
 }
 
-export default Navbar
+export default connect(
+  state => ({
+    user: state.app.user,
+  }),
+  {
+    dispatchSetUser: appActions.dispatchSetUser,
+  }
+)(Navbar)

@@ -1,4 +1,5 @@
 import React from 'react'
+import cn from 'classnames'
 import { ChannelListWrapper, ChannelTitle, ChannelItem } from './styles'
 
 const UserStatus = (props) => {
@@ -7,28 +8,23 @@ const UserStatus = (props) => {
     onAddChannel,
     onClickChannel,
     currentChannel,
-    onClickDeleteChannel,
   } = props
 
   return (
     <ChannelListWrapper>
       <ChannelTitle className="d-center mb-2">
-        <div>Channel</div>
-        <button className="ml-auto button is-small is-primary" onClick={onAddChannel}><i className="fa fa-plus" aria-hidden="true" /></button>
+        <p className="subtitle">Channel</p>
+        <button className="ml-auto btn-none is-primary" onClick={onAddChannel}><i className="fa fa-plus" aria-hidden="true" /></button>
       </ChannelTitle>
       <ul className="channel-list">
         {channels.map((channel) => (
           <ChannelItem
             onClick={() => onClickChannel(channel._id)}
-            className="channel-item"
-            active={currentChannel === channel._id}
+            className={cn('channel-item', { active: currentChannel === channel._id })}
             key={channel._id}
           >
-            <div>#{channel.name}</div>
-            <div className="channel-id">{channel._id}</div>
-            <button className="btn-delete btn-none" onClick={onClickDeleteChannel} data-id={channel._id}>
-              <i className="fa fa-times-circle" aria-hidden="true" />
-            </button>
+            <div><span className="mr-1">#</span>{channel.name}</div>
+            <span className="badge">{channel.number_unread_message}</span>
           </ChannelItem>
         ))}
       </ul>

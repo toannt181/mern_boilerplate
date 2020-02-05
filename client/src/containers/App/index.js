@@ -5,18 +5,17 @@ import {
   Switch,
   Route,
 } from 'react-router-dom'
-import AuthenticateRoute from '../../hocs/AuthenticateRoute'
+import AuthenticateRoute from 'hocs/AuthenticateRoute'
 
-import { actions } from '../../slices/appSlice'
-// import { selectUsername } from './selectors'
+import { actions } from 'slices/appSlice'
 import GlobalStyle from './globalStyle'
-import Main from '../Main'
 import LoginPage from '../LoginPage'
 import WarningModal from './WarningModal'
-import LoadingSpinner from '../../components/LoadingSpinner'
-import { ACCESS_TOKEN } from '../../configs/constants'
+import LoadingSpinner from 'components/LoadingSpinner'
+import { ACCESS_TOKEN } from 'configs/constants'
 import WaitVerifyEmailPage from '../WaitVerifyEmailPage'
 import VerifyEmailPage from '../VerifyEmailPage'
+import MainLayout from 'common/MainLayout'
 
 function App(props) {
   const {
@@ -52,7 +51,7 @@ function App(props) {
             <Route exact path="/login" component={LoginPage} />
             <Route exact path="/wait-verify" component={WaitVerifyEmailPage} />
             <Route exact path="/verify" component={VerifyEmailPage} />
-            <AuthenticateRoute component={Main} />
+            <AuthenticateRoute component={MainLayout} />
           </Switch>
         )}
         {(!isAppReady || appLoadingStack > 0) && (<LoadingSpinner />)}

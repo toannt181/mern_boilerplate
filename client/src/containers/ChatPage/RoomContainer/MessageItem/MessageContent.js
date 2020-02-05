@@ -10,7 +10,7 @@ export const MessageContentWrapper = styled.div`
   
 
   .message-name {
-    color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.gray5};
     font-size: ${({ theme }) => theme.size.small};
     font-weight: ${({ theme }) => theme.fontWeight.bold};
     cursor: pointer;
@@ -23,6 +23,10 @@ export const MessageContentWrapper = styled.div`
   .message-date {
     color: ${({ theme }) => theme.colors.gray5};
     font-size: ${({ theme }) => theme.size.tiny};
+  }
+
+  .message-chat {
+    color: ${({ theme }) => theme.colors.gray7};
   }
 `
 

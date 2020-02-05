@@ -24,6 +24,10 @@ const mixin = `
     margin-left: auto;
   }
 
+  .mr-auto {
+    margin-right: auto;
+  }
+
   .d-center {
     display: flex;
     align-items: center;
