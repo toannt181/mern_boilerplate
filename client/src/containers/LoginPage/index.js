@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { LoginPageWrapper } from './styles'
-import { actions } from '../App/slice'
+import { actions } from '../../slices/appSlice'
 import { withRouter } from 'react-router-dom'
 import Logo from '../../components/Logo'
 import LoginIntroduction from './LoginIntroduction'

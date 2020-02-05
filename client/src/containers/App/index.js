@@ -7,8 +7,8 @@ import {
 } from 'react-router-dom'
 import AuthenticateRoute from '../../hocs/AuthenticateRoute'
 
-import { actions } from './slice'
-import { selectUsername } from './selectors'
+import { actions } from '../../slices/appSlice'
+// import { selectUsername } from './selectors'
 import GlobalStyle from './globalStyle'
 import Main from '../Main'
 import LoginPage from '../LoginPage'
@@ -65,7 +65,7 @@ function App(props) {
 export default connect(
   state => ({
     user: state.app.user,
-    fullname: selectUsername(state),
+    // fullname: selectUsername(state),
     warningData: state.app.warningData,
     appLoadingStack: state.app.appLoadingStack,
   }),

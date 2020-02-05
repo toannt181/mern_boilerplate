@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Route, withRouter } from 'react-router-dom'
 
-import { actions as appActions } from '../App/slice'
-import { actions } from './slice'
+import { actions as appActions } from '../../slices/appSlice'
+import { actions as userActions } from '../../slices/userSlice'
 import SideMenu from '../../components/SideMenu'
 import ChannelContainer from './ChannelContainer'
 import RoomContainer from './RoomContainer'
@@ -128,21 +128,21 @@ function Main(props) {
 export default withRouter(connect(
   state => ({
     user: state.app.user,
-    channels: state.main.channels,
-    currentChannel: state.main.currentChannel,
-    messages: state.main.messages,
+    channels: state.user.channels,
+    currentChannel: state.user.currentChannel,
+    messages: state.user.messages,
   }),
   {
     dispatchSetUser: appActions.dispatchSetUser,
     dispatchSetNotificationPermision: appActions.dispatchSetNotificationPermision,
-    dispatchCreateChannel: actions.dispatchCreateChannel,
-    dispatchFetchChannel: actions.dispatchFetchChannel,
-    dispatchSelectChannel: actions.dispatchSelectChannel,
-    dispatchFetchMessage: actions.dispatchFetchMessage,
-    dispatchSendMessage: actions.dispatchSendMessage,
-    dispatchDeleteChannel: actions.dispatchDeleteChannel,
-    dispatchRequestJoinRoom: actions.dispatchRequestJoinRoom,
-    dispatchAddMessage: actions.dispatchAddMessage,
-    dispatchRequestLeaveRoom: actions.dispatchRequestLeaveRoom,
+    dispatchCreateChannel: userActions.dispatchCreateChannel,
+    dispatchFetchChannel: userActions.dispatchFetchChannel,
+    dispatchSelectChannel: userActions.dispatchSelectChannel,
+    dispatchFetchMessage: userActions.dispatchFetchMessage,
+    dispatchSendMessage: userActions.dispatchSendMessage,
+    dispatchDeleteChannel: userActions.dispatchDeleteChannel,
+    dispatchRequestJoinRoom: userActions.dispatchRequestJoinRoom,
+    dispatchAddMessage: userActions.dispatchAddMessage,
+    dispatchRequestLeaveRoom: userActions.dispatchRequestLeaveRoom,
   }
 )(Main))

@@ -15,8 +15,8 @@ export default createGlobalStyle`
     font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    color: ${({ theme }) => theme.colors.gray14};
-    background: ${({ theme }) => theme.colors.gray2};
+    color: ${({ theme }) => theme.colors.gray5};
+    background: ${({ theme }) => theme.colors.gray15};
     font-size: 16px;
   }
 

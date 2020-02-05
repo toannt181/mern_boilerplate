@@ -1,11 +1,11 @@
 import { put, takeEvery } from 'redux-saga/effects'
-import { actions } from './../App/slice'
-import { ACCESS_TOKEN, REFRESH_TOKEN } from '../../configs/constants'
-import * as UserAPI from '../../api/UserAPI'
+import { actions as appActions } from '../slices/appSlice'
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '../configs/constants'
+import * as UserAPI from '../api/UserAPI'
 
 function* watchFetchUser() {
   const user = yield UserAPI.fetchUser()
-  yield put(actions.dispatchSetUser(user))
+  yield put(appActions.dispatchSetUser(user))
 }
 
 function* watchCreateUser(action) {
@@ -21,7 +21,7 @@ function* watchLogin(action) {
     const { accessToken, refreshToken } = yield UserAPI.login(action.payload)
     localStorage.setItem(ACCESS_TOKEN, accessToken)
     localStorage.setItem(REFRESH_TOKEN, refreshToken)
-    yield put(actions.dispatchFetchUser())
+    yield put(appActions.dispatchFetchUser())
   } catch { }
 }
 
@@ -32,8 +32,8 @@ function* watchVerifyEmail(action) {
 }
 
 export default function* sagas() {
-  yield takeEvery(actions.dispatchFetchUser.type, watchFetchUser)
-  yield takeEvery(actions.dispatchCreateUser.type, watchCreateUser)
-  yield takeEvery(actions.dispatchLogin.type, watchLogin)
-  yield takeEvery(actions.dispatchVerifyEmail.type, watchVerifyEmail)
+  yield takeEvery(appActions.dispatchFetchUser.type, watchFetchUser)
+  yield takeEvery(appActions.dispatchCreateUser.type, watchCreateUser)
+  yield takeEvery(appActions.dispatchLogin.type, watchLogin)
+  yield takeEvery(appActions.dispatchVerifyEmail.type, watchVerifyEmail)
 }

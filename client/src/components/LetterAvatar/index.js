@@ -1,10 +1,10 @@
 import React from 'react'
 import { LetterAvatarWrapper } from './styles'
 
-function LetterAvatar({ letter }) {
+function LetterAvatar({ children, ...rest }) {
   return (
-    <LetterAvatarWrapper>
-      {letter}
+    <LetterAvatarWrapper {...rest}>
+      {children}
     </LetterAvatarWrapper>
   )
 }

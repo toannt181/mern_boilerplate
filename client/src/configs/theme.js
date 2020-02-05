@@ -1,5 +1,6 @@
 const colors = {
   primary: '#00d1b2',
+  primary2: '#8ad8cc',
   blue1: '#202225',
   blue3: '#e8f4fe',
   white: '#ffffff',
@@ -7,6 +8,7 @@ const colors = {
   gray2: '#36393f',
   gray3: '#4f545c',
   gray5: '#72767d',
+  gray9: '#969696',
   gray13: '#dddddd',
   gray14: '#eaeaea',
   gray15: '#f6f6f6',
@@ -26,6 +28,7 @@ const fontWeight = {
 
 const radius = {
   medium: '20px',
+  large: '20px',
 }
 
 export default {

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { LoginPageWrapper } from '../LoginPage/styles'
-import { actions } from '../App/slice'
+import { actions } from '../../slices/appSlice'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Logo from '../../components/Logo'

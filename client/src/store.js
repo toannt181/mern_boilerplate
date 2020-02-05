@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
 import createSagaMiddleware from 'redux-saga'
 import { routerReducer } from 'react-router-redux'
-import { reducer as app } from './containers/App/slice'
-import { reducer as main } from './containers/Main/slice'
+import { reducer as app } from './slices/appSlice'
+import { reducer as user } from './slices/userSlice'
 import sagas from './sagas'
 
 const sagaMiddleware = createSagaMiddleware()
@@ -10,7 +10,7 @@ const sagaMiddleware = createSagaMiddleware()
 export default configureStore({
   reducer: {
     app,
-    main,
+    user,
     routing: routerReducer,
   },
   middleware: [sagaMiddleware],

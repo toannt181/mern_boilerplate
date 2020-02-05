@@ -29,6 +29,10 @@ const mixin = `
     align-items: center;
     justify-content: center;
   }
+
+  .text-center {
+    text-align: center;
+  }
 `
 
 export default mixin
