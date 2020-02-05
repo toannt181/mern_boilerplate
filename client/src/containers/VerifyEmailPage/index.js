@@ -3,6 +3,8 @@ import { LoginPageWrapper } from '../LoginPage/styles'
 import { actions } from '../App/slice'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
+import Logo from '../../components/Logo'
+import LoginIntroduction from '../LoginPage/LoginIntroduction'
 
 function VerifyEmailPage({ history, match, dispatchVerifyEmail, location }) {
   const onClickToLogin = () => {
@@ -16,12 +18,14 @@ function VerifyEmailPage({ history, match, dispatchVerifyEmail, location }) {
 
   return (
     <LoginPageWrapper>
-      <div className="login-form">
-        <div className="text-center mb-4">
-          <h2>Welcome back!</h2>
-          <h5>Your email has been verified</h5>
-          <button type="button" className="mt-2 button is-primary is-light is-fullwidth" onClick={onClickToLogin}>Back to login</button>
-        </div>
+      <div className="login-container">
+        <div className="login-form">
+          <Logo className="mb-8" />
+            <h2 className="title is-2">Welcome back!</h2>
+            <p className="sub-description">Your email has been verified</p>
+            <button type="button" className="mt-2 button is-primary is-light is-fullwidth" onClick={onClickToLogin}>Back to login</button>
+          </div>
+        <LoginIntroduction />
       </div>
     </LoginPageWrapper>
   )

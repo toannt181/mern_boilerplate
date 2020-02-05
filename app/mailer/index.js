@@ -3,7 +3,6 @@ const fs = require('fs')
 const path = require('path')
 // const config = require('../../config')
 
-
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   secure: false, // true for 465, false for other ports

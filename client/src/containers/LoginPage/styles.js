@@ -1,19 +1,21 @@
 import styled from 'styled-components'
 import { rgba } from 'polished'
-import background from '../../assets/bg.jpg'
+import background from '../../assets/city.jpg'
 
 export const LoginPageWrapper = styled.div`
   background: ${({ theme }) => theme.colors.gray2};
-  padding-top: 200px;
   height: 100vh;
   background: url(${background}) center center no-repeat;
   background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  .login-form {
-    background: ${({ theme }) => theme.colors.gray3};
-    border-radius: 4px;
-    padding: 64px 40px;
-    width: 720px;
+  .login-container {
+    background: ${({ theme }) => theme.colors.white};
+    border-radius: ${({ theme }) => theme.radius.medium};
+    width: 75%;
+    display: flex;
     margin: auto;
     box-shadow: 0 2px 10px 0 ${({ theme }) => rgba(theme.colors.black, 0.2)};
   }
@@ -25,7 +27,30 @@ export const LoginPageWrapper = styled.div`
   }
 
   .btn-group {
-    margin-top: 20px;
+    margin-top: 40px;
+  }
+
+  .login-introduce, .login-form {
+    flex: 1;
+    padding: 64px;
+
+    .sub-description {
+      margin-bottom: 40px;
+    }
+  }
+
+  .login-introduce {
+    background: ${({ theme }) => theme.colors.gray15};
+    border-radius: ${({ theme }) => theme.radius.medium};
+
+    .title {
+      margin-bottom: 20px;
+    }
+
+    .fa {
+      color: ${({ theme }) => theme.colors.primary};
+      margin-bottom: 40px;
+    }
   }
 `
 

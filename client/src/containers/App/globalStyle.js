@@ -95,4 +95,21 @@ export default createGlobalStyle`
       outline: none;
     }
   }
+
+  .title:not(:last-child) {
+    margin-bottom: 8px;
+  }
+
+  .sub-description {
+    color: ${({ theme }) => theme.colors.gray5};
+    font-size: ${({ theme }) => theme.size.small};
+  }
+
+  .label {
+    color: ${({ theme }) => theme.colors.gray5};
+  }
+
+  .button {
+    font-weight: ${({ theme }) => theme.fontWeight.bold};
+  }
 `

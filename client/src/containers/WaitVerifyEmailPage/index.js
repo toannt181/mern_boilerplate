@@ -1,14 +1,18 @@
 import React from 'react'
 import { LoginPageWrapper } from '../LoginPage/styles'
+import Logo from '../../components/Logo'
+import LoginIntroduction from '../LoginPage/LoginIntroduction'
 
 function WaitVerifyEmailPage() {
   return (
     <LoginPageWrapper>
-      <div className="login-form">
-        <div className="text-center mb-4">
-          <h2>Welcome back!</h2>
-          <h5>Please check your email to verify your account</h5>
+      <div className="login-container">
+        <div className="login-form">
+          <Logo className="mb-8" />
+          <h2 className="title is-2">Welcome back!</h2>
+          <p className="sub-description">Please check your email to verify your account</p>
         </div>
+        <LoginIntroduction />
       </div>
     </LoginPageWrapper>
   )

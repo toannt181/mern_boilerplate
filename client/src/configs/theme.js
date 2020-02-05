@@ -7,7 +7,9 @@ const colors = {
   gray2: '#36393f',
   gray3: '#4f545c',
   gray5: '#72767d',
-  gray14: '#dcddde',
+  gray13: '#dddddd',
+  gray14: '#eaeaea',
+  gray15: '#f6f6f6',
   black: '#000000',
 }
 
@@ -19,11 +21,16 @@ const size = {
 }
 
 const fontWeight = {
-  bold: 500,
+  bold: 700,
+}
+
+const radius = {
+  medium: '20px',
 }
 
 export default {
   colors,
   fontWeight,
   size,
+  radius,
 }

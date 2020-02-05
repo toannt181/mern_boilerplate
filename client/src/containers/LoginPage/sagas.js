@@ -9,20 +9,26 @@ function* watchFetchUser() {
 }
 
 function* watchCreateUser(action) {
-  const { payload, callback } = action.payload
-  yield UserAPI.createUser(payload)
-  callback()
+  try {
+    const { payload, callback } = action.payload
+    yield UserAPI.createUser(payload)
+    callback()
+  } catch { }
 }
 
 function* watchLogin(action) {
-  const { accessToken, refreshToken } = yield UserAPI.login(action.payload)
-  localStorage.setItem(ACCESS_TOKEN, accessToken)
-  localStorage.setItem(REFRESH_TOKEN, refreshToken)
-  yield put(actions.dispatchFetchUser())
+  try {
+    const { accessToken, refreshToken } = yield UserAPI.login(action.payload)
+    localStorage.setItem(ACCESS_TOKEN, accessToken)
+    localStorage.setItem(REFRESH_TOKEN, refreshToken)
+    yield put(actions.dispatchFetchUser())
+  } catch { }
 }
 
 function* watchVerifyEmail(action) {
-  yield UserAPI.verifyEmail(action.payload)
+  try {
+    yield UserAPI.verifyEmail(action.payload)
+  } catch { }
 }
 
 export default function* sagas() {

@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { LoginPageWrapper } from './styles'
 import { actions } from '../App/slice'
 import { withRouter } from 'react-router-dom'
+import Logo from '../../components/Logo'
+import LoginIntroduction from './LoginIntroduction'
 
 function LoginPage(props) {
   const { dispatchCreateUser, history, user, dispatchLogin } = props
@@ -11,7 +13,7 @@ function LoginPage(props) {
 
   const onChangeValue = useCallback((e) => {
     const { target } = e
-    setForm((data) => ({ ...data, [target.dataset.name]: target.value }))
+    setForm((data) => ({ ...data, [target.name]: target.value }))
   }, [])
 
   const createUser = useCallback((e) => {
@@ -45,39 +47,41 @@ function LoginPage(props) {
 
   return (
     <LoginPageWrapper>
-      <div className="login-form">
-        <div className="text-center mb-4">
-          <h2>Welcome back!</h2>
-          <h5>We're so excited to see you again!</h5>
+      <div className="login-container">
+        <div className="login-form">
+          <Logo className="mb-8" />
+          <h2 className="title is-2">Welcome back!</h2>
+          <p className="sub-description">Sign in to continue</p>
+          {isSignupForm
+            ? (
+              <form onSubmit={createUser}>
+                <label className="label">Email</label>
+                <input className="input mb-2" type="email" name="email" required value={form.email} onChange={onChangeValue} />
+                <label className="label">Name</label>
+                <input className="input mb-2" type="text" name="name" required value={form.name} onChange={onChangeValue} />
+                <label className="label">Password</label>
+                <input className="input" type="password" required name="password"value={form.password} onChange={onChangeValue} />
+                <div className="btn-group">
+                  <button type="submit" className="mb-2 button is-primary is-fullwidth">Signup</button>
+                  <button type="button" className="button is-primary is-light is-fullwidth" onClick={onToggleViewSignUp}>Back to login</button>
+                </div>
+              </form>
+            )
+            : (
+              <form onSubmit={loginUser}>
+                <label className="label">Email</label>
+                <input className="input mb-2" type="email" required value={form.email} onChange={onChangeValue} name="email" />
+                <label className="label">Password</label>
+                <input className="input" type="password" required value={form.password} onChange={onChangeValue} name="password" />
+                <div className="btn-group">
+                  <button type="submit" className="mb-2 button is-primary is-fullwidth">Login</button>
+                  <button type="button" className="button is-primary is-light is-fullwidth" onClick={onToggleViewSignUp}>Signup</button>
+                </div>
+              </form>
+            )
+          }
         </div>
-        {isSignupForm
-          ? (
-            <form onSubmit={createUser}>
-              <label className="login-label">Email</label>
-              <input className="input mb-2" type="email" required value={form.email} onChange={onChangeValue} data-name="email" />
-              <label className="login-label">Name</label>
-              <input className="input mb-2" type="text" required value={form.name} onChange={onChangeValue} data-name="name" />
-              <label className="login-label">Password</label>
-              <input className="input" type="password" required value={form.password} onChange={onChangeValue} data-name="password" />
-              <div className="btn-group d-center">
-                <button type="button" className="mr-2 button is-primary is-light is-fullwidth" onClick={onToggleViewSignUp}>Back to login</button>
-                <button type="submit" className="ml-2 button is-primary is-fullwidth">Signup</button>
-              </div>
-            </form>
-          )
-          : (
-            <form onSubmit={loginUser}>
-              <label className="login-label">Email</label>
-              <input className="input mb-2" type="email" required value={form.email} onChange={onChangeValue} data-name="email" />
-              <label className="login-label">Password</label>
-              <input className="input" type="password" required value={form.password} onChange={onChangeValue} data-name="password" />
-              <div className="btn-group d-center">
-                <button type="button" className="mr-2 button is-primary is-light is-fullwidth" onClick={onToggleViewSignUp}>Signup</button>
-                <button type="submit" className="ml-2 button is-primary is-fullwidth">Login</button>
-              </div>
-            </form>
-          )
-        }
+        <LoginIntroduction />
       </div>
     </LoginPageWrapper>
   )

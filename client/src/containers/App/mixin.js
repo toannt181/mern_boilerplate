@@ -1,18 +1,18 @@
 const margins = Array(8).fill().map((_, i) => `
   .ml-${i + 1} {
-    margin-left: ${0.25 * (i + 1)}rem;
+    margin-left: ${0.5 * (i + 1)}rem;
   }
 
   .mr-${i + 1} {
-    margin-right: ${0.25 * (i + 1)}rem;
+    margin-right: ${0.5 * (i + 1)}rem;
   }
 
   .mt-${i + 1} {
-    margin-top: ${0.25 * (i + 1)}rem;
+    margin-top: ${0.5 * (i + 1)}rem;
   }
 
   .mb-${i + 1} {
-    margin-bottom: ${0.25 * (i + 1)}rem;
+    margin-bottom: ${0.5 * (i + 1)}rem;
   }
 `)
   .join('\n')
