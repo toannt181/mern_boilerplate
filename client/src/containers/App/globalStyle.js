@@ -8,6 +8,7 @@ export default createGlobalStyle`
 
   * {
     box-sizing: border-box;
+    word-break: break-word;
   }
 
   html {
