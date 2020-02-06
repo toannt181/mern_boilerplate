@@ -70,8 +70,8 @@ function ChatPage(props) {
     ]
   )
 
-  const onChange = (e) => {
-    setContent(e.target.value)
+  const onChange = (value) => {
+    setContent(value)
   }
 
   const onSendMessage = useCallback(() => {

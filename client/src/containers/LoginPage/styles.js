@@ -15,6 +15,7 @@ export const LoginPageWrapper = styled.div`
     background: ${({ theme }) => theme.colors.white};
     border-radius: ${({ theme }) => theme.radius.medium};
     width: 75%;
+    max-width: 1024px;
     display: flex;
     margin: auto;
     box-shadow: 0 2px 10px 0 ${({ theme }) => rgba(theme.colors.black, 0.2)};

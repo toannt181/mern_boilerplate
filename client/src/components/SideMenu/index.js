@@ -23,7 +23,7 @@ function SideMenu({ location, history }) {
 
   return (
     <SideMenuWrapper>
-      <Logo iconOnly className="text-center mb-8" size="big" />
+      <Logo onClick={() => history.push('/')} iconOnly className="text-center mb-8" size="big" />
       {LIST.map((item, index) => (
         <LetterAvatar
           key={index}

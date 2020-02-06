@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
 import EmojiDropdown from 'components/EmojiDropdown'
 
@@ -55,11 +55,25 @@ const ChatInput = (props) => {
   } = props
   const inputRef = useRef()
 
+  const [isShowEmojiDropdown, toggleEmojiDropdown] = useState(false)
+
   const onKeyDown = (e) => {
     if (isOnCompositionStart || !content.trim()) return
     if (e.key === 'Enter') {
       onEnter()
     }
+  }
+
+  const onChangeText = (e) => {
+    onChange(e.target.value)
+  }
+
+  const onClickEmoji = (emoji) => {
+    onChange(`${content}${emoji}`)
+  }
+
+  const onClickButtonEmoji = () => {
+    toggleEmojiDropdown(state => !state)
   }
 
   return (
@@ -69,13 +83,13 @@ const ChatInput = (props) => {
         ref={inputRef}
         className="chat-input"
         onKeyDown={onKeyDown}
-        onChange={onChange}
+        onChange={onChangeText}
         value={content}
         onCompositionStart={onCompositionStart}
         onCompositionEnd={onCompositionEnd}
       />
-      <EmojiDropdown>
-        <button className="btn-none"><i className="fa fa-smile-o" aria-hidden="true" /></button>
+      <EmojiDropdown onClick={onClickEmoji} isActive={isShowEmojiDropdown}>
+        <button className="btn-none" onClick={onClickButtonEmoji}><i className="fa fa-smile-o" aria-hidden="true" /></button>
       </EmojiDropdown>
     </ChatInputWrapper>
   )
