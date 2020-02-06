@@ -38,7 +38,7 @@ function LoginPage(props) {
   useEffect(() => {
     if (user) {
       if (user.isVerified) {
-        history.push('/')
+        history.push('/channels')
       } else {
         history.push('/wait-verify')
       }

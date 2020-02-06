@@ -14,7 +14,7 @@ const RoomContainer = (props) => {
   const {
     messages = [],
     user = {},
-    currentChannel,
+    currentChannelId,
     dispatchFetchMessage,
     dispatchRequestJoinRoom,
     dispatchSelectChannel,
@@ -35,11 +35,11 @@ const RoomContainer = (props) => {
 
   useEffect(() => {
     const channelId = params.id
-    if (channelId && currentChannel !== channelId) {
+    if (channelId && currentChannelId !== channelId) {
       onFetchMessageChannel(params.id)
       dispatchSelectChannel(channelId)
     }
-  }, [onFetchMessageChannel, dispatchSelectChannel, currentChannel, params])
+  }, [onFetchMessageChannel, dispatchSelectChannel, currentChannelId, params])
 
 
   useEffect(() => {
@@ -65,7 +65,7 @@ export default memo(connect(
   state => ({
     user: state.app.user,
     messages: state.user.messages,
-    currentChannel: state.user.currentChannel,
+    currentChannelId: state.user.currentChannelId,
   }),
   {
     dispatchFetchMessage: userActions.dispatchFetchMessage,

@@ -1,13 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit'
-
+import { createSlice, createSelector } from '@reduxjs/toolkit'
+import find from 'lodash/find'
 const INITIAL_STATE = {
   channels: [],
   messages: [],
   currentChannel: null,
+  currentChannelId: null,
 }
 
 const slice = createSlice({
-  name: 'main',
+  name: 'user',
   initialState: INITIAL_STATE,
   reducers: {
     dispatchSetChannel(state, action) {
@@ -20,7 +21,7 @@ const slice = createSlice({
       state.messages = action.payload
     },
     dispatchSelectChannel(state, action) {
-      state.currentChannel = action.payload
+      state.currentChannelId = action.payload
     },
     dispatchFetchChannel() { },
     dispatchCreateChannel() { },
@@ -31,5 +32,18 @@ const slice = createSlice({
     dispatchRequestLeaveRoom() { },
   },
 })
+
+const baseSelector = (state) => state.user
+
+const getUserChannel = createSelector(
+  baseSelector,
+  (state) => {
+    return find(state.channels, { _id: state.currentChannelId })
+  }
+)
+
+export const selectors = {
+  getUserChannel,
+}
 
 export const { actions, reducer } = slice

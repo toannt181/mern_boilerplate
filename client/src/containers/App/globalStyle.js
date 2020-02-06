@@ -10,6 +10,10 @@ export default createGlobalStyle`
     box-sizing: border-box;
   }
 
+  html {
+    overflow: hidden;
+  }
+
   body {
     margin: 0;
     font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
@@ -93,7 +97,7 @@ export default createGlobalStyle`
   }
 
   .subtitle {
-    color: ${({ theme }) => theme.colors.gray5};
+    color: ${({ theme }) => theme.colors.gray3};
     font-size: ${({ theme }) => theme.size.medium};
     font-weight: ${({ theme }) => theme.fontWeight.bold};
   }

@@ -14,12 +14,12 @@ export const RoomHeadingWrapper = styled.div`
 
 const RoomHeading = (props) => {
   const {
-    // channel,
+    currentChannel = null,
   } = props
 
-  return (
+  return currentChannel && (
     <RoomHeadingWrapper className="d-center">
-      <h3 className="title is-1">#Testing</h3>
+      <h3 className="title is-1">#{currentChannel.name}</h3>
       <div className="ml-auto">
         <i className="fa fa-star-o" aria-hidden="true" />
         <i className="fa fa-ellipsis-v" aria-hidden="true" />

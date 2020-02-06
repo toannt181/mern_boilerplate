@@ -7,7 +7,7 @@ const UserStatus = (props) => {
     channels,
     onAddChannel,
     onClickChannel,
-    currentChannel,
+    currentChannelId,
   } = props
 
   return (
@@ -20,7 +20,7 @@ const UserStatus = (props) => {
         {channels.map((channel) => (
           <ChannelItem
             onClick={() => onClickChannel(channel._id)}
-            className={cn('channel-item', { active: currentChannel === channel._id })}
+            className={cn('channel-item', { active: currentChannelId === channel._id })}
             key={channel._id}
           >
             <div><span className="mr-1">#</span>{channel.name}</div>

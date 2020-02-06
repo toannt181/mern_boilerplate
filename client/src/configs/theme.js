@@ -4,9 +4,9 @@ const colors = {
   blue1: '#202225',
   blue3: '#e8f4fe',
   white: '#ffffff',
-  gray1: '#2f3136',
-  gray2: '#36393f',
-  gray3: '#4f545c',
+  gray1: '#1a1a1a',
+  gray2: '#222222',
+  gray3: '#363636',
   gray5: '#555555',
   gray7: '#72767d',
   gray9: '#969696',
@@ -33,6 +33,7 @@ const fontWeight = {
 }
 
 const radius = {
+  xsmall: '8px',
   small: '15px',
   medium: '20px',
   large: '30px',

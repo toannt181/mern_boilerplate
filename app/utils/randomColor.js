@@ -1,7 +1,12 @@
 const { random } = require('lodash')
 
-const MAX_HEX_COLOR = 16777215
+const COLOR_LIST = [
+  '6cba7a',
+  '577bea',
+  'fce07e',
+  'e15d57',
+]
 
 module.exports = function randomColor() {
-  return random(0, MAX_HEX_COLOR).toString(16)
+  return COLOR_LIST[random(0, 3)]
 }

@@ -6,5 +6,6 @@ export const MainWrapper = styled.div`
 
   main {
     flex: 1;
+    position: relative;
   }
 `

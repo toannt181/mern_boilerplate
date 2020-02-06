@@ -9,6 +9,7 @@ import SideMenu from '../../components/SideMenu'
 import { MainWrapper } from './styles'
 import '../../configs/socket'
 import ChatPage from '../../containers/ChatPage'
+import PageNotFound from '../../containers/PageNotFound'
 
 function MainLayout() {
   return (
@@ -17,7 +18,7 @@ function MainLayout() {
       <main>
         <Switch>
           <Route path="/channels" component={ChatPage} />
-          <Route component={() => <h1>404</h1>} />
+          <Route component={PageNotFound} />
         </Switch>
       </main>
     </MainWrapper>

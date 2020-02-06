@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Route, withRouter } from 'react-router-dom'
 
 import { actions as appActions } from 'slices/appSlice'
-import { actions as userActions } from 'slices/userSlice'
+import { actions as userActions, selectors as userSelectors } from 'slices/userSlice'
 import Navbar from '../../components/Navbar'
 import ChannelContainer from './ChannelContainer'
 import RoomContainer from './RoomContainer'
@@ -20,12 +20,13 @@ function ChatPage(props) {
     channels,
     dispatchCreateChannel,
     dispatchFetchChannel,
-    currentChannel,
+    currentChannelId,
     dispatchAddMessage,
     dispatchRequestLeaveRoom,
     history,
     dispatchSetNotificationPermision,
     dispatchSendMessage,
+    currentChannel,
   } = props
 
   const [isShowChannelModal, toggleChannelModal] = useState(false)
@@ -55,15 +56,15 @@ function ChatPage(props) {
   }, [dispatchCreateChannel])
 
   const onClickChannel = useCallback((channelId) => {
-    if (currentChannel !== channelId) {
-      if (currentChannel) {
-        dispatchRequestLeaveRoom({ channelId: currentChannel })
+    if (currentChannelId !== channelId) {
+      if (currentChannelId) {
+        dispatchRequestLeaveRoom({ channelId: currentChannelId })
       }
       history.push(`/channels/${channelId}`)
     }
   },
     [
-      currentChannel,
+      currentChannelId,
       dispatchRequestLeaveRoom,
       history,
     ]
@@ -74,9 +75,9 @@ function ChatPage(props) {
   }
 
   const onSendMessage = useCallback(() => {
-    dispatchSendMessage({ channelId: currentChannel, content, user })
+    dispatchSendMessage({ channelId: currentChannelId, content, user })
     setContent('')
-  }, [dispatchSendMessage, currentChannel, user, content])
+  }, [dispatchSendMessage, currentChannelId, user, content])
 
   return (
     <ChatWrapper>
@@ -84,20 +85,22 @@ function ChatPage(props) {
         channels={channels}
         onAddChannel={onAddChannel}
         onClickChannel={onClickChannel}
-        currentChannel={currentChannel}
+        currentChannelId={currentChannelId}
       />
       <div className="room">
         <Navbar />
-        <RoomHeading />
+        <RoomHeading currentChannel={currentChannel} />
         <Route
           path="/channels/:id"
           component={RoomContainer}
         />
-        <ChatInput
-          onEnter={onSendMessage}
-          content={content}
-          onChange={onChange}
-        />
+        {currentChannelId && (
+          <ChatInput
+            onEnter={onSendMessage}
+            content={content}
+            onChange={onChange}
+          />
+        )}
       </div>
       {isShowChannelModal && (
         <ChannelModal
@@ -113,8 +116,9 @@ export default memo(withRouter(connect(
   state => ({
     user: state.app.user,
     channels: state.user.channels,
-    currentChannel: state.user.currentChannel,
+    currentChannelId: state.user.currentChannelId,
     messages: state.user.messages,
+    currentChannel: userSelectors.getUserChannel(state),
   }),
   {
     dispatchSetNotificationPermision: appActions.dispatchSetNotificationPermision,

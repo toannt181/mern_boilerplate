@@ -14,6 +14,7 @@ export const MessageAvatarWrapper = styled.div`
   background: ${({ color, theme }) => `#${color}` || theme.colors.primary};
   border: 1px solid;
   border-color: ${({ color, theme }) => `#${color}` || theme.colors.primary};
+  color: ${({ theme }) => theme.colors.white};
 `
 
 const MessageAvatar = ({ user }) => (

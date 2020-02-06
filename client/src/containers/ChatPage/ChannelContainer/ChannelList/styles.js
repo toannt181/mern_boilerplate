@@ -16,11 +16,10 @@ export const ChannelTitle = styled.div`
 export const ChannelItem = styled.div`
   position: relative;
   color: ${({ theme }) => theme.colors.gray5};
-  padding: 8px;
-  margin: 8px 0 8px -8px;
-  border-radius: ${({ theme }) => theme.radius.small};
+  padding: 4px 16px;
+  margin: 8px 0;
+  border-radius: ${({ theme }) => theme.radius.xsmall};
   cursor: pointer;
-  transition-duration: .25s;
 
   &.active {
     font-weight: ${({ theme }) => theme.fontWeight.bold};

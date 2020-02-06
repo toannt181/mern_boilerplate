@@ -4,8 +4,8 @@ export const RoomContainerWrapper = styled.div`
   position: relative;
   overflow: auto;
   padding: 12px;
-  padding-right: 32px;
-  margin-right: -16px;
+  padding-right: 48px;
+  margin-right: -32px;
   height: calc(100vh - 230px);
 `
 

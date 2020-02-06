@@ -1,23 +1,41 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 import LetterAvatar from '../LetterAvatar'
 import Logo from '../Logo'
 import { SideMenuWrapper } from './styles'
 
-function SideMenu() {
+function isActive(pathname, target) {
+  if (target === '/') {
+    return pathname === '/'
+  }
+  return pathname.includes(target)
+}
+
+const LIST = [
+  { iconClass: 'fa fa-th-large', path: '/' },
+  { iconClass: 'fa fa-users', path: '/channels' },
+  { iconClass: 'fa fa-exclamation-circle', path: '/info' },
+  { iconClass: 'fa fa-cog', path: '/setting' },
+]
+
+function SideMenu({ location, history }) {
+  const { pathname } = location
+
   return (
     <SideMenuWrapper>
       <Logo iconOnly className="text-center mb-8" size="big" />
-      <LetterAvatar active>
-        <i className="fa fa-th-large" />
-      </LetterAvatar>
-      <LetterAvatar>
-        <i className="fa fa-users" />
-      </LetterAvatar>
-      <LetterAvatar>
-        <i className="fa fa-exclamation-circle" />
-      </LetterAvatar>
+      {LIST.map((item, index) => (
+        <LetterAvatar
+          key={index}
+          onClick={() => history.push(item.path)}
+          className={isActive(pathname, item.path) ? 'active' : ''}
+        >
+          <i className={item.iconClass} />
+        </LetterAvatar>
+      ))}
+
     </SideMenuWrapper>
   )
 }
 
-export default SideMenu
+export default withRouter(SideMenu)
