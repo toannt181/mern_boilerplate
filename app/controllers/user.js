@@ -16,15 +16,14 @@ async function store(req, res) {
     gender,
     organizationName,
     comment,
-    thumbnail,
     isDeleteThumbnail,
   } = req.body
 
-  let newThumbnail
+  const newThumbnail = {}
   if (req.file) {
-    newThumbnail = req.file.filename
-  } else if (isDeleteThumbnail) {
-    newThumbnail = null
+    newThumbnail.thumbnail = req.file.filename
+  } else if (isDeleteThumbnail === 'true') {
+    newThumbnail.thumbnail = null
   }
 
   const result = await model.User.update({ _id }, {
@@ -33,7 +32,7 @@ async function store(req, res) {
     gender,
     organizationName,
     comment,
-    ...(newThumbnail !== undefined && {thumbnail: newThumbnail}),
+    ...newThumbnail,
   })
   res.json(result)
 }
