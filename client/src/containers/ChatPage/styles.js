@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 
 export const ChatWrapper = styled.div`
-  height: 100%;
   display: flex;
+  flex: 1;
 
   .room {
     flex: 1;

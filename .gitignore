@@ -9,3 +9,4 @@ data
 public/assets
 sessions/*
 storages/*
+dump.rdb

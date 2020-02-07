@@ -61,6 +61,9 @@ const ChatInput = (props) => {
     if (isOnCompositionStart || !content.trim()) return
     if (e.key === 'Enter') {
       onEnter()
+      if (isShowEmojiDropdown) {
+        onClickButtonEmoji()
+      }
     }
   }
 
@@ -70,6 +73,7 @@ const ChatInput = (props) => {
 
   const onClickEmoji = (emoji) => {
     onChange(`${content}${emoji}`)
+    inputRef.current.focus()
   }
 
   const onClickButtonEmoji = () => {

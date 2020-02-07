@@ -54,7 +54,7 @@ module.exports = function (app) {
   // bodyParser should be above methodOverride
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
-  app.use(upload.single('image'))
+  app.use(upload.single('file'))
   // app.use(session({
   //   secret: 'keyboard cat',
   //   store: new FileStore({}),

@@ -10,6 +10,18 @@ const schema = new moongose.Schema({
   name: {
     type: String,
   },
+  telNo: {
+    type: String,
+  },
+  gender: {
+    type: Number,
+  },
+  organizationName: {
+    type: String,
+  },
+  comment: {
+    type: String,
+  },
   email: {
     type: String,
     unique: true,

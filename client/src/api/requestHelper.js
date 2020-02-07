@@ -10,6 +10,7 @@ export default async function requestHelper({ method, options }) {
     ...options,
     method,
     headers: {
+      ...(options.formData && { 'Content-Type': 'multipart/form-data' }),
       Authorization: `Bearer ${token}`,
     },
   })

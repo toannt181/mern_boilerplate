@@ -6,6 +6,14 @@ import UserStatus from './UserStatus'
 import { actions as appActions } from 'slices/appSlice'
 
 export const NavWrapper = styled.div`
+  padding: 16px 40px 0 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  .control {
+    width: 400px
+  }
 `
 
 function Navbar({ user, dispatchSetUser }) {
@@ -15,8 +23,8 @@ function Navbar({ user, dispatchSetUser }) {
   }, [dispatchSetUser])
 
   return (
-    <NavWrapper className="d-center">
-      <div className="control has-icons-left has-icons-right mr-auto">
+    <NavWrapper>
+      <div className="control has-icons-left has-icons-right mr-4">
         <input className="input" type="text" placeholder="Search" />
         <span className="icon is-small is-left">
           <i className="fa fa-search" />

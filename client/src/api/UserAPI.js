@@ -37,6 +37,10 @@ export function sendMessage({ channelId, content }) {
   return Request.post({ url: `channels/${channelId}/messages`, data: { channelId, content } })
 }
 
+export function updateProfile({ data }) {
+  return Request.post({ url: `users`, data, formData: true })
+}
+
 export function requestJoinRoom({ channelId }) {
   socket.emit('join', { channelId })
 }

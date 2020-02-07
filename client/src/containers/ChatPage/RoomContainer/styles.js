@@ -6,12 +6,11 @@ export const RoomContainerWrapper = styled.div`
   padding: 12px;
   padding-right: 48px;
   margin-right: -32px;
-  height: calc(100vh - 230px);
+  height: calc(100vh - 256px);
 `
 
 export const MessageList = styled.div`
   flex: 1;
-  padding-bottom: 36px;
 `
 
 export const Title = styled.h3`

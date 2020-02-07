@@ -44,6 +44,13 @@ function* watchRequestLeaveRoom(action) {
   yield UserAPI.requestLeaveRoom(action.payload)
 }
 
+function* watchPostUserInfo(action) {
+  try {
+    yield UserAPI.updateProfile(action.payload)
+    window.location.reload()
+  } catch {}
+}
+
 export default function* sagas() {
   yield takeEvery(userActions.dispatchFetchChannel.type, watchFetchChannel)
   yield takeEvery(userActions.dispatchCreateChannel.type, watchCreateChannel)
@@ -52,4 +59,5 @@ export default function* sagas() {
   yield takeEvery(userActions.dispatchDeleteChannel.type, watchDeleteChannel)
   yield takeEvery(userActions.dispatchRequestJoinRoom.type, watchRequestJoinRoom)
   yield takeEvery(userActions.dispatchRequestLeaveRoom.type, watchRequestLeaveRoom)
+  yield takeEvery(userActions.dispatchPostUserInfo.type, watchPostUserInfo)
 }

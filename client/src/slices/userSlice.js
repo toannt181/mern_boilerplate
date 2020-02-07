@@ -30,6 +30,7 @@ const slice = createSlice({
     dispatchDeleteChannel() { },
     dispatchRequestJoinRoom() { },
     dispatchRequestLeaveRoom() { },
+    dispatchPostUserInfo() { },
   },
 })
 

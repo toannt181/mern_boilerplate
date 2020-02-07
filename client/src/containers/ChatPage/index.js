@@ -4,7 +4,6 @@ import { Route, withRouter } from 'react-router-dom'
 
 import { actions as appActions } from 'slices/appSlice'
 import { actions as userActions, selectors as userSelectors } from 'slices/userSlice'
-import Navbar from '../../components/Navbar'
 import ChannelContainer from './ChannelContainer'
 import RoomContainer from './RoomContainer'
 import ChannelModal from './ChannelModal'
@@ -88,7 +87,6 @@ function ChatPage(props) {
         currentChannelId={currentChannelId}
       />
       <div className="room">
-        <Navbar />
         <RoomHeading currentChannel={currentChannel} />
         <Route
           path="/channels/:id"
