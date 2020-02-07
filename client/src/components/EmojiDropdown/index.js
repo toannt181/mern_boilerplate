@@ -59,7 +59,7 @@ const bindCloseDropdownClickOutside = (e) => {
 }
 
 const EmojiDropdown = ({ children, isActive, onClick = () => { } }) => {
-  const [tabIndex, setTabIndex] = useState(1)
+  const [tabIndex, setTabIndex] = useState(0)
   const tab = TAB_LIST[tabIndex]
 
   useEffect(() => {
