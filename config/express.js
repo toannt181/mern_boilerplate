@@ -7,11 +7,9 @@ const cors = require('cors')
 const helmet = require('helmet')
 // const FileStore = require('session-file-store')(session)
 // const flash = require('flash')
-const multer = require('multer')
 // const requireHttps = require('./middlewares/require-https')
 const config = require('.')
 
-const upload = multer({ dest: `${config.root}/storages/public` })
 
 const env = process.env.NODE_ENV || 'development'
 
@@ -54,7 +52,6 @@ module.exports = function (app) {
   // bodyParser should be above methodOverride
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: true }))
-  app.use(upload.single('file'))
   // app.use(session({
   //   secret: 'keyboard cat',
   //   store: new FileStore({}),

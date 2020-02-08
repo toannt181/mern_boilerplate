@@ -43,6 +43,10 @@ const RoomContainer = (props) => {
 
 
   useEffect(() => {
+    return () => { dispatchSelectChannel(null) }
+  }, [dispatchSelectChannel])
+
+  useEffect(() => {
     const ref = wrapperRef.current
 
     if (!prevMessageLength || messages.length > prevMessageLength) {

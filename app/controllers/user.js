@@ -1,62 +1,85 @@
 const { Router } = require('express')
-
 const { model } = require('../db')
+const resizeImage = require('../middlewares/resizeImage')
 
 const route = new Router()
 
-async function index(req, res) {
-  res.json(req.user)
-}
+async function index(req, res, next) {
+  try {
+    const {
+      _id,
+      name,
+      avatar,
+      comment,
+      gender,
+      organizationName,
+      telNo,
+      thumbnailPath,
+      isVerified,
+    } = req.user
 
-async function store(req, res) {
-  const { _id } = req.user
-  const {
-    name,
-    telNo,
-    gender,
-    organizationName,
-    comment,
-    isDeleteThumbnail,
-  } = req.body
-
-  const newThumbnail = {}
-  if (req.file) {
-    newThumbnail.thumbnail = req.file.filename
-  } else if (isDeleteThumbnail === 'true') {
-    newThumbnail.thumbnail = null
-  }
-
-  const result = await model.User.update({ _id }, {
-    name,
-    telNo,
-    gender,
-    organizationName,
-    comment,
-    ...newThumbnail,
-  })
-  res.json(result)
-}
-
-async function updateThumbnail(req, res) {
-  const { _id } = req.user
-  if (req.file) {
-    const thumbnail = req.file.filename
-    const result = await model.User.update({ _id }, { thumbnail })
+    const result = {
+      _id,
+      name,
+      avatar,
+      comment,
+      gender,
+      organizationName,
+      telNo,
+      thumbnail: thumbnailPath,
+      isVerified,
+    }
     res.json(result)
-    return
+  } catch (error) {
+    next(error)
   }
-  res.json({ error: 'Missing file' })
 }
 
-async function deleteThumbnail(req, res) {
-  const { _id } = req.user
-  const result = await model.User.update({ _id }, { thumbnail: null })
-  res.json(result)
+async function store(req, res, next) {
+  try {
+    const { _id } = req.user
+    const {
+      name,
+      telNo,
+      gender,
+      organizationName,
+      comment,
+      isDeleteThumbnail,
+    } = req.body
+
+    const newThumbnail = {}
+    if (req.file) {
+      newThumbnail.thumbnail = req.file.filename
+    } else if (isDeleteThumbnail === 'true') {
+      newThumbnail.thumbnail = null
+    }
+
+    const result = await model.User.update({ _id }, {
+      name,
+      telNo,
+      gender,
+      organizationName,
+      comment,
+      ...newThumbnail,
+    })
+    res.json(result)
+  } catch (error) {
+    next(error)
+  }
+}
+
+async function deleteThumbnail(req, res, next) {
+  try {
+    const { _id } = req.user
+    const result = await model.User.update({ _id }, { thumbnail: null })
+    res.json(result)
+  } catch (error) {
+    next(error)
+  }
 }
 
 route.get('/', index)
-route.post('/', store)
-route.post('/thumbnail', updateThumbnail)
+route.post('/', resizeImage, store)
 route.delete('/thumbnail', deleteThumbnail)
 
 module.exports = route

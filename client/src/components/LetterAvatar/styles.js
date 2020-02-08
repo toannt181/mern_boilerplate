@@ -4,7 +4,7 @@ export const LetterAvatarWrapper = styled.div`
   width: 48px;
   height: 48px;
   color: ${({ theme }) => theme.colors.gray9};
-  background-color: ${({ theme }) => theme.colors.gray15};
+  background-color: ${({ theme, color }) => color ? `#${color}` : theme.colors.gray15};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13,6 +13,8 @@ export const LetterAvatarWrapper = styled.div`
   margin-bottom: 16px;
   border-radius: ${({ theme }) => theme.radius.medium};
   cursor: pointer;
+  background-image: ${({ background }) => `url(${background})`};
+  background-size: cover;
 
   &.active {
     color: ${({ theme }) => theme.colors.white};

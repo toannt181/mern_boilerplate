@@ -5,13 +5,15 @@ export const UserAvatarWrapper = styled.div`
   .avatar-container {
     display: block;
 
-    .btn-group {
+    .file-label {
+      cursor: pointer;
+      width: 120px;
+      display: block;
+    }
+
+    .btn {
       margin-top: 16px;
-      
-      .btn {
-        width: 120px;
-        display: inline-block;
-      }
+      width: 120px;
     }
   }
 `
@@ -38,16 +40,13 @@ function UserPage({ form, onChangeValue, onChangeFile }) {
         <label className="label">Profile picture</label>
       </div>
       <div className="field-body avatar-container">
-        <AvatarWrapper className="avatar d-center" background={background}>
-          {!!background || <i className="fa fa-user" />}
-        </AvatarWrapper>
-        <div className="btn-group">
-          <label className="btn file-label mr-2">
-            <input className="file-input" type="file" name="file" onChange={onChangeFile} />
-            <div className="button is-fullwidth is-primary">Replace</div>
-          </label>
-          <button type="button" className="btn button is-danger is-light" onClick={() => onChangeValue({ name: 'thumbnail', value: null })}>Remove</button>
-        </div>
+        <label className="file-label">
+          <input className="file-input" type="file" name="file" onChange={onChangeFile} />
+          <AvatarWrapper className="avatar d-center" background={background}>
+            {!!background || <i className="fa fa-user" />}
+          </AvatarWrapper>
+        </label>
+        <button type="button" className="btn button is-danger is-light" onClick={() => onChangeValue({ name: 'thumbnail', value: null })}>Remove</button>
       </div>
     </UserAvatarWrapper>
   )

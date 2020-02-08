@@ -61,9 +61,21 @@ export default createGlobalStyle`
     &:focus {
       outline: none;
     }
-
     &.is-primary {
       color: ${({ theme }) => theme.colors.primary};
+    }
+
+    &.is-circle {
+      border-radius: 50%;
+
+      &:hover {
+        background: ${({ theme }) => theme.colors.gray14};
+      }
+    }
+
+    &.is-big {
+      height: 36px;
+      width: 36px;
     }
   }
 

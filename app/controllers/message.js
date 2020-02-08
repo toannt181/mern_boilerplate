@@ -19,7 +19,7 @@ async function index(req, res, next) {
       const user = users.find(({ _id }) => _id.equals(message.createdBy))
       return {
         ...message.toJSON(),
-        user,
+        user: user.info,
       }
     })
     res.json(messagesWithUser)

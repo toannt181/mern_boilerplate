@@ -23,6 +23,8 @@ const defaults = {
   notifier,
 };
 
+defaults.fileStoragePath = `${defaults.root}/storages/public`
+
 /**
  * Expose
  */

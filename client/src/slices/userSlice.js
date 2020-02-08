@@ -3,7 +3,6 @@ import find from 'lodash/find'
 const INITIAL_STATE = {
   channels: [],
   messages: [],
-  currentChannel: null,
   currentChannelId: null,
 }
 

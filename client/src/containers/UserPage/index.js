@@ -8,7 +8,6 @@ import UserOrganization from './UserOrganization'
 
 import { connect } from 'react-redux'
 import { actions as userActions } from 'slices/userSlice'
-import getServerPhoto from 'utils/getServerPhoto'
 
 export const UserPageWrapper = styled.div`
   padding: 16px 40px;
@@ -17,21 +16,23 @@ export const UserPageWrapper = styled.div`
 function readURL(file, callback) {
   const reader = new FileReader()
   reader.onload = (e) => {
-    callback( e.target.result)
+    callback(e.target.result)
   }
   reader.readAsDataURL(file)
 }
 
+const INIT_FORM = {
+  name: '',
+  telNo: '',
+  gender: '',
+  organizationName: '',
+  comment: '',
+  thumbnail: '',
+  isDeleteThumbnail: false,
+}
+
 function UserPage({ user, dispatchPostUserInfo }) {
-  const [form, setForm] = useState({
-    name: '',
-    telNo: '',
-    gender: '',
-    organizationName: '',
-    comment: '',
-    thumbnail: '',
-    isDeleteThumbnail: false,
-  })
+  const [form, setForm] = useState({ ...INIT_FORM })
 
   useEffect(() => {
     const {
@@ -43,19 +44,19 @@ function UserPage({ user, dispatchPostUserInfo }) {
       thumbnail,
     } = user
     setForm({
-      ...form,
-      thumbnail: getServerPhoto(thumbnail),
+      ...INIT_FORM,
+      thumbnail: thumbnail || '',
       name,
       telNo: telNo || '',
       gender,
       organizationName: organizationName || '',
       comment: comment || '',
     })
-  }, [setForm])
+  }, [user, setForm])
 
   const onChangeForm = (e) => {
     const value = { [e.target.name]: e.target.value }
-    setForm(state => ({ ...state, ...value}))
+    setForm(state => ({ ...state, ...value }))
   }
 
   const onChangeValue = (e) => {
@@ -111,6 +112,6 @@ export default memo(connect(
     user: state.app.user,
   }),
   {
-    dispatchPostUserInfo:  userActions.dispatchPostUserInfo,
+    dispatchPostUserInfo: userActions.dispatchPostUserInfo,
   }
 )(UserPage))

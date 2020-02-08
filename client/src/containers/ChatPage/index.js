@@ -26,6 +26,7 @@ function ChatPage(props) {
     dispatchSetNotificationPermision,
     dispatchSendMessage,
     currentChannel,
+    dispatchDeleteChannel,
   } = props
 
   const [isShowChannelModal, toggleChannelModal] = useState(false)
@@ -53,6 +54,11 @@ function ChatPage(props) {
     dispatchCreateChannel({ name })
     toggleChannelModal(false)
   }, [dispatchCreateChannel])
+
+  const onDeleteChannel = useCallback(() => {
+    dispatchDeleteChannel(currentChannelId)
+    history.push('/channels')
+  }, [dispatchDeleteChannel, currentChannelId, history])
 
   const onClickChannel = useCallback((channelId) => {
     if (currentChannelId !== channelId) {
@@ -87,7 +93,10 @@ function ChatPage(props) {
         currentChannelId={currentChannelId}
       />
       <div className="room">
-        <RoomHeading currentChannel={currentChannel} />
+        <RoomHeading
+          currentChannel={currentChannel}
+          deleteChannel={onDeleteChannel}
+        />
         <Route
           path="/channels/:id"
           component={RoomContainer}
@@ -125,5 +134,6 @@ export default memo(withRouter(connect(
     dispatchAddMessage: userActions.dispatchAddMessage,
     dispatchRequestLeaveRoom: userActions.dispatchRequestLeaveRoom,
     dispatchSendMessage: userActions.dispatchSendMessage,
+    dispatchDeleteChannel: userActions.dispatchDeleteChannel,
   }
 )(ChatPage)))

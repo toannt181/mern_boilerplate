@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { withRouter } from 'react-router-dom'
 import Dropdown from 'components/Dropdown'
-import getServerPhoto from 'utils/getServerPhoto'
 
 export const AvatarWrapper = styled.div`
   width: 48px;
@@ -52,7 +51,7 @@ const UserStatus = ({ history, user, onClickLogout }) => {
   return (
     <div className="d-center">
       <p className="subtitle mr-2">{user ? user.name : 'Anonymous'}</p>
-      <AvatarWrapper onClick={onClickUserIcon} color={user.avatar} background={getServerPhoto(user.thumbnail)}>{!user.thumbnail && user.name[0]}</AvatarWrapper>
+      <AvatarWrapper onClick={onClickUserIcon} color={user.avatar} background={user.thumbnail}>{!user.thumbnail && user.name[0]}</AvatarWrapper>
       <Dropdown
         isActive={isShowUserMenu}
         menu={<UserMenu onClickLogout={onClickLogout} />}

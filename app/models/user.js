@@ -6,9 +6,21 @@ const randomColor = require('../utils/randomColor')
 const SALT_ROUND = 10
 const MODEL_NAME = 'user'
 
+function setRunValidators() {
+  this.setOptions({ runValidators: true })
+}
+
+moongose.plugin((schema) => {
+  schema.pre('findOneAndUpdate', setRunValidators)
+  schema.pre('updateMany', setRunValidators)
+  schema.pre('updateOne', setRunValidators)
+  schema.pre('update', setRunValidators)
+})
+
 const schema = new moongose.Schema({
   name: {
     type: String,
+    required: true,
   },
   telNo: {
     type: String,
@@ -52,6 +64,21 @@ schema.pre('save', async function (next) {
 schema.methods.isValidPassword = function (password) {
   return bcrypt.compareSync(password, this.password)
 }
+
+schema.virtual('thumbnailPath')
+  .get(function () {
+    return this.thumbnail ? `${process.env.SERVER_URL}/${this.thumbnail}` : ''
+  })
+
+schema.virtual('info')
+  .get(function () {
+    return {
+      name: this.name,
+      email: this.email,
+      avatar: this.avatar,
+      thumbnail: this.thumbnailPath,
+    }
+  })
 
 const initialize = () => moongose.model(MODEL_NAME, schema)
 

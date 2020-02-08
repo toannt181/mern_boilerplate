@@ -27,7 +27,7 @@ module.exports = function setupPassport(model) {
           return done(null, false, { message: 'Incorrect password.' })
         }
 
-        return done(null, user);
+        return done(null, user)
       } catch (e) {
         return done(e)
       }
