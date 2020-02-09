@@ -21,7 +21,7 @@ const ChannelModal = ({ message = '', title = '', onClickAccept = null, history,
             <div className="media-content">
               <div className="content">
                 <h3 className="title-3">{title || 'ERROR'}</h3>
-                <p>{message}</p>
+                <p dangerouslySetInnerHTML={{ __html: message }} />
                 <button className="button is-danger" onClick={onClickAcceptButton}>OK</button>
               </div>
             </div>
