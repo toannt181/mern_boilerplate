@@ -5,6 +5,7 @@ const updateVersion = async () => {
   let setting = await model.Setting.findOne()
   if (!setting) {
     setting = new model.Setting({ version: '1.0.0', releaseNote: '' })
+    setting.save()
   }
   console.log(setting)
 }
