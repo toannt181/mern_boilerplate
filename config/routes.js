@@ -1,12 +1,9 @@
-// const users = require('../app/controllers/users')
 const { Router } = require('express')
 const user = require('../app/controllers/user')
 const channel = require('../app/controllers/channel')
+const admin = require('../app/controllers/admin')
 const authentication = require('../app/controllers/authentication')
 const auth = require('../app/middlewares/authorization')
-
-// const articleAuth = [auth.requiresLogin, auth.article.hasAuthorization]
-// const commentAuth = [auth.requiresLogin, auth.comment.hasAuthorization]
 
 module.exports = function (app) {
   const apiRoute = new Router()
@@ -16,9 +13,7 @@ module.exports = function (app) {
   apiRoute.use('/authentication', authentication)
   apiRoute.use('/users', auth, user)
   apiRoute.use('/channels', auth, channel)
-  // app.get('/signup', users.signup)
-  // app.get('/logout', users.logout)
-  // app.post('/users', users.create)
+  apiRoute.use('/admin', admin)
 
   // Error handling
   app.use((err, req, res, next) => {

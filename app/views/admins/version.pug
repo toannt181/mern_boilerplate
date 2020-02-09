@@ -1,0 +1,16 @@
+extends ../layouts/admin
+
+block main
+  .container.py-4
+    form(action='/api/admin' method='POST')
+      .form-group
+        label Version
+        input.form-control(value=setting.version name='version')
+      .form-group
+        label Secret key
+        input.form-control(value='' type='password' name='secretKey')
+      .form-group
+        label Version note
+        textarea.form-control(rows='15' name='releaseNote')= setting.releaseNote
+      button.btn.btn-primary.btn-block(type='submit') Submit form
+

@@ -7,7 +7,6 @@ import {
 
 import SideMenu from 'components/SideMenu'
 import { MainWrapper } from './styles'
-import 'configs/socket'
 import ChatPage from 'containers/ChatPage'
 import PageNotFound from 'containers/PageNotFound'
 import UserPage from 'containers/UserPage'

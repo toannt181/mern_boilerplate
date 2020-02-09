@@ -3,8 +3,8 @@ import styled from 'styled-components'
 export const LetterAvatarWrapper = styled.div`
   width: 48px;
   height: 48px;
-  color: ${({ theme }) => theme.colors.gray9};
-  background-color: ${({ theme, color }) => color ? `#${color}` : theme.colors.gray15};
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme, color }) => color ? `#${color}` : theme.colors.gray14};
   display: flex;
   align-items: center;
   justify-content: center;

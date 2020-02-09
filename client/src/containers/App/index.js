@@ -16,6 +16,7 @@ import { ACCESS_TOKEN } from 'configs/constants'
 import WaitVerifyEmailPage from '../WaitVerifyEmailPage'
 import VerifyEmailPage from '../VerifyEmailPage'
 import MainLayout from 'common/MainLayout'
+import socket from 'configs/socket'
 
 function App(props) {
   const {
@@ -41,6 +42,17 @@ function App(props) {
       setAppReady(true)
     }
   }, [user])
+
+  useEffect(() => {
+    socket.on('releaseVersion', ({ version, releaseNote}) => {
+      dispatchWarningModal({
+        visible: true,
+        title: `Version ${version} has been released, please reload and enjoy!`,
+        message: releaseNote,
+        onClickAccept: () => window.location.reload(),
+      })
+    })
+  }, [dispatchWarningModal])
 
   return (
     <>

@@ -3,8 +3,11 @@ import {
   withRouter,
 } from 'react-router-dom'
 
-const ChannelModal = ({ message, history, dispatchWarningModal }) => {
+const ChannelModal = ({ message = '', title = '', onClickAccept = null, history, dispatchWarningModal }) => {
   const onClickAcceptButton = () => {
+    if (onClickAccept) {
+      return onClickAccept()
+    }
     history.push('/')
     dispatchWarningModal({ visible: false })
   }
@@ -17,7 +20,7 @@ const ChannelModal = ({ message, history, dispatchWarningModal }) => {
           <article className="media">
             <div className="media-content">
               <div className="content">
-                <h3 className="title-3">ERROR</h3>
+                <h3 className="title-3">{title || 'ERROR'}</h3>
                 <p>{message}</p>
                 <button className="button is-danger" onClick={onClickAcceptButton}>OK</button>
               </div>

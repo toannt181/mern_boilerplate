@@ -1,10 +1,13 @@
 const socketio = require('socket.io')
 const chalk = require('chalk')
 
-let io
+let createdIO
 
 function config(server) {
-  io = socketio.listen(server)
+  if (createdIO) return createdIO
+
+  const io = socketio.listen(server)
+  createdIO = io
 
   io.on('connection', (socket) => {
     console.log(chalk.yellow('Login id: %s'), socket.id)
@@ -26,4 +29,5 @@ function config(server) {
   })
 }
 
-module.exports = { io, config }
+
+module.exports = { config }
