@@ -130,4 +130,14 @@ export default createGlobalStyle`
   .button {
     font-weight: ${({ theme }) => theme.fontWeight.bold};
   }
+
+  a {
+    &.is-primary {
+      color: ${({ theme }) => theme.colors.gray5};
+
+      &:hover {
+        color: ${({ theme }) => theme.colors.primary};
+      }
+    }
+  }
 `

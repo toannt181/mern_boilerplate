@@ -10,6 +10,7 @@ import { MainWrapper } from './styles'
 import ChatPage from 'containers/ChatPage'
 import PageNotFound from 'containers/PageNotFound'
 import UserPage from 'containers/UserPage'
+import NewsPage from 'containers/NewsPage'
 import Navbar from 'components/Navbar'
 
 function MainLayout() {
@@ -21,6 +22,7 @@ function MainLayout() {
         <Switch>
           <Route path="/channels" component={ChatPage} />
           <Route path="/user" component={UserPage} />
+          <Route exact path="/" component={NewsPage} />
           <Route component={PageNotFound} />
         </Switch>
       </main>
