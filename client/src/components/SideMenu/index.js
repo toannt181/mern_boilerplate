@@ -1,7 +1,6 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import LetterAvatar from '../LetterAvatar'
-import Logo from '../Logo'
 import { SideMenuWrapper } from './styles'
 
 function isActive(pathname, target) {
@@ -23,7 +22,6 @@ function SideMenu({ location, history }) {
 
   return (
     <SideMenuWrapper>
-      <Logo onClick={() => history.push('/')} iconOnly className="text-center mb-8" size="big" />
       {LIST.map((item, index) => (
         <LetterAvatar
           key={index}

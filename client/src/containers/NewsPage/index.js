@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 export const NewsPageWrapper = styled.div`
-  padding: 16px 40px;
+  padding: 40px;
 
   .main-content {
     display: flex;
@@ -28,7 +28,7 @@ export const CategoryItem = styled.div`
   color: ${({ theme }) => theme.colors.gray5};
   font-size: ${({ theme }) => theme.size.medium};
   font-weight: ${({ theme }) => theme.fontWeight.bold};
-
+  cursor: pointer;
   margin-bottom: 16px;
 
   .icon {
@@ -38,7 +38,19 @@ export const CategoryItem = styled.div`
     margin-right: 16px;
 
     .fa {
-      font-size: 24px;
+      font-size: 20px;
+    }
+  }
+
+  &:hover, .active {
+    background: ${({ theme }) => theme.colors.primary};
+
+    .cat-name {
+      color: ${({ theme }) => theme.colors.white};
+    }
+
+    .icon { 
+      background: ${({ theme }) => theme.colors.white};
     }
   }
 `
@@ -70,11 +82,11 @@ export const NewItemWrapper = styled.div`
 `
 
 const LIST = [
+  { name: 'World', icon: 'fa fa-globe' },
   { name: 'Technology', icon: 'fa fa-clock-o' },
-  { name: 'Technology', icon: 'fa fa-clock-o' },
-  { name: 'Technology', icon: 'fa fa-clock-o' },
-  { name: 'Technology', icon: 'fa fa-clock-o' },
-  { name: 'Technology', icon: 'fa fa-clock-o' },
+  { name: 'Sport', icon: 'fa fa-futbol-o' },
+  { name: 'Culture', icon: 'fa fa-graduation-cap' },
+  { name: 'Law', icon: 'fa fa-balance-scale' },
 ]
 
 const NewsPage = () => {
@@ -84,15 +96,15 @@ const NewsPage = () => {
       <div className="main-content">
         <div className="category-list">
           {LIST.map(item => (
-            <CategoryItem>
+            <CategoryItem key={item.name}>
               <div className="icon"><span className={item.icon} aria-hidden="true" /></div>
-              <div>{item.name}</div>
+              <div className="cat-name">{item.name}</div>
             </CategoryItem>
           ))}
         </div>
         <div className="new-list">
-          {Array(10).fill().map(() => (
-            <NewItemWrapper>
+          {Array(10).fill().map((_, index) => (
+            <NewItemWrapper key={index}>
               <div className="thumb-image">
               </div>
               <div className="new-content">

@@ -1,11 +1,17 @@
 import styled from 'styled-components'
 
 export const MainWrapper = styled.div`
-  height: 100%;
-  display: flex;
+  /* height: 100%; */
+  /* display: flex; */
 
-  main {
-    flex: 1;
-    position: relative;
+  .main {
+    display: flex;
+
+    .main-content {
+      margin-left: 80px;
+      position: relative;
+      flex: 1;
+      min-height: calc(100vh - 80px)
+    }
   }
 `

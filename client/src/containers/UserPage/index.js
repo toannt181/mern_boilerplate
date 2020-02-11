@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 import { actions as userActions } from 'slices/userSlice'
 
 export const UserPageWrapper = styled.div`
-  padding: 16px 40px;
+  padding: 40px;
 `
 
 function readURL(file, callback) {

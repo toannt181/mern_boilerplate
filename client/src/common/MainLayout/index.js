@@ -16,15 +16,17 @@ import Navbar from 'components/Navbar'
 function MainLayout() {
   return (
     <MainWrapper>
-      <SideMenu />
-      <main>
-        <Navbar />
-        <Switch>
-          <Route path="/channels" component={ChatPage} />
-          <Route path="/user" component={UserPage} />
-          <Route exact path="/" component={NewsPage} />
-          <Route component={PageNotFound} />
-        </Switch>
+      <Navbar />
+      <main className="main">
+        <SideMenu />
+        <div className="main-content">
+          <Switch>
+            <Route path="/channels" component={ChatPage} />
+            <Route path="/user" component={UserPage} />
+            <Route exact path="/" component={NewsPage} />
+            <Route component={PageNotFound} />
+          </Switch>
+        </div>
       </main>
     </MainWrapper>
   )

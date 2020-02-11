@@ -39,9 +39,14 @@ const radius = {
   large: '30px',
 }
 
+const index = {
+  navbar: 20,
+}
+
 export default {
   colors,
   fontWeight,
   size,
   radius,
+  index,
 }
