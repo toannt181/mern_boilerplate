@@ -17,6 +17,10 @@ module.exports = function (app) {
 
   // Error handling
   app.use((err, req, res, next) => {
+    if (err.message === '403') {
+      res.status(403).json({ error: 'Forbidden Error' })
+      return
+    }
     if (err.stack) {
       // if (err.stack.includes('ValidationError')) {
       //   res.status(422).render('422', { error: err.stack })

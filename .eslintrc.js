@@ -21,6 +21,7 @@ module.exports = {
       "semi": 0,
       "camelcase": 0,
       "arrow-body-style": 0,
-      "no-underscore-dangle": 0
+      "no-underscore-dangle": 0,
+      "object-curly-newline": 0
     }
 };

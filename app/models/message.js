@@ -5,12 +5,19 @@ const MODEL_NAME = 'message'
 const schema = new moongose.Schema({
   content: {
     type: String,
+    required: true,
   },
   channelId: {
     type: moongose.Types.ObjectId,
+    required: true,
   },
   createdBy: {
     type: moongose.Types.ObjectId,
+    required: true,
+  },
+  type: {
+    type: Number,
+    required: true,
   },
 })
 

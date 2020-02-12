@@ -44,7 +44,7 @@ function App(props) {
   }, [user])
 
   useEffect(() => {
-    socket.on('releaseVersion', ({ version, releaseNote}) => {
+    socket.on('releaseVersion', ({ version, releaseNote }) => {
       dispatchWarningModal({
         visible: true,
         title: `Version ${version} has been released, please reload and enjoy!`,

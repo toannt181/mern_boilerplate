@@ -10,7 +10,7 @@ function config(server) {
   createdIO = io
 
   io.on('connection', (socket) => {
-    console.log(chalk.yellow('Login id: %s'), socket.id)
+    console.log(chalk.yellow('Login id: %s at %s'), socket.id, socket.handshake.headers['user-agent'])
 
     socket.on('join', ({ channelId }) => {
       console.log(chalk.yellow('Id %s join channel %s '), socket.id, channelId)
@@ -27,6 +27,8 @@ function config(server) {
       socket.to(channelId).emit('receive-new-message', { message, channelId })
     })
   })
+
+  return createdIO
 }
 
 

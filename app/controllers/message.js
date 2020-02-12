@@ -1,25 +1,47 @@
 const { Router } = require('express')
-
+const mongoose = require('mongoose')
 const { model } = require('../db')
+const common = require('../constants/common')
 
 const route = new Router({ mergeParams: true })
+
+async function hasPermissionAccessChannelMiddleware(req, res, next) {
+  try {
+    const { _id: userId } = req.user
+    const { id } = req.params
+    const channel = await model.Channel.findOne({ _id: id, 'members._id': userId })
+    if (!channel) {
+      throw new Error('403')
+    }
+    next()
+  } catch (e) {
+    next(e)
+  }
+}
 
 async function index(req, res, next) {
   try {
     const { id } = req.params
-    const messages = await model.Message.find({ channelId: id })
-    const userIdList = {}
-    messages.forEach((message) => {
-      if (message.createdBy) {
-        userIdList[message.createdBy] = true
-      }
-    })
-    const users = await model.User.find({ _id: { $in: Object.keys(userIdList) } })
+    const messages = await model.Message
+      .aggregate([
+        { $match: { channelId: new mongoose.Types.ObjectId(id) } },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'createdBy',
+            foreignField: '_id',
+            as: 'user',
+          },
+        },
+      ])
+
     const messagesWithUser = messages.map((message) => {
-      const user = users.find(({ _id }) => _id.equals(message.createdBy))
+      const { user, ...rest } = message
+      const { name, email, avatar, thumbnail } = user[0]
+
       return {
-        ...message.toJSON(),
-        user: user.info,
+        ...rest,
+        user: { name, email, avatar, thumbnail },
       }
     })
     res.json(messagesWithUser)
@@ -33,7 +55,12 @@ async function store(req, res, next) {
     const { _id } = req.user
     const { id } = req.params
     const { content } = req.body
-    const message = new model.Message({ channelId: id, content, createdBy: _id })
+    const message = new model.Message({
+      channelId: id,
+      content,
+      createdBy: _id,
+      type: common.message.type.TEXT,
+    })
     await message.save()
     res.json(message)
   } catch (error) {
@@ -41,8 +68,8 @@ async function store(req, res, next) {
   }
 }
 
-route.get('/', index)
+route.get('/', hasPermissionAccessChannelMiddleware, index)
 
-route.post('/', store)
+route.post('/', hasPermissionAccessChannelMiddleware, store)
 
 module.exports = route
