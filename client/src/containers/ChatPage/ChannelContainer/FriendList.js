@@ -1,7 +1,6 @@
 import React, { useEffect, memo } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import cn from 'classnames'
 import { actions as userActions } from 'slices/userSlice'
 import LetterAvatar from 'components/LetterAvatar'
 
@@ -32,7 +31,7 @@ const FriendList = (props) => {
 
   useEffect(() => {
     dispatchFetchMemberList()
-  }, [])
+  }, [dispatchFetchMemberList])
 
   return (
     <FriendListWrapper>

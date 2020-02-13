@@ -55,7 +55,7 @@ function App(props) {
         dispatchUpdateMemberStatus({ userId, status })
       })
     }
-  }, [user])
+  }, [user, dispatchEmitConnectedUser])
 
   useEffect(() => {
     socket.on('releaseVersion', ({ version, releaseNote }) => {

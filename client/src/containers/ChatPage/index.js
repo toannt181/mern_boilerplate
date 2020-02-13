@@ -50,7 +50,7 @@ function ChatPage(props) {
       dispatchAddMessage(message)
       new Notification(`${message.user.name}: ${message.content}`)
     })
-  }, [dispatchFetchChannel, dispatchAddMessage, dispatchSetNotificationPermision])
+  }, [dispatchFetchChannel, user, dispatchAddMessage, dispatchSetNotificationPermision])
 
 
   const onAddChannel = useCallback(() => {
@@ -85,7 +85,7 @@ function ChatPage(props) {
   const acceptInvitation = useCallback(() => {
     dispatchRequestAcceptInvitedChannel(currentChannelId)
   },
-    [currentChannelId]
+    [currentChannelId, dispatchRequestAcceptInvitedChannel]
   )
 
   const onChange = (value) => {
@@ -102,7 +102,7 @@ function ChatPage(props) {
     const member = find(currentChannel.members, { _id: user._id })
     if (!member) return false
     return member.status === STATUS.PENDING
-  }, [currentChannel])
+  }, [currentChannel, user])
 
 
   const onClickToggleInviteMemberModal = () => {
