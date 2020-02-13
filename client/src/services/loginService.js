@@ -31,9 +31,16 @@ function* watchVerifyEmail(action) {
   } catch { }
 }
 
+function* watchEmitConnectedUser(action) {
+  try {
+    yield UserAPI.emitConnectedUser(action.payload)
+  } catch { }
+}
+
 export default function* sagas() {
   yield takeEvery(appActions.dispatchFetchUser.type, watchFetchUser)
   yield takeEvery(appActions.dispatchCreateUser.type, watchCreateUser)
   yield takeEvery(appActions.dispatchLogin.type, watchLogin)
   yield takeEvery(appActions.dispatchVerifyEmail.type, watchVerifyEmail)
+  yield takeEvery(appActions.dispatchEmitConnectedUser.type, watchEmitConnectedUser)
 }

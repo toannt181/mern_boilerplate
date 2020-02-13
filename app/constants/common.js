@@ -21,4 +21,11 @@ module.exports = {
       JOIN_MESSAGE: 3,
     },
   },
+  user: {
+    status: {
+      ONLINE: 1,
+      OFFLINE: 2,
+      PENDING: 3,
+    },
+  },
 }

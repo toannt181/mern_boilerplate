@@ -64,6 +64,13 @@ function* watchdInviteMember(action) {
   } catch { }
 }
 
+function* watchFetchMemberList() {
+  try {
+    const members = yield UserAPI.fetchMemberList()
+    yield put(userActions.dispatchSetMemberList(members))
+  } catch { }
+}
+
 export default function* sagas() {
   yield takeEvery(userActions.dispatchFetchChannel.type, watchFetchChannel)
   yield takeEvery(userActions.dispatchCreateChannel.type, watchCreateChannel)
@@ -75,4 +82,5 @@ export default function* sagas() {
   yield takeEvery(userActions.dispatchPostUserInfo.type, watchPostUserInfo)
   yield takeEvery(userActions.dispatchRequestAcceptInvitedChannel.type, watchRequestAcceptInvitedChannel)
   yield takeEvery(userActions.dispatchInviteMember.type, watchdInviteMember)
+  yield takeEvery(userActions.dispatchFetchMemberList.type, watchFetchMemberList)
 }

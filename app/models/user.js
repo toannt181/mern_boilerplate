@@ -36,13 +36,16 @@ const schema = new moongose.Schema({
   },
   email: {
     type: String,
+    required: true,
     unique: true,
   },
   password: {
     type: String,
+    required: true,
   },
   avatar: {
     type: String,
+    required: true,
   },
   thumbnail: {
     type: String,
@@ -50,6 +53,13 @@ const schema = new moongose.Schema({
   isVerified: {
     type: Boolean,
     default: false,
+  },
+  lastActiveDate: {
+    type: Date,
+  },
+  status: {
+    type: Number,
+    default: 2,
   },
 })
 
@@ -77,6 +87,15 @@ schema.virtual('info')
       email: this.email,
       avatar: this.avatar,
       thumbnail: this.thumbnailPath,
+      _id: this._id,
+    }
+  })
+
+schema.virtual('fullInfo')
+  .get(function () {
+    return {
+      ...this.info,
+      status: this.status,
     }
   })
 

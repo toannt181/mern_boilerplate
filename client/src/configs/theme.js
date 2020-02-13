@@ -15,6 +15,7 @@ const colors = {
   gray15: '#f6f6f6',
   black: '#000000',
   red: '#e15d57',
+  green1: '#0bd098',
 }
 
 const size = {

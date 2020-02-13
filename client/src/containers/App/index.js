@@ -8,6 +8,7 @@ import {
 import AuthenticateRoute from 'hocs/AuthenticateRoute'
 
 import { actions } from 'slices/appSlice'
+import { actions as userActions } from 'slices/userSlice'
 import GlobalStyle from './globalStyle'
 import LoginPage from '../LoginPage'
 import WarningModal from './WarningModal'
@@ -17,6 +18,7 @@ import WaitVerifyEmailPage from '../WaitVerifyEmailPage'
 import VerifyEmailPage from '../VerifyEmailPage'
 import MainLayout from 'common/MainLayout'
 import socket from 'configs/socket'
+import usePrevious from 'utils/usePrevious'
 
 function App(props) {
   const {
@@ -25,9 +27,13 @@ function App(props) {
     appLoadingStack,
     dispatchFetchUser,
     dispatchSetUser,
+    dispatchEmitConnectedUser,
+    dispatchUpdateMemberStatus,
     user,
   } = props
   const [isAppReady, setAppReady] = useState(false)
+  const prevUser = usePrevious(user)
+
 
   useEffect(() => {
     if (localStorage.getItem(ACCESS_TOKEN)) {
@@ -40,6 +46,14 @@ function App(props) {
   useEffect(() => {
     if (user !== null) {
       setAppReady(true)
+    }
+
+    if (!prevUser && user) {
+      dispatchEmitConnectedUser({ userId: user._id })
+
+      socket.on('changeUserStatus', ({ userId, status }) => {
+        dispatchUpdateMemberStatus({ userId, status })
+      })
     }
   }, [user])
 
@@ -80,5 +94,8 @@ export default connect(
     warningData: state.app.warningData,
     appLoadingStack: state.app.appLoadingStack,
   }),
-  actions
+  {
+    ...actions,
+    dispatchUpdateMemberStatus: userActions.dispatchUpdateMemberStatus,
+  }
 )(App)

@@ -49,6 +49,10 @@ export function inviteMember({ email, channelId }) {
   return Request.post({ url: `channels/${channelId}/invite`, data: { email } })
 }
 
+export function fetchMemberList() {
+  return Request.get({ url: 'members' })
+}
+
 export function requestJoinRoom({ channelId }) {
   socket.emit('join', { channelId })
 }
@@ -65,4 +69,8 @@ export function subscribeMessageChannel(callback) {
   socket.on('receive-new-message', (data) => {
     callback(data)
   })
+}
+
+export function emitConnectedUser(payload) {
+  socket.emit('connected', payload)
 }

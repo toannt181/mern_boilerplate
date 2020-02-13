@@ -1,10 +1,11 @@
 const { Router } = require('express')
+const chalk = require('chalk')
 const user = require('../app/controllers/user')
 const channel = require('../app/controllers/channel')
 const admin = require('../app/controllers/admin')
+const member = require('../app/controllers/member')
 const authentication = require('../app/controllers/authentication')
 const auth = require('../app/middlewares/authorization')
-const chalk = require('chalk')
 
 module.exports = function (app) {
   const apiRoute = new Router()
@@ -14,6 +15,7 @@ module.exports = function (app) {
   apiRoute.use('/authentication', authentication)
   apiRoute.use('/users', auth, user)
   apiRoute.use('/channels', auth, channel)
+  apiRoute.use('/members', auth, member)
   apiRoute.use('/admin', admin)
 
   // Error handling

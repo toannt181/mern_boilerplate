@@ -12,3 +12,9 @@ export const MESSAGE_TYPE = {
   NOTIFICATION: 2,
   JOIN_MESSAGE: 3,
 }
+
+export const USER_STATUS = {
+  ONLINE: 1,
+  OFFLINE: 2,
+  PENDING: 3,
+}

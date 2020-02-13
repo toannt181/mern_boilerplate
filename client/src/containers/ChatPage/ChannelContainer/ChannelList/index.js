@@ -24,8 +24,10 @@ const UserStatus = (props) => {
             className={cn('channel-item', { active: currentChannelId === channel._id })}
             key={channel._id}
           >
-            <div><span className="fa fa-commenting-o mr-2" />{channel.name}<span className="badge is-notification">12</span></div>
-            <span className="badge">{channel.number_unread_message}</span>
+            <div><span className="fa fa-commenting-o mr-2" />
+              {channel.name}
+              {/* <span className="badge is-notification">12</span> */}
+            </div>
           </ChannelItem>
         ))}
       </ul>

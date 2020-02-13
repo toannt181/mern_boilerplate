@@ -2,6 +2,7 @@ import { createSlice, createSelector } from '@reduxjs/toolkit'
 import find from 'lodash/find'
 const INITIAL_STATE = {
   channels: [],
+  members: [],
   messages: [],
   currentChannelId: null,
 }
@@ -38,6 +39,17 @@ const slice = createSlice({
           return action.payload
         }
         return channel
+      })
+    },
+    dispatchFetchMemberList() { },
+    dispatchSetMemberList(state, action) {
+      state.members = action.payload
+    },
+    dispatchUpdateMemberStatus(state, action) {
+      state.members.forEach(member => {
+        if (member._id === action.payload.userId) {
+          member.status = action.payload.status
+        }
       })
     },
   },

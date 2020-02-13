@@ -16,6 +16,7 @@ const slice = createSlice({
     },
     dispatchFetchUser() { },
     dispatchCreateUser() { },
+    dispatchEmitConnectedUser() { },
     dispatchLogin() { },
     dispatchVerifyEmail() { },
     dispatchWarningModal(state, action) {

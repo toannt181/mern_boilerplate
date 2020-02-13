@@ -1,6 +1,7 @@
 import React from 'react'
 import { ChannelContainerWrapper } from './styles'
 import ChannelList from './ChannelList'
+import FriendList from './FriendList'
 
 const ChannelContainer = (props) => {
   const {
@@ -14,17 +15,20 @@ const ChannelContainer = (props) => {
   return (
     <ChannelContainerWrapper>
       <ChannelList
-        title="Favorite"
+        title="Favorites"
         channels={favoriteChannels}
         onClickChannel={onClickChannel}
         currentChannelId={currentChannelId}
       />
       <ChannelList
-        title="Channel"
+        title="Channels"
         channels={channels}
         onAddChannel={onAddChannel}
         onClickChannel={onClickChannel}
         currentChannelId={currentChannelId}
+      />
+      <FriendList
+        title="Members"
       />
     </ChannelContainerWrapper>
   )
