@@ -7,6 +7,10 @@ const { connectDB, model } = require('./app/db')
 const { port } = config
 const app = express()
 
+app.model = model
+
+module.exports = app
+
 app.get('/', (req, res) => {
   res.send('Connected')
 })
@@ -21,7 +25,7 @@ app.redis = require('./config/redis')
 
 function listen() {
   const server = app.listen(port)
-  app.io = require('./config/socket').config(server)
+  app.io = require('./config/socket')(server)
   console.log(`Express app started on port ${port}`)
 }
 
@@ -37,5 +41,3 @@ function connect() {
 }
 
 connect()
-
-module.exports = app

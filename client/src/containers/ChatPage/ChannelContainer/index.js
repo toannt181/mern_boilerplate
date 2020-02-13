@@ -4,7 +4,8 @@ import ChannelList from './ChannelList'
 
 const ChannelContainer = (props) => {
   const {
-    channels,
+    channels = [],
+    favoriteChannels = [],
     onAddChannel,
     onClickChannel,
     currentChannelId,
@@ -12,8 +13,14 @@ const ChannelContainer = (props) => {
 
   return (
     <ChannelContainerWrapper>
-      <h2 className="title is-2">Chat</h2>
       <ChannelList
+        title="Favorite"
+        channels={favoriteChannels}
+        onClickChannel={onClickChannel}
+        currentChannelId={currentChannelId}
+      />
+      <ChannelList
+        title="Channel"
         channels={channels}
         onAddChannel={onAddChannel}
         onClickChannel={onClickChannel}

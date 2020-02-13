@@ -1,13 +1,8 @@
 const socketio = require('socket.io')
 const chalk = require('chalk')
 
-let createdIO
-
 function config(server) {
-  if (createdIO) return createdIO
-
   const io = socketio.listen(server)
-  createdIO = io
 
   io.on('connection', (socket) => {
     console.log(chalk.yellow('Login id: %s at %s'), socket.id, socket.handshake.headers['user-agent'])
@@ -22,14 +17,14 @@ function config(server) {
       socket.leave(channelId)
     })
 
-    socket.on('send-new-message', ({ channelId, message }) => {
-      console.log(chalk.yellow('Emit message to channel %s'), channelId)
-      socket.to(channelId).emit('receive-new-message', { message, channelId })
-    })
+    // socket.on('send-new-message', ({ channelId, message }) => {
+    //   console.log(chalk.yellow('Emit message to channel %s'), channelId)
+    //   socket.to(channelId).emit('receive-new-message', { message, channelId })
+    // })
   })
 
-  return createdIO
+  return io
 }
 
 
-module.exports = { config }
+module.exports = config

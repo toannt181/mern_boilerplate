@@ -10,7 +10,6 @@ export const LetterAvatarWrapper = styled.div`
   justify-content: center;
   border-radius: 12px;
   font-weight: ${({ theme }) => theme.fontWeight.bold};
-  margin-bottom: 16px;
   border-radius: ${({ theme }) => theme.radius.medium};
   cursor: pointer;
   background-image: ${({ background }) => `url(${background})`};
@@ -19,5 +18,10 @@ export const LetterAvatarWrapper = styled.div`
   &.active {
     color: ${({ theme }) => theme.colors.white};
     background-color: ${({ theme }) => theme.colors.primary};
+  }
+
+  &.is-medium {
+    width: 40px;
+    height: 40px;
   }
 `

@@ -5,7 +5,7 @@ const MODEL_NAME = 'message'
 const schema = new moongose.Schema({
   content: {
     type: String,
-    required: true,
+    default: '',
   },
   channelId: {
     type: moongose.Types.ObjectId,

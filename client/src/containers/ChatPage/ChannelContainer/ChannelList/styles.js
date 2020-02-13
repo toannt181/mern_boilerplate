@@ -1,10 +1,19 @@
 import styled from 'styled-components'
+import { rgba } from 'polished'
 
 export const ChannelListWrapper = styled.div`
   padding: 16px;
 
   .channel-list {
     margin-top: 8px;
+  }
+
+  .btn-add {
+    background: ${({ theme }) => rgba(theme.colors.primary, 0.24)};
+    color: ${({ theme }) => theme.colors.primary};
+    font-size: ${({ theme }) => theme.size.tiny};
+    width: 20px;
+    height: 20px;
   }
 `
 
@@ -23,8 +32,7 @@ export const ChannelItem = styled.div`
 
   &.active {
     font-weight: ${({ theme }) => theme.fontWeight.bold};
-    background: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.white};
+    background: ${({ theme }) => rgba(theme.colors.primary, 0.12)};
   }
 
   &.highlight {

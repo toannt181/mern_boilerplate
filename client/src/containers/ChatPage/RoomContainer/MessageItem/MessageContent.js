@@ -14,6 +14,7 @@ export const MessageContentWrapper = styled.div`
     font-size: ${({ theme }) => theme.size.small};
     font-weight: ${({ theme }) => theme.fontWeight.bold};
     cursor: pointer;
+    line-height: 1;
 
     &:hover {
       text-decoration: underline;

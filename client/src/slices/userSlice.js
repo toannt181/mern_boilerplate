@@ -30,6 +30,16 @@ const slice = createSlice({
     dispatchRequestJoinRoom() { },
     dispatchRequestLeaveRoom() { },
     dispatchPostUserInfo() { },
+    dispatchRequestAcceptInvitedChannel() { },
+    dispatchInviteMember() { },
+    dispatchUpdateChannel(state, action) {
+      state.channels = state.channels.map(channel => {
+        if (channel._id === action.payload._id) {
+          return action.payload
+        }
+        return channel
+      })
+    },
   },
 })
 

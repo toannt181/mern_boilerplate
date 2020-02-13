@@ -125,6 +125,10 @@ export default createGlobalStyle`
     color: ${({ theme }) => theme.colors.white};
     font-size: ${({ theme }) => theme.size.xtiny};
     border-radius: ${({ theme }) => theme.radius.small};
+
+    &.is-notification {
+      background: ${({ theme }) => theme.colors.blue1};
+    }
   }
 
   .button {

@@ -7,6 +7,7 @@ import {
 } from './styles'
 
 import MessageItem from './MessageItem'
+import InviteMessage from '../InviteMessage'
 
 let prevMessageLength
 
@@ -18,6 +19,8 @@ const RoomContainer = (props) => {
     dispatchFetchMessage,
     dispatchRequestJoinRoom,
     dispatchSelectChannel,
+    isInvitedRoom = false,
+    acceptInvitation = (() => { }),
     match: { params } = {},
   } = props
 
@@ -41,28 +44,25 @@ const RoomContainer = (props) => {
     }
   }, [onFetchMessageChannel, dispatchSelectChannel, currentChannelId, params])
 
-
-  useEffect(() => {
-    return () => { dispatchSelectChannel(null) }
-  }, [dispatchSelectChannel])
-
   useEffect(() => {
     const ref = wrapperRef.current
 
-    if (!prevMessageLength || messages.length > prevMessageLength) {
+    if (ref && (!prevMessageLength || messages.length > prevMessageLength)) {
       ref.scrollTop = ref.scrollHeight - ref.clientHeight
     }
 
     return () => { prevMessageLength = 0 }
   }, [messages])
 
-  return (
-    <RoomContainerWrapper ref={wrapperRef}>
-      <MessageList>
-        {messages.map((message, i) => <MessageItem key={i} message={message} position={message.createdBy === user._id ? 'right' : 'left'} />)}
-      </MessageList>
-    </RoomContainerWrapper>
-  )
+  return isInvitedRoom
+    ? <InviteMessage acceptInvitation={acceptInvitation} />
+    : (
+      <RoomContainerWrapper ref={wrapperRef}>
+        <MessageList>
+          {messages.map((message, i) => <MessageItem key={i} message={message} position={message.createdBy === user._id ? 'right' : 'left'} />)}
+        </MessageList>
+      </RoomContainerWrapper>
+    )
 }
 
 export default memo(connect(

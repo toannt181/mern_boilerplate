@@ -1,7 +1,8 @@
 const { Router } = require('express')
-const message = require('./message')
+const messageController = require('./message')
 const { model } = require('../db')
 const common = require('../constants/common')
+const { createNewMessage } = require('../services/message')
 
 const route = new Router()
 
@@ -40,15 +41,17 @@ async function destroy(req, res, next) {
 
 async function invite(req, res, next) {
   try {
-    const { userId } = req.body
+    const { email } = req.body
     const { id } = req.params
+    const user = await model.User.findOne({ email })
+    if (!user) throw new Error('404')
     const newMember = {
-      _id: userId,
-      role: common.room.role.MANAGEMENT,
+      _id: user._id,
+      role: common.room.role.MEMBER,
       status: common.room.status.PENDING,
     }
     const channel = await model.Channel.findById(id)
-    if (!channel.members.find((item) => item._id.toString() === userId)) {
+    if (!channel.members.find((item) => item._id.toString() === user._id)) {
       channel.members.push(newMember)
       await channel.save()
     }
@@ -79,10 +82,16 @@ async function join(req, res, next) {
     const { id } = req.params
     const { _id } = req.user
     const channel = await model.Channel.findById(id)
-    const member = channel.members.find((item) => item._id.toString() === _id)
+    const member = channel.members.find((item) => item._id.toString() === _id.toString())
     if (member) {
       member.status = common.room.status.JOINED
       await channel.save()
+
+      await createNewMessage({
+        channelId: id,
+        createdBy: _id,
+        type: common.message.type.JOIN_MESSAGE,
+      })
     }
     res.json(channel)
   } catch (error) {
@@ -96,6 +105,6 @@ route.delete('/:id', destroy)
 route.post('/:id/invite', invite)
 route.post('/:id/kickout', kickout)
 route.post('/:id/join', join)
-route.use('/:id/messages', message)
+route.use('/:id/messages', messageController)
 
 module.exports = route

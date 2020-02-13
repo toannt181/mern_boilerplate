@@ -2,6 +2,7 @@ const { Router } = require('express')
 const mongoose = require('mongoose')
 const { model } = require('../db')
 const common = require('../constants/common')
+const { createNewMessage } = require('../services/message')
 
 const route = new Router({ mergeParams: true })
 
@@ -37,11 +38,10 @@ async function index(req, res, next) {
 
     const messagesWithUser = messages.map((message) => {
       const { user, ...rest } = message
-      const { name, email, avatar, thumbnail } = user[0]
-
+      const tempUser = new model.User(user[0])
       return {
         ...rest,
-        user: { name, email, avatar, thumbnail },
+        user: tempUser.info,
       }
     })
     res.json(messagesWithUser)
@@ -55,13 +55,12 @@ async function store(req, res, next) {
     const { _id } = req.user
     const { id } = req.params
     const { content } = req.body
-    const message = new model.Message({
+    const message = await createNewMessage({
       channelId: id,
       content,
       createdBy: _id,
       type: common.message.type.TEXT,
     })
-    await message.save()
     res.json(message)
   } catch (error) {
     next(error)

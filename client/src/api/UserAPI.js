@@ -41,6 +41,14 @@ export function updateProfile({ data }) {
   return Request.post({ url: `users`, data, formData: true })
 }
 
+export function acceptInvitedChannel(channelId) {
+  return Request.post({ url: `channels/${channelId}/join` })
+}
+
+export function inviteMember({ email, channelId }) {
+  return Request.post({ url: `channels/${channelId}/invite`, data: { email } })
+}
+
 export function requestJoinRoom({ channelId }) {
   socket.emit('join', { channelId })
 }

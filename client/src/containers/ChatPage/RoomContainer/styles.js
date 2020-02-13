@@ -6,7 +6,7 @@ export const RoomContainerWrapper = styled.div`
   padding: 12px;
   padding-right: 48px;
   margin-right: -32px;
-  height: calc(100vh - 256px);
+  height: calc(100vh - 280px);
 `
 
 export const MessageList = styled.div`

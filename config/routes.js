@@ -4,6 +4,7 @@ const channel = require('../app/controllers/channel')
 const admin = require('../app/controllers/admin')
 const authentication = require('../app/controllers/authentication')
 const auth = require('../app/middlewares/authorization')
+const chalk = require('chalk')
 
 module.exports = function (app) {
   const apiRoute = new Router()
@@ -27,6 +28,7 @@ module.exports = function (app) {
       //   return
       // }
       if (process.env.NODE_ENV === 'development') {
+        console.log(chalk.red('ERR', err.message))
         res.status(500).json({ error: err.message })
       } else {
         res.status(500).json({ error: 'Internal error' })

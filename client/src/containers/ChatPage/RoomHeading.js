@@ -43,6 +43,7 @@ const RoomHeading = (props) => {
   const {
     currentChannel = null,
     deleteChannel,
+    onInviteMember = (() => { }),
   } = props
 
   const [isShowMenu, toggleMenu] = useState(false)
@@ -54,6 +55,7 @@ const RoomHeading = (props) => {
       <h3 className="title is-1">#{currentChannel.name}</h3>
       <div className="ml-auto d-center">
         <button className="btn-none is-circle is-big"><i className="fa fa-star-o" aria-hidden="true" /></button>
+        <button className="btn-none is-circle is-big" onClick={onInviteMember}><i className="fa fa-plus" aria-hidden="true" /></button>
         <Dropdown
           isActive={isShowMenu}
           menu={<Menu deleteChannel={deleteChannel} />}

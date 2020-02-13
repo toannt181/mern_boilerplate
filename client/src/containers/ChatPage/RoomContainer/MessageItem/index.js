@@ -1,22 +1,18 @@
 import React from 'react'
-import {
-  MessageItem,
-} from './styles'
-import MessageAvatar from './MessageAvatar'
-import MessageContent from './MessageContent'
+import { MESSAGE_TYPE } from 'configs/constants'
+import MessageText from './MessageText'
+import MemberJoinMessage from './MemberJoinMessage'
 
-const RoomContainer = ({ message, position }) => position === 'left'
-  ? (
-    <MessageItem>
-      <MessageAvatar user={message.user} />
-      <MessageContent message={message} position={position} />
-    </MessageItem>
-  )
-  : (
-    <MessageItem>
-      <MessageContent message={message} position={position} />
-      <MessageAvatar user={message.user} />
-    </MessageItem>
-  )
+const MessageItem = (props) => {
+  const { message } = props
 
-export default RoomContainer
+  switch (message.type) {
+    case MESSAGE_TYPE.JOIN_MESSAGE:
+      return <MemberJoinMessage {...props} />
+    default:
+      return <MessageText {...props} />
+  }
+
+}
+
+export default MessageItem

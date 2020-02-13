@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useState, memo } from 'react'
+import React, { useCallback, useEffect, useState, memo, useMemo } from 'react'
 import { connect } from 'react-redux'
 import { Route, withRouter } from 'react-router-dom'
+import find from 'lodash/find'
 
 import { actions as appActions } from 'slices/appSlice'
 import { actions as userActions, selectors as userSelectors } from 'slices/userSlice'
@@ -12,6 +13,8 @@ import * as UserAPI from '../../api/UserAPI'
 import { requestNotifyPermission } from '../../utils/notification'
 import RoomHeading from './RoomHeading'
 import ChatInput from './ChatInput'
+import { STATUS, MESSAGE_TYPE } from 'configs/constants'
+import InviteMemberModal from './InviteMemberModal'
 
 function ChatPage(props) {
   const {
@@ -27,10 +30,13 @@ function ChatPage(props) {
     dispatchSendMessage,
     currentChannel,
     dispatchDeleteChannel,
+    dispatchRequestAcceptInvitedChannel,
+    dispatchInviteMember,
   } = props
 
   const [isShowChannelModal, toggleChannelModal] = useState(false)
   const [content, setContent] = useState('')
+  const [isShowInviteMemberModal, toggleInviteMemberModal] = useState(false)
 
   useEffect(() => {
     dispatchFetchChannel()
@@ -40,6 +46,7 @@ function ChatPage(props) {
       })
 
     UserAPI.subscribeMessageChannel(function ({ message }) {
+      if (message.createdBy === user._id && message.type === MESSAGE_TYPE.TEXT) return
       dispatchAddMessage(message)
       new Notification(`${message.user.name}: ${message.content}`)
     })
@@ -75,6 +82,12 @@ function ChatPage(props) {
     ]
   )
 
+  const acceptInvitation = useCallback(() => {
+    dispatchRequestAcceptInvitedChannel(currentChannelId)
+  },
+    [currentChannelId]
+  )
+
   const onChange = (value) => {
     setContent(value)
   }
@@ -83,6 +96,23 @@ function ChatPage(props) {
     dispatchSendMessage({ channelId: currentChannelId, content, user })
     setContent('')
   }, [dispatchSendMessage, currentChannelId, user, content])
+
+  const isInvitedRoom = useMemo(() => {
+    if (!currentChannel) return false
+    const member = find(currentChannel.members, { _id: user._id })
+    if (!member) return false
+    return member.status === STATUS.PENDING
+  }, [currentChannel])
+
+
+  const onClickToggleInviteMemberModal = () => {
+    toggleInviteMemberModal(state => !state)
+  }
+
+  const onInviteMember = (email) => {
+    dispatchInviteMember({ email, channelId: currentChannelId })
+    onClickToggleInviteMemberModal()
+  }
 
   return (
     <ChatWrapper>
@@ -93,14 +123,28 @@ function ChatPage(props) {
         currentChannelId={currentChannelId}
       />
       <div className="room">
-        <RoomHeading
-          currentChannel={currentChannel}
-          deleteChannel={onDeleteChannel}
-        />
+        {!isInvitedRoom && (
+          <RoomHeading
+            currentChannel={currentChannel}
+            deleteChannel={onDeleteChannel}
+            onInviteMember={onClickToggleInviteMemberModal}
+          />
+        )}
         <Route
           path="/channels/:id"
-          component={RoomContainer}
+          render={(props) => <RoomContainer
+            {...props}
+            isInvitedRoom={isInvitedRoom}
+            acceptInvitation={acceptInvitation}
+          />}
         />
+        {!isInvitedRoom && currentChannelId && (
+          <ChatInput
+            onEnter={onSendMessage}
+            content={content}
+            onChange={onChange}
+          />
+        )}
         {currentChannelId && (
           <ChatInput
             onEnter={onSendMessage}
@@ -113,6 +157,12 @@ function ChatPage(props) {
         <ChannelModal
           onCloseModal={onAddChannel}
           onCreateChannel={onCreateChannel}
+        />
+      )}
+      {isShowInviteMemberModal && (
+        <InviteMemberModal
+          onCloseModal={onClickToggleInviteMemberModal}
+          onInviteMember={onInviteMember}
         />
       )}
     </ChatWrapper>
@@ -135,5 +185,7 @@ export default memo(withRouter(connect(
     dispatchRequestLeaveRoom: userActions.dispatchRequestLeaveRoom,
     dispatchSendMessage: userActions.dispatchSendMessage,
     dispatchDeleteChannel: userActions.dispatchDeleteChannel,
+    dispatchRequestAcceptInvitedChannel: userActions.dispatchRequestAcceptInvitedChannel,
+    dispatchInviteMember: userActions.dispatchInviteMember,
   }
 )(ChatPage)))

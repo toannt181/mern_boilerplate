@@ -5,16 +5,17 @@ import { ChannelListWrapper, ChannelTitle, ChannelItem } from './styles'
 const UserStatus = (props) => {
   const {
     channels,
-    onAddChannel,
+    onAddChannel = null,
     onClickChannel,
     currentChannelId,
+    title = '',
   } = props
 
   return (
     <ChannelListWrapper>
       <ChannelTitle className="d-center mb-2">
-        <p className="subtitle">Channel</p>
-        <button className="ml-auto btn-none is-primary" onClick={onAddChannel}><i className="fa fa-plus" aria-hidden="true" /></button>
+        <p className="subtitle mr-auto">{title}</p>
+        {onAddChannel && <button className="ml-auto btn-none btn-add" onClick={onAddChannel}><i className="fa fa-plus" aria-hidden="true" /></button>}
       </ChannelTitle>
       <ul className="channel-list">
         {channels.map((channel) => (
@@ -23,7 +24,7 @@ const UserStatus = (props) => {
             className={cn('channel-item', { active: currentChannelId === channel._id })}
             key={channel._id}
           >
-            <div><span className="mr-1">#</span>{channel.name}</div>
+            <div><span className="fa fa-commenting-o mr-2" />{channel.name}<span className="badge is-notification">12</span></div>
             <span className="badge">{channel.number_unread_message}</span>
           </ChannelItem>
         ))}

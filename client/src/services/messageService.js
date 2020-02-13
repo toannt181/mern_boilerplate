@@ -48,7 +48,20 @@ function* watchPostUserInfo(action) {
   try {
     yield UserAPI.updateProfile(action.payload)
     window.location.reload()
-  } catch {}
+  } catch { }
+}
+
+function* watchRequestAcceptInvitedChannel(action) {
+  try {
+    const channel = yield UserAPI.acceptInvitedChannel(action.payload)
+    yield put(userActions.dispatchUpdateChannel(channel))
+  } catch { }
+}
+
+function* watchdInviteMember(action) {
+  try {
+    yield UserAPI.inviteMember(action.payload)
+  } catch { }
 }
 
 export default function* sagas() {
@@ -60,4 +73,6 @@ export default function* sagas() {
   yield takeEvery(userActions.dispatchRequestJoinRoom.type, watchRequestJoinRoom)
   yield takeEvery(userActions.dispatchRequestLeaveRoom.type, watchRequestLeaveRoom)
   yield takeEvery(userActions.dispatchPostUserInfo.type, watchPostUserInfo)
+  yield takeEvery(userActions.dispatchRequestAcceptInvitedChannel.type, watchRequestAcceptInvitedChannel)
+  yield takeEvery(userActions.dispatchInviteMember.type, watchdInviteMember)
 }

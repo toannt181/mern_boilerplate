@@ -26,7 +26,7 @@ function SideMenu({ location, history }) {
         <LetterAvatar
           key={index}
           onClick={() => history.push(item.path)}
-          className={isActive(pathname, item.path) ? 'active' : ''}
+          className={isActive(pathname, item.path) ? 'active mb-2' : 'mb-2'}
         >
           <i className={item.iconClass} />
         </LetterAvatar>

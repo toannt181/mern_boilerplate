@@ -3,6 +3,7 @@ import LetterAvatar from 'components/LetterAvatar'
 
 const MessageAvatar = ({ user }) => (
   <LetterAvatar
+    className="is-medium"
     color={user.avatar}
     background={user.thumbnail}
   >
