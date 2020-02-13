@@ -41,7 +41,7 @@ const FriendList = (props) => {
       </div>
       <ul className="channel-list">
         {members.map((member) => (
-          <div className="member-item" key={member._id}>
+          <div className="member-item mb-1" key={member._id}>
             <LetterAvatar
               className="is-small"
               color={member.avatar}
