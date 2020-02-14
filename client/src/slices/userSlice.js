@@ -34,11 +34,10 @@ const slice = createSlice({
     dispatchRequestAcceptInvitedChannel() { },
     dispatchInviteMember() { },
     dispatchUpdateChannel(state, action) {
-      state.channels = state.channels.map(channel => {
+      state.channels.forEach(channel => {
         if (channel._id === action.payload._id) {
-          return action.payload
+          channel = [...channel, ...action.payload]
         }
-        return channel
       })
     },
     dispatchFetchMemberList() { },

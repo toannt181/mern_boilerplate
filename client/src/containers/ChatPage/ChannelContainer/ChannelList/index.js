@@ -26,7 +26,7 @@ const UserStatus = (props) => {
           >
             <div><span className="fa fa-commenting-o mr-2" />
               {channel.name}
-              {/* <span className="badge is-notification">12</span> */}
+              {channel.numberNotReadMessage && <span className="badge is-notification">{channel.numberNotReadMessage}</span>}
             </div>
           </ChannelItem>
         ))}

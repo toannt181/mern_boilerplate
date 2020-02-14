@@ -8,7 +8,9 @@ const MessageItem = (props) => {
 
   switch (message.type) {
     case MESSAGE_TYPE.JOIN_MESSAGE:
-      return <MemberJoinMessage {...props} />
+      return <MemberJoinMessage {...props} text="has just joined the channel" />
+    case MESSAGE_TYPE.INVITE_MESSAGE:
+      return <MemberJoinMessage {...props} text="is invited to the channel" />
     default:
       return <MessageText {...props} />
   }

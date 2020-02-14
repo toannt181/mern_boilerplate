@@ -61,7 +61,8 @@ const schema = new moongose.Schema({
     type: Number,
     default: 2,
   },
-})
+}, { timestamps: true })
+
 
 schema.pre('save', async function (next) {
   if (!this.avatar) {

@@ -10,7 +10,7 @@ const schema = new moongose.Schema({
     type: String,
     default: '1.0.0',
   },
-})
+}, { timestamps: true })
 
 const initialize = () => moongose.model(MODEL_NAME, schema)
 

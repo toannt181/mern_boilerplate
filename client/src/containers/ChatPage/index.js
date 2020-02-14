@@ -32,6 +32,7 @@ function ChatPage(props) {
     dispatchDeleteChannel,
     dispatchRequestAcceptInvitedChannel,
     dispatchInviteMember,
+    members,
   } = props
 
   const [isShowChannelModal, toggleChannelModal] = useState(false)
@@ -99,9 +100,7 @@ function ChatPage(props) {
 
   const isInvitedRoom = useMemo(() => {
     if (!currentChannel) return false
-    const member = find(currentChannel.members, { _id: user._id })
-    if (!member) return false
-    return member.status === STATUS.PENDING
+    return currentChannel.status === STATUS.PENDING
   }, [currentChannel, user])
 
 
@@ -161,6 +160,7 @@ function ChatPage(props) {
       )}
       {isShowInviteMemberModal && (
         <InviteMemberModal
+          members={members}
           onCloseModal={onClickToggleInviteMemberModal}
           onInviteMember={onInviteMember}
         />
@@ -175,6 +175,7 @@ export default memo(withRouter(connect(
     channels: state.user.channels,
     currentChannelId: state.user.currentChannelId,
     messages: state.user.messages,
+    members: state.user.members,
     currentChannel: userSelectors.getUserChannel(state),
   }),
   {

@@ -15,9 +15,9 @@ export const MemberJoinMessageWrapper = styled.div`
   }
 `
 
-const MemberJoinMessage = ({ message }) => (
+const MemberJoinMessage = ({ message, text }) => (
   <MemberJoinMessageWrapper>
-    <span className="name">{message.user.name}</span> has just joined the channel
+    <span className="name">{message.user.name}</span> {text}
   </MemberJoinMessageWrapper>
 )
 

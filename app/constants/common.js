@@ -19,6 +19,7 @@ module.exports = {
       TEXT: 1,
       NOTIFICATION: 2,
       JOIN_MESSAGE: 3,
+      INVITE_MESSAGE: 4,
     },
   },
   user: {

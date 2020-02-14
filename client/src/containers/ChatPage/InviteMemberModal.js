@@ -1,15 +1,19 @@
 import React, { useState } from 'react'
 import Modal from 'components/Modal'
-const ChannelModal = ({ onInviteMember, onCloseModal }) => {
+import Select from 'components/Select'
+
+const ChannelModal = ({ onInviteMember, members =[], onCloseModal }) => {
   const [email, setEmail] = useState('')
 
-  const onChange = (e) => {
-    setEmail(e.target.value)
+  const onChange = (option) => {
+    setEmail(option)
   }
 
   const onClickCreateButton = () => {
-    onInviteMember(email)
+    onInviteMember(email.email)
   }
+
+  const options = members.map(member => ({ value: member._id, label: `${member.name} (${member.email})`, email: member.email }))
 
   return (
     <Modal
@@ -17,7 +21,7 @@ const ChannelModal = ({ onInviteMember, onCloseModal }) => {
       title="Invite member"
       onAccept={onClickCreateButton}
     >
-      <input className="input" type="email" placeholder="Email" value={email} onChange={onChange} />
+      <Select options={options} value={email} onChange={onChange} />
     </Modal>
   )
 }

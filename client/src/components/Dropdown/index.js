@@ -61,7 +61,7 @@ const Dropdown = ({ children, isActive, menu = null, up = false }) => {
           </div>
         </div>
       </div>
-    </DropdownWrapper >
+    </DropdownWrapper>
   )
 }
 

@@ -9,8 +9,8 @@ const route = new Router({ mergeParams: true })
 async function hasPermissionAccessChannelMiddleware(req, res, next) {
   try {
     const { _id: userId } = req.user
-    const { id } = req.params
-    const channel = await model.Channel.findOne({ _id: id, 'members._id': userId })
+    const { id: channelId } = req.params
+    const channel = await model.UserChannel.findOne({ channelId, userId })
     if (!channel) {
       throw new Error('403')
     }

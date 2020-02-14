@@ -42,6 +42,7 @@ const radius = {
 
 const index = {
   navbar: 20,
+  selectInput: 100,
 }
 
 export default {

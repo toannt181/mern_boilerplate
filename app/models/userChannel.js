@@ -9,7 +9,19 @@ const schema = new moongose.Schema({
   channelId: {
     type: moongose.Types.ObjectId,
   },
-})
+  role: {
+    type: Number,
+    require: true,
+  },
+  status: {
+    type: Number,
+    require: true,
+  },
+  lastReadMessageId: {
+    type: moongose.Types.ObjectId,
+    default: null,
+  },
+}, { timestamps: true })
 
 const initialize = () => moongose.model(MODEL_NAME, schema)
 

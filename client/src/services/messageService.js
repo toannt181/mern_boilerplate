@@ -2,6 +2,7 @@ import { put, takeEvery } from 'redux-saga/effects'
 import { actions as userActions } from '../slices/userSlice'
 import { actions as appActions } from '../slices/appSlice'
 import * as UserAPI from '../api/UserAPI'
+import { STATUS } from 'configs/constants'
 
 function* watchFetchChannel() {
   const channels = yield UserAPI.fetchChannel()
@@ -53,8 +54,8 @@ function* watchPostUserInfo(action) {
 
 function* watchRequestAcceptInvitedChannel(action) {
   try {
-    const channel = yield UserAPI.acceptInvitedChannel(action.payload)
-    yield put(userActions.dispatchUpdateChannel(channel))
+    yield UserAPI.acceptInvitedChannel(action.payload)
+    yield put(userActions.dispatchUpdateChannel({ __id: action.payload, status: STATUS.JOINED }))
   } catch { }
 }
 

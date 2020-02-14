@@ -19,7 +19,7 @@ const schema = new moongose.Schema({
     type: Number,
     required: true,
   },
-})
+}, { timestamps: true })
 
 const initialize = () => moongose.model(MODEL_NAME, schema)
 
