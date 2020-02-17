@@ -45,7 +45,6 @@ const schema = new moongose.Schema({
   },
   avatar: {
     type: String,
-    required: true,
   },
   thumbnail: {
     type: String,
