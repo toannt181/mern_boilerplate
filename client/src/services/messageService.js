@@ -55,7 +55,7 @@ function* watchPostUserInfo(action) {
 function* watchRequestAcceptInvitedChannel(action) {
   try {
     yield UserAPI.acceptInvitedChannel(action.payload)
-    yield put(userActions.dispatchUpdateChannel({ __id: action.payload, status: STATUS.JOINED }))
+    yield put(userActions.dispatchUpdateSingleChannel({ channelId: action.payload, status: STATUS.JOINED }))
   } catch { }
 }
 

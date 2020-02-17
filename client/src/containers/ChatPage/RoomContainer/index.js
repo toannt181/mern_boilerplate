@@ -61,9 +61,10 @@ const RoomContainer = (props) => {
       if (isScrollAtBottom) {
         onScrollAtBotom()
       }
+      ref.addEventListener('scroll', scrollHandle)
     }, MINIMUN_DELAY)
 
-    ref.addEventListener('scroll', scrollHandle)
+    scrollHandle()
 
     return () => ref.removeEventListener('scroll', scrollHandle)
   }, [messages, currentChannelId, currentChannel, dispatchLastReadMessage])
