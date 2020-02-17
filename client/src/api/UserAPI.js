@@ -53,8 +53,12 @@ export function fetchMemberList() {
   return Request.get({ url: 'members' })
 }
 
-export function requestJoinRoom({ channelId }) {
-  socket.emit('join', { channelId })
+export function updateLastReadMessage({ channelId, lastReadMessageId }) {
+  return Request.post({ url: `channels/${channelId}/last-read-message`, data: { lastReadMessageId } })
+}
+
+export function requestJoinRoom({ channelListId }) {
+  socket.emit('join', { channelListId })
 }
 
 export function requestLeaveRoom({ channelId }) {
@@ -69,6 +73,8 @@ export function subscribeMessageChannel(callback) {
   socket.on('receive-new-message', (data) => {
     callback(data)
   })
+
+  return () => socket.off('receive-new-message')
 }
 
 export function emitConnectedUser(payload) {

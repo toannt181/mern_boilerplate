@@ -1,5 +1,5 @@
 const { Router } = require('express')
-const { find } = require('lodash')
+// const { find } = require('lodash')
 const mongoose = require('mongoose')
 const messageController = require('./message')
 const { model } = require('../db')
@@ -58,7 +58,7 @@ async function index(req, res, next) {
           },
         },
         {
-          $unwind: '$numberNotReadMessage',
+          $unwind: { path: '$numberNotReadMessage', preserveNullAndEmptyArrays: true },
         },
       ])
 
@@ -74,7 +74,7 @@ async function index(req, res, next) {
       return {
         name: channel.name,
         _id: channelId,
-        numberNotReadMessage: numberNotReadMessage.count,
+        numberNotReadMessage: numberNotReadMessage ? numberNotReadMessage.count : 0,
         status,
         messages,
         role,
@@ -194,11 +194,34 @@ async function join(req, res, next) {
   }
 }
 
+async function updateLastReadMessage(req, res, next) {
+  try {
+    const { id } = req.params
+    const { _id } = req.user
+    const { lastReadMessageId } = req.body
+
+    await model.UserChannel.findOneAndUpdate(
+      {
+        userId: _id,
+        channelId: id,
+      },
+      {
+        lastReadMessageId,
+      },
+    )
+
+    res.json({ success: true })
+  } catch (error) {
+    next(error)
+  }
+}
+
 route.get('/', index)
 route.post('/', store)
 route.delete('/:id', destroy)
 route.post('/:id/invite', invite)
 route.post('/:id/kickout', kickout)
+route.post('/:id/last-read-Message', updateLastReadMessage)
 route.post('/:id/join', join)
 route.use('/:id/messages', messageController)
 

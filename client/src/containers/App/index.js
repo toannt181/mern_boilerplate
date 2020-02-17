@@ -30,6 +30,7 @@ function App(props) {
     dispatchEmitConnectedUser,
     dispatchUpdateMemberStatus,
     user,
+    channels,
   } = props
   const [isAppReady, setAppReady] = useState(false)
   const prevUser = usePrevious(user)
@@ -68,6 +69,24 @@ function App(props) {
     })
   }, [dispatchWarningModal])
 
+
+  useEffect(() => {
+    const num = setInterval(() => {
+      if (document.title === 'MoveOnFlow') {
+        const numberUnreadMessage = channels.reduce((total, item) => total + (item.numberNotReadMessage || 0), 0)
+        if (numberUnreadMessage !== 0) {
+          document.title = `${numberUnreadMessage} new messages`
+          return
+        }
+      }
+      document.title = 'MoveOnFlow'
+    }, 2000)
+
+    return () => clearInterval(num)
+  }, [channels])
+
+
+
   return (
     <>
       <GlobalStyle />
@@ -90,9 +109,9 @@ function App(props) {
 export default connect(
   state => ({
     user: state.app.user,
-    // fullname: selectUsername(state),
     warningData: state.app.warningData,
     appLoadingStack: state.app.appLoadingStack,
+    channels: state.user.channels,
   }),
   {
     ...actions,

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState, memo, useMemo } from 'react'
 import { connect } from 'react-redux'
 import { Route, withRouter } from 'react-router-dom'
-import find from 'lodash/find'
+// import find from 'lodash/find'
 
 import { actions as appActions } from 'slices/appSlice'
 import { actions as userActions, selectors as userSelectors } from 'slices/userSlice'
@@ -16,6 +16,8 @@ import ChatInput from './ChatInput'
 import { STATUS, MESSAGE_TYPE } from 'configs/constants'
 import InviteMemberModal from './InviteMemberModal'
 
+const joinedChannel = {}
+
 function ChatPage(props) {
   const {
     user,
@@ -24,7 +26,7 @@ function ChatPage(props) {
     dispatchFetchChannel,
     currentChannelId,
     dispatchAddMessage,
-    dispatchRequestLeaveRoom,
+    dispatchRequestJoinRoom,
     history,
     dispatchSetNotificationPermision,
     dispatchSendMessage,
@@ -32,6 +34,7 @@ function ChatPage(props) {
     dispatchDeleteChannel,
     dispatchRequestAcceptInvitedChannel,
     dispatchInviteMember,
+    dispatchUpdateSingleChannel,
     members,
   } = props
 
@@ -46,13 +49,35 @@ function ChatPage(props) {
         dispatchSetNotificationPermision(result)
       })
 
-    UserAPI.subscribeMessageChannel(function ({ message }) {
+    const unsubscribe = UserAPI.subscribeMessageChannel(({ message, channelId }) => {
       if (message.createdBy === user._id && message.type === MESSAGE_TYPE.TEXT) return
-      dispatchAddMessage(message)
+      if (currentChannelId === channelId) {
+        dispatchAddMessage(message)
+      } else {
+        dispatchUpdateSingleChannel({
+          channelId,
+          numberNotReadMessage: '+1',
+        })
+      }
       new Notification(`${message.user.name}: ${message.content}`)
     })
-  }, [dispatchFetchChannel, user, dispatchAddMessage, dispatchSetNotificationPermision])
 
+    return unsubscribe
+  }, [dispatchFetchChannel, currentChannelId, dispatchUpdateSingleChannel, user, dispatchAddMessage, dispatchSetNotificationPermision])
+
+
+  useEffect(() => {
+    const channelListId = []
+    channels.forEach(item => {
+      if (!joinedChannel[item._id]) {
+        channelListId.push(item._id)
+        joinedChannel[item._id] = true
+      }
+    })
+    if (channelListId.length) {
+      dispatchRequestJoinRoom({ channelListId })
+    }
+  }, [channels])
 
   const onAddChannel = useCallback(() => {
     toggleChannelModal(state => !state)
@@ -70,15 +95,11 @@ function ChatPage(props) {
 
   const onClickChannel = useCallback((channelId) => {
     if (currentChannelId !== channelId) {
-      if (currentChannelId) {
-        dispatchRequestLeaveRoom({ channelId: currentChannelId })
-      }
       history.push(`/channels/${channelId}`)
     }
   },
     [
       currentChannelId,
-      dispatchRequestLeaveRoom,
       history,
     ]
   )
@@ -101,7 +122,7 @@ function ChatPage(props) {
   const isInvitedRoom = useMemo(() => {
     if (!currentChannel) return false
     return currentChannel.status === STATUS.PENDING
-  }, [currentChannel, user])
+  }, [currentChannel])
 
 
   const onClickToggleInviteMemberModal = () => {
@@ -188,5 +209,7 @@ export default memo(withRouter(connect(
     dispatchDeleteChannel: userActions.dispatchDeleteChannel,
     dispatchRequestAcceptInvitedChannel: userActions.dispatchRequestAcceptInvitedChannel,
     dispatchInviteMember: userActions.dispatchInviteMember,
+    dispatchRequestJoinRoom: userActions.dispatchRequestJoinRoom,
+    dispatchUpdateSingleChannel: userActions.dispatchUpdateSingleChannel,
   }
 )(ChatPage)))

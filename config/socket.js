@@ -15,9 +15,9 @@ function config(server) {
       await updateUserStatus({ userId, status: common.user.status.ONLINE })
     })
 
-    socket.on('join', ({ channelId }) => {
-      console.log(chalk.yellow('Id %s join channel %s '), socket.id, channelId)
-      socket.join(channelId)
+    socket.on('join', ({ channelListId }) => {
+      console.log(chalk.yellow('Id %s join channel %s '), socket.id, channelListId)
+      channelListId.forEach((channelId) => socket.join(channelId))
     })
 
     socket.on('leave', ({ channelId }) => {
@@ -33,6 +33,5 @@ function config(server) {
 
   return io
 }
-
 
 module.exports = config

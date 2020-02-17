@@ -72,6 +72,18 @@ function* watchFetchMemberList() {
   } catch { }
 }
 
+function* watchUpdateLastReadMessage(action) {
+  try {
+    const { channelId, lastReadMessageId } = action.payload
+    yield UserAPI.updateLastReadMessage(action.payload)
+    yield put(userActions.dispatchUpdateSingleChannel({
+      channelId,
+      lastReadMessageId,
+      numberNotReadMessage: 0,
+    }))
+  } catch { }
+}
+
 export default function* sagas() {
   yield takeEvery(userActions.dispatchFetchChannel.type, watchFetchChannel)
   yield takeEvery(userActions.dispatchCreateChannel.type, watchCreateChannel)
@@ -84,4 +96,5 @@ export default function* sagas() {
   yield takeEvery(userActions.dispatchRequestAcceptInvitedChannel.type, watchRequestAcceptInvitedChannel)
   yield takeEvery(userActions.dispatchInviteMember.type, watchdInviteMember)
   yield takeEvery(userActions.dispatchFetchMemberList.type, watchFetchMemberList)
+  yield takeEvery(userActions.dispatchLastReadMessage.type, watchUpdateLastReadMessage)
 }

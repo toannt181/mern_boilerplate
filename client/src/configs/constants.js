@@ -19,3 +19,5 @@ export const USER_STATUS = {
   OFFLINE: 2,
   PENDING: 3,
 }
+
+export const MINIMUN_DELAY = 300

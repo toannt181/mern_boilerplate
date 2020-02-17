@@ -51,6 +51,19 @@ const slice = createSlice({
         }
       })
     },
+    dispatchLastReadMessage() { },
+    dispatchUpdateSingleChannel(state, action) {
+      const { channelId, numberNotReadMessage, ...rest } = action.payload
+      state.channels = state.channels.map(channel => {
+        if (channel._id === channelId) {
+          const value = numberNotReadMessage === '+1'
+            ? channel.numberNotReadMessage + 1
+            : numberNotReadMessage
+          return { ...channel, numberNotReadMessage: value, ...rest }
+        }
+        return channel
+      })
+    },
   },
 })
 

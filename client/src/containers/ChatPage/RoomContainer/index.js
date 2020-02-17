@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, memo, useCallback } from 'react'
 import { connect } from 'react-redux'
-import { actions as userActions } from 'slices/userSlice'
+import last from 'lodash/last'
+import throttle from 'lodash/throttle'
+import { actions as userActions, selectors as userSelectors } from 'slices/userSlice'
 import {
   MessageList,
   RoomContainerWrapper,
@@ -9,6 +11,10 @@ import {
 import MessageItem from './MessageItem'
 import InviteMessage from '../InviteMessage'
 
+import { MINIMUN_DELAY } from 'configs/constants'
+
+const MINIMUM_A_MESSAGE_HEIGHT = 40
+
 let prevMessageLength
 
 const RoomContainer = (props) => {
@@ -16,25 +22,51 @@ const RoomContainer = (props) => {
     messages = [],
     user = {},
     currentChannelId,
+    currentChannel,
     dispatchFetchMessage,
-    dispatchRequestJoinRoom,
     dispatchSelectChannel,
     isInvitedRoom = false,
     acceptInvitation = (() => { }),
     match: { params } = {},
+    dispatchLastReadMessage,
   } = props
 
   const wrapperRef = useRef()
 
   const onFetchMessageChannel = useCallback((channelId) => {
     dispatchFetchMessage({ channelId })
-    dispatchRequestJoinRoom({ channelId })
   },
     [
       dispatchFetchMessage,
-      dispatchRequestJoinRoom,
     ]
   )
+
+  useEffect(() => {
+    const ref = wrapperRef.current
+    if (!ref) return
+
+    const onScrollAtBotom = () => {
+      const lastMessage = last(messages)
+
+      if (!lastMessage || (currentChannel && currentChannel.lastReadMessageId === lastMessage._id)) return
+      const payload = {
+        channelId: currentChannelId,
+        lastReadMessageId: lastMessage._id,
+      }
+      dispatchLastReadMessage(payload)
+    }
+
+    const scrollHandle = throttle(() => {
+      const isScrollAtBottom = ref.scrollTop >= ref.scrollHeight - ref.clientHeight - MINIMUM_A_MESSAGE_HEIGHT
+      if (isScrollAtBottom) {
+        onScrollAtBotom()
+      }
+    }, MINIMUN_DELAY)
+
+    ref.addEventListener('scroll', scrollHandle)
+
+    return () => ref.removeEventListener('scroll', scrollHandle)
+  }, [messages, currentChannelId, currentChannel, dispatchLastReadMessage])
 
   useEffect(() => {
     const channelId = params.id
@@ -70,10 +102,11 @@ export default memo(connect(
     user: state.app.user,
     messages: state.user.messages,
     currentChannelId: state.user.currentChannelId,
+    currentChannel: userSelectors.getUserChannel(state),
   }),
   {
     dispatchFetchMessage: userActions.dispatchFetchMessage,
-    dispatchRequestJoinRoom: userActions.dispatchRequestJoinRoom,
     dispatchSelectChannel: userActions.dispatchSelectChannel,
+    dispatchLastReadMessage: userActions.dispatchLastReadMessage,
   }
 )(RoomContainer))
