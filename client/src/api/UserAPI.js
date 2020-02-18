@@ -5,6 +5,10 @@ export function createUser(data) {
   return Request.post({ url: 'authentication/signup', data })
 }
 
+export function viewUserInfo({ userId }) {
+  return Request.get({ url: `users/${userId}` })
+}
+
 export function login(data) {
   return Request.post({ url: 'authentication/login', data })
 }

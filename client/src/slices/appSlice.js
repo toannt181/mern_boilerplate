@@ -5,6 +5,8 @@ const INITIAL_STATE = {
   warningData: { visible: false },
   notifiable: false,
   appLoadingStack: 0,
+  guestUserInfo: {},
+  viewUserId: null,
 }
 
 const slice = createSlice({
@@ -24,6 +26,13 @@ const slice = createSlice({
     },
     dispatchSetNotificationPermision(state, action) {
       state.notifiable = action.payload
+    },
+    dispatchFetchViewUserInfo() { },
+    dispatchUpdateGuestUserInfo(state, action) {
+      state.guestUserInfo = action.payload
+    },
+    dispatchUpdateViewUserId(state, action) {
+      state.viewUserId = action.payload
     },
   },
 })

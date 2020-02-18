@@ -77,7 +77,7 @@ function ChatPage(props) {
     if (channelListId.length) {
       dispatchRequestJoinRoom({ channelListId })
     }
-  }, [channels])
+  }, [channels, dispatchRequestJoinRoom])
 
   const onAddChannel = useCallback(() => {
     toggleChannelModal(state => !state)

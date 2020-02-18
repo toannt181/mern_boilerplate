@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import last from 'lodash/last'
 import throttle from 'lodash/throttle'
 import { actions as userActions, selectors as userSelectors } from 'slices/userSlice'
+import { actions as appActions } from 'slices/appSlice'
 import {
   MessageList,
   RoomContainerWrapper,
@@ -29,6 +30,7 @@ const RoomContainer = (props) => {
     acceptInvitation = (() => { }),
     match: { params } = {},
     dispatchLastReadMessage,
+    dispatchUpdateViewUserId,
   } = props
 
   const wrapperRef = useRef()
@@ -87,12 +89,16 @@ const RoomContainer = (props) => {
     return () => { prevMessageLength = 0 }
   }, [messages])
 
+  const onShowViewUserModal = (userId) => {
+    dispatchUpdateViewUserId(userId)
+  }
+
   return isInvitedRoom
     ? <InviteMessage acceptInvitation={acceptInvitation} />
     : (
       <RoomContainerWrapper ref={wrapperRef}>
         <MessageList>
-          {messages.map((message, i) => <MessageItem key={i} message={message} position={message.createdBy === user._id ? 'right' : 'left'} />)}
+          {messages.map((message, i) => <MessageItem onShowViewUserModal={() => onShowViewUserModal(message.createdBy)} key={i} message={message} position={message.createdBy === user._id ? 'right' : 'left'} />)}
         </MessageList>
       </RoomContainerWrapper>
     )
@@ -109,5 +115,6 @@ export default memo(connect(
     dispatchFetchMessage: userActions.dispatchFetchMessage,
     dispatchSelectChannel: userActions.dispatchSelectChannel,
     dispatchLastReadMessage: userActions.dispatchLastReadMessage,
+    dispatchUpdateViewUserId: appActions.dispatchUpdateViewUserId,
   }
 )(RoomContainer))

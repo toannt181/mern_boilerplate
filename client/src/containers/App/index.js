@@ -16,6 +16,7 @@ import LoadingSpinner from 'components/LoadingSpinner'
 import { ACCESS_TOKEN } from 'configs/constants'
 import WaitVerifyEmailPage from '../WaitVerifyEmailPage'
 import VerifyEmailPage from '../VerifyEmailPage'
+import UserModal from './UserModal'
 import MainLayout from 'common/MainLayout'
 import socket from 'configs/socket'
 import usePrevious from 'utils/usePrevious'
@@ -31,10 +32,10 @@ function App(props) {
     dispatchUpdateMemberStatus,
     user,
     channels,
+    viewUserId,
   } = props
   const [isAppReady, setAppReady] = useState(false)
   const prevUser = usePrevious(user)
-
 
   useEffect(() => {
     if (localStorage.getItem(ACCESS_TOKEN)) {
@@ -85,8 +86,6 @@ function App(props) {
     return () => clearInterval(num)
   }, [channels])
 
-
-
   return (
     <>
       <GlobalStyle />
@@ -101,6 +100,7 @@ function App(props) {
         )}
         {(!isAppReady || appLoadingStack > 0) && (<LoadingSpinner />)}
         {warningData.visible && <WarningModal {...warningData} dispatchWarningModal={dispatchWarningModal} />}
+        {!!viewUserId && <UserModal />}
       </Router>
     </>
   )
@@ -112,6 +112,7 @@ export default connect(
     warningData: state.app.warningData,
     appLoadingStack: state.app.appLoadingStack,
     channels: state.user.channels,
+    viewUserId: state.app.viewUserId,
   }),
   {
     ...actions,

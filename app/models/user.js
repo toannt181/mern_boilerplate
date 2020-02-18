@@ -99,6 +99,18 @@ schema.virtual('fullInfo')
     }
   })
 
+schema.virtual('completedInfo')
+  .get(function () {
+    return {
+      ...this.fullInfo,
+      status: this.status,
+      telNo: this.telNo,
+      gender: this.gender,
+      organizationName: this.organizationName,
+      comment: this.comment,
+    }
+  })
+
 const initialize = () => moongose.model(MODEL_NAME, schema)
 
 module.exports = {

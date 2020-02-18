@@ -31,7 +31,6 @@ function SideMenu({ location, history }) {
           <i className={item.iconClass} />
         </LetterAvatar>
       ))}
-
     </SideMenuWrapper>
   )
 }

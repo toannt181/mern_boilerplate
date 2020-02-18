@@ -35,6 +35,16 @@ async function index(req, res, next) {
   }
 }
 
+async function show(req, res, next) {
+  try {
+    const { id } = req.params
+    const user = await model.User.findById(id)
+    res.json(user.completedInfo)
+  } catch (error) {
+    next(error)
+  }
+}
+
 async function store(req, res, next) {
   try {
     const { _id } = req.user
@@ -79,6 +89,7 @@ async function deleteThumbnail(req, res, next) {
 }
 
 route.get('/', index)
+route.get('/:id', show)
 route.post('/', resizeImage, store)
 route.delete('/thumbnail', deleteThumbnail)
 

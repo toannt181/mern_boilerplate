@@ -5,6 +5,8 @@ const INITIAL_STATE = {
   members: [],
   messages: [],
   currentChannelId: null,
+  viewUserId: null,
+  guestUserInfo: {},
 }
 
 const slice = createSlice({
