@@ -2,7 +2,7 @@ import React from 'react'
 import cn from 'classnames'
 import { ChannelListWrapper, ChannelTitle, ChannelItem } from './styles'
 
-const UserStatus = (props) => {
+const ChannelList = (props) => {
   const {
     channels,
     onAddChannel = null,
@@ -35,4 +35,4 @@ const UserStatus = (props) => {
   )
 }
 
-export default UserStatus
+export default ChannelList

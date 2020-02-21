@@ -5,8 +5,8 @@ import { Route, withRouter } from 'react-router-dom'
 
 import { actions as appActions } from 'slices/appSlice'
 import { actions as userActions, selectors as userSelectors } from 'slices/userSlice'
-import ChannelContainer from './ChannelContainer'
-import RoomContainer from './RoomContainer'
+import ChannelContainer from './containers/ChannelContainer'
+import RoomContainer from './containers/RoomContainer'
 import ChannelModal from './ChannelModal'
 import { ChatWrapper } from './styles'
 import * as UserAPI from '../../api/UserAPI'
@@ -66,83 +66,78 @@ function ChatPage(props) {
   }, [dispatchFetchChannel, currentChannelId, dispatchUpdateSingleChannel, user, dispatchAddMessage, dispatchSetNotificationPermision])
 
 
-  useEffect(() => {
-    const channelListId = []
-    channels.forEach(item => {
-      if (!joinedChannel[item._id]) {
-        channelListId.push(item._id)
-        joinedChannel[item._id] = true
-      }
-    })
-    if (channelListId.length) {
-      dispatchRequestJoinRoom({ channelListId })
-    }
-  }, [channels, dispatchRequestJoinRoom])
+  // useEffect(() => {
+  //   const channelListId = []
+  //   channels.forEach(item => {
+  //     if (!joinedChannel[item._id]) {
+  //       channelListId.push(item._id)
+  //       joinedChannel[item._id] = true
+  //     }
+  //   })
+  //   if (channelListId.length) {
+  //     dispatchRequestJoinRoom({ channelListId })
+  //   }
+  // }, [channels, dispatchRequestJoinRoom])
 
-  const onAddChannel = useCallback(() => {
-    toggleChannelModal(state => !state)
-  }, [toggleChannelModal])
+  // const onAddChannel = useCallback(() => {
+  //   toggleChannelModal(state => !state)
+  // }, [toggleChannelModal])
 
-  const onCreateChannel = useCallback((name) => {
-    dispatchCreateChannel({ name })
-    toggleChannelModal(false)
-  }, [dispatchCreateChannel])
+  // const onCreateChannel = useCallback((name) => {
+  //   dispatchCreateChannel({ name })
+  //   toggleChannelModal(false)
+  // }, [dispatchCreateChannel])
 
-  const onDeleteChannel = useCallback(() => {
-    dispatchDeleteChannel(currentChannelId)
-    history.push('/channels')
-  }, [dispatchDeleteChannel, currentChannelId, history])
+  // const onDeleteChannel = useCallback(() => {
+  //   dispatchDeleteChannel(currentChannelId)
+  //   history.push('/channels')
+  // }, [dispatchDeleteChannel, currentChannelId, history])
 
-  const onClickChannel = useCallback((channelId) => {
-    if (currentChannelId !== channelId) {
-      history.push(`/channels/${channelId}`)
-    }
-  },
-    [
-      currentChannelId,
-      history,
-    ]
-  )
+  // const onClickChannel = useCallback((channelId) => {
+  //   if (currentChannelId !== channelId) {
+  //     history.push(`/channels/${channelId}`)
+  //   }
+  // },
+  //   [
+  //     currentChannelId,
+  //     history,
+  //   ]
+  // )
 
-  const acceptInvitation = useCallback(() => {
-    dispatchRequestAcceptInvitedChannel(currentChannelId)
-  },
-    [currentChannelId, dispatchRequestAcceptInvitedChannel]
-  )
+  // const acceptInvitation = useCallback(() => {
+  //   dispatchRequestAcceptInvitedChannel(currentChannelId)
+  // },
+  //   [currentChannelId, dispatchRequestAcceptInvitedChannel]
+  // )
 
-  const onChange = (value) => {
-    setContent(value)
-  }
+  // const onChange = (value) => {
+  //   setContent(value)
+  // }
 
-  const onSendMessage = useCallback(() => {
-    dispatchSendMessage({ channelId: currentChannelId, content, user })
-    setContent('')
-  }, [dispatchSendMessage, currentChannelId, user, content])
+  // const onSendMessage = useCallback(() => {
+  //   dispatchSendMessage({ channelId: currentChannelId, content, user })
+  //   setContent('')
+  // }, [dispatchSendMessage, currentChannelId, user, content])
 
-  const isInvitedRoom = useMemo(() => {
-    if (!currentChannel) return false
-    return currentChannel.status === STATUS.PENDING
-  }, [currentChannel])
+  // const isInvitedRoom = useMemo(() => {
+  //   if (!currentChannel) return false
+  //   return currentChannel.status === STATUS.PENDING
+  // }, [currentChannel])
 
 
-  const onClickToggleInviteMemberModal = () => {
-    toggleInviteMemberModal(state => !state)
-  }
+  // const onClickToggleInviteMemberModal = () => {
+  //   toggleInviteMemberModal(state => !state)
+  // }
 
-  const onInviteMember = (email) => {
-    dispatchInviteMember({ email, channelId: currentChannelId })
-    onClickToggleInviteMemberModal()
-  }
+  // const onInviteMember = (email) => {
+  //   dispatchInviteMember({ email, channelId: currentChannelId })
+  //   onClickToggleInviteMemberModal()
+  // }
 
   return (
     <ChatWrapper>
-      <ChannelContainer
-        channels={channels}
-        onAddChannel={onAddChannel}
-        onClickChannel={onClickChannel}
-        currentChannelId={currentChannelId}
-      />
-      <div className="room">
+      <ChannelContainer />
+      {/* <div className="room">
         {!isInvitedRoom && (
           <RoomHeading
             currentChannel={currentChannel}
@@ -185,7 +180,7 @@ function ChatPage(props) {
           onCloseModal={onClickToggleInviteMemberModal}
           onInviteMember={onInviteMember}
         />
-      )}
+      )} */}
     </ChatWrapper>
   )
 }

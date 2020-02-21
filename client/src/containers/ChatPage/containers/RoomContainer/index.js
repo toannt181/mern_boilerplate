@@ -10,7 +10,7 @@ import {
 } from './styles'
 
 import MessageItem from './MessageItem'
-import InviteMessage from '../InviteMessage'
+import InviteMessage from './InviteMessage'
 
 import { MINIMUN_DELAY } from 'configs/constants'
 
