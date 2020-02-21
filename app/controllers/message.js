@@ -9,8 +9,10 @@ const route = new Router({ mergeParams: true })
 async function hasPermissionAccessChannelMiddleware(req, res, next) {
   try {
     const { _id: userId } = req.user
-    const { id: channelId } = req.params
-    const channel = await model.UserChannel.findOne({ channelId, userId })
+    const { id } = req.params
+    const channelId = mongoose.Types.ObjectId(id)
+
+    const channel = await model.User.findOne({ 'channels._id': channelId, _id: userId })
     if (!channel) {
       throw new Error('403')
     }
@@ -57,8 +59,8 @@ async function store(req, res, next) {
     const { content } = req.body
     const message = await createNewMessage({
       channelId: id,
+      userId: _id,
       content,
-      createdBy: _id,
       type: common.message.type.TEXT,
     })
     res.json(message)

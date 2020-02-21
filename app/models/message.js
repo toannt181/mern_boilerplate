@@ -11,7 +11,7 @@ const schema = new moongose.Schema({
     type: moongose.Types.ObjectId,
     required: true,
   },
-  createdBy: {
+  userId: {
     type: moongose.Types.ObjectId,
     required: true,
   },

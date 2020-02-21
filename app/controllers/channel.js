@@ -10,79 +10,33 @@ const route = new Router()
 
 async function index(req, res, next) {
   try {
-    const { _id } = req.user
+    const { channels } = req.user
 
-    const userChannels = await model.UserChannel
+    const channelIdList = channels.map(({ _id: channelId }) => channelId)
+
+    const countUnreadNumberMessage = await model.Channel
       .aggregate([
-        { $match: { userId: _id } },
-        {
-          $lookup: {
-            from: 'channels',
-            let: { channelId: '$channelId' },
-            pipeline: [{
-              $match: {
-                $expr: {
-                  $eq: ['$$channelId', '$_id'],
-                },
-              },
-            }],
-            as: 'channel',
-          },
-        },
-        {
-          $unwind: '$channel',
-        },
+        { $match: { _id: { $in: channelIdList } } },
         {
           $lookup: {
             from: 'messages',
-            let: { channelId: '$channelId', lastReadMessageId: '$lastReadMessageId' },
+            let: { channelId: '$_id' },
+            as: 'messages',
             pipeline: [
-              {
-                $match: {
-                  $expr: {
-                    $and: [
-                      { $eq: ['$channelId', '$$channelId'] },
-                      { $gt: ['$_id', '$$lastReadMessageId'] },
-                    ],
-                  },
-                },
-              },
-              {
-                $group: {
-                  _id: null,
-                  count: { $sum: 1 },
-                },
-              },
+              { $match: { $expr: { $eq: ['$channelId', '$$channelId'] } } },
+              { $group: { _id: '$channelId', unreadMessageNumber: { $sum: 1 } } },
             ],
-            as: 'numberNotReadMessage',
           },
         },
         {
-          $unwind: { path: '$numberNotReadMessage', preserveNullAndEmptyArrays: true },
+          $unwind: {
+            preserveNullAndEmptyArrays: true,
+            path: '$messages',
+          },
         },
       ])
 
-    const channels = userChannels.map(({
-      messages,
-      channel,
-      channelId,
-      status,
-      role,
-      lastReadMessageId,
-      numberNotReadMessage,
-    }) => {
-      return {
-        name: channel.name,
-        _id: channelId,
-        numberNotReadMessage: numberNotReadMessage ? numberNotReadMessage.count : 0,
-        status,
-        messages,
-        role,
-        lastReadMessageId,
-      }
-    })
-
-    res.json(channels)
+    res.json(countUnreadNumberMessage)
   } catch (error) {
     next(error)
   }
@@ -90,18 +44,18 @@ async function index(req, res, next) {
 
 async function store(req, res, next) {
   try {
-    const { _id } = req.user
     const { name } = req.body
     const channel = new model.Channel({ name })
     await channel.save()
-    const userChannel = new model.UserChannel({
-      userId: _id,
-      channelId: channel.id,
+
+    const member = {
+      _id: channel._id,
       role: common.room.role.MANAGEMENT,
       status: common.room.status.JOINED,
-    })
-    await userChannel.save()
-    res.json(channel)
+    }
+    req.user.channels.push(member)
+    await req.user.save()
+    res.json({ success: true })
   } catch (error) {
     next(error)
   }
@@ -128,23 +82,20 @@ async function invite(req, res, next) {
 
     const channelId = mongoose.Types.ObjectId(id)
 
-    const hasInvited = await model.UserChannel.findOne({
-      userId: user._id,
-      channelId,
-    })
+    const hasInvited = user.channels.some((channel) => channel._id.toString() === id.toString())
 
     if (hasInvited) {
       res.json({ success: true })
       return
     }
 
-    const userChannel = new model.UserChannel({
-      userId: user._id,
-      channelId,
+    const member = {
+      _id: channelId,
       role: common.room.role.MANAGEMENT,
       status: common.room.status.PENDING,
-    })
-    await userChannel.save()
+    }
+    user.channels.push(member)
+    await user.save()
     await createNewMessage({
       channelId,
       createdBy: user._id,
@@ -176,18 +127,20 @@ async function kickout(req, res, next) {
 async function join(req, res, next) {
   try {
     const { id } = req.params
-    const { _id } = req.user
-    const userChannel = await model.UserChannel.findOne({ userId: _id, channelId: id })
-    if (userChannel) {
-      userChannel.status = common.room.status.JOINED
-      await userChannel.save()
+    const { _id, channels } = req.user
 
-      await createNewMessage({
-        channelId: id,
-        createdBy: _id,
-        type: common.message.type.JOIN_MESSAGE,
-      })
-    }
+    const channelIndex = channels.find((channel) => channel.id.toString() === id.toString())
+
+    if (channelIndex === -1) throw new Error('403')
+
+    req.user.channels[channelIndex].status = common.room.status.JOINED
+    await req.user.save()
+
+    await createNewMessage({
+      channelId: id,
+      createdBy: _id,
+      type: common.message.type.JOIN_MESSAGE,
+    })
     res.json({ success: true })
   } catch (error) {
     next(error)
@@ -197,18 +150,15 @@ async function join(req, res, next) {
 async function updateLastReadMessage(req, res, next) {
   try {
     const { id } = req.params
-    const { _id } = req.user
+    const { channels } = req.user
     const { lastReadMessageId } = req.body
 
-    await model.UserChannel.findOneAndUpdate(
-      {
-        userId: _id,
-        channelId: id,
-      },
-      {
-        lastReadMessageId,
-      },
-    )
+    const channelIndex = channels.find((channel) => channel.id.toString() === id.toString())
+
+    if (channelIndex === -1) throw new Error('403')
+    req.user.channels[channelIndex].lastReadMessageId = lastReadMessageId
+
+    await req.user.save()
 
     res.json({ success: true })
   } catch (error) {
