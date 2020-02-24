@@ -12,7 +12,7 @@ async function hasPermissionAccessChannelMiddleware(req, res, next) {
     const { id } = req.params
     const channelId = mongoose.Types.ObjectId(id)
 
-    const channel = await model.User.findOne({ 'channels._id': channelId, _id: userId })
+    const channel = await model.Channel.findOne({ _id: channelId, 'members.userId': userId })
     if (!channel) {
       throw new Error('403')
     }

@@ -34,38 +34,38 @@ const RoomContainer = (props) => {
   } = props
 
   const wrapperRef = useRef()
+  const isFirstScroll = useRef(false)
 
   const onFetchMessageChannel = useCallback((channelId) => {
     dispatchFetchMessage({ channelId })
   }, [])
 
-  // useEffect(() => {
-  //   const ref = wrapperRef.current
-  //   if (!ref) return
+  const onScrollAtBottom = useCallback(() => {
+    const lastMessage = last(messages)
 
-  //   const onScrollAtBotom = () => {
-  //     const lastMessage = last(messages)
+    if (!lastMessage || (currentChannel && currentChannel.lastReadMessageId === lastMessage._id)) return
+    const payload = {
+      channelId: currentChannel._id,
+      lastReadMessageId: lastMessage._id,
+    }
+    dispatchLastReadMessage(payload)
+  }, [messages, currentChannel])
 
-  //     if (!lastMessage || (currentChannel && currentChannel.lastReadMessageId === lastMessage._id)) return
-  //     const payload = {
-  //       channelId: currentChannelId,
-  //       lastReadMessageId: lastMessage._id,
-  //     }
-  //     dispatchLastReadMessage(payload)
-  //   }
+  const onScroll = throttle(() => {
+    const ref = wrapperRef.current
+    if (!ref) return
+    isFirstScroll.current = true
+    const isScrollAtBottom = ref.scrollTop >= ref.scrollHeight - ref.clientHeight - MINIMUM_A_MESSAGE_HEIGHT
+    if (isScrollAtBottom) {
+      onScrollAtBottom()
+    }
+  }, MINIMUN_DELAY)
 
-  //   const scrollHandle = throttle(() => {
-  //     const isScrollAtBottom = ref.scrollTop >= ref.scrollHeight - ref.clientHeight - MINIMUM_A_MESSAGE_HEIGHT
-  //     if (isScrollAtBottom) {
-  //       onScrollAtBotom()
-  //     }
-  //     ref.addEventListener('scroll', scrollHandle)
-  //   }, MINIMUN_DELAY)
-
-  //   scrollHandle()
-
-  //   return () => ref.removeEventListener('scroll', scrollHandle)
-  // }, [messages, currentChannelId, currentChannel, dispatchLastReadMessage])
+  useEffect(() => {
+    if (isFirstScroll.current || !messages.length) return
+    isFirstScroll.current = true
+    onScrollAtBottom()
+  }, [messages])
 
   useEffect(() => {
     const channelId = params.id
@@ -73,7 +73,7 @@ const RoomContainer = (props) => {
       onFetchMessageChannel(params.id)
       dispatchSelectChannel(channelId)
     }
-  }, [onFetchMessageChannel, dispatchSelectChannel, currentChannelId, params])
+  }, [currentChannelId, params])
 
   useEffect(() => {
     const ref = wrapperRef.current
@@ -98,7 +98,7 @@ const RoomContainer = (props) => {
       {isInvitedRoom
         ? <InviteMessage acceptInvitation={acceptInvitation} />
         : (
-          <RoomContainerWrapper ref={wrapperRef}>
+          <RoomContainerWrapper ref={wrapperRef} onScroll={onScroll}>
             <MessageList>
               {messages.map((message, i) => (
                 <MessageItem

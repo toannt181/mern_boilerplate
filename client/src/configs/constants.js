@@ -20,4 +20,4 @@ export const USER_STATUS = {
   PENDING: 3,
 }
 
-export const MINIMUN_DELAY = 300
+export const MINIMUN_DELAY = 1000

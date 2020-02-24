@@ -31,7 +31,8 @@
   "eslintConfig": {
     "extends": ["react-app"],
     "rules": {
-      "react-hooks/exhaustive-deps": "off"
+      "react-hooks/exhaustive-deps": "off",
+      "jsx-a11y/anchor-is-valid": "off"
     },
     "overrides": [
       {

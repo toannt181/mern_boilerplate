@@ -60,27 +60,6 @@ const schema = new moongose.Schema({
     type: Number,
     default: 2,
   },
-  channels: {
-    type: [{
-      _id: {
-        type: moongose.Types.ObjectId,
-        require: true,
-      },
-      role: {
-        type: Number,
-        require: true,
-      },
-      status: {
-        type: Number,
-        require: true,
-      },
-      lastReadMessageId: {
-        type: moongose.Types.ObjectId,
-        default: null,
-      },
-    }],
-    default: [],
-  },
 }, { timestamps: true })
 
 

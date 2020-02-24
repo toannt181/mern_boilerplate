@@ -7,6 +7,27 @@ const schema = new moongose.Schema({
     type: String,
     required: true,
   },
+  members: {
+    type: [{
+      userId: {
+        type: moongose.Types.ObjectId,
+        require: true,
+      },
+      role: {
+        type: Number,
+        require: true,
+      },
+      status: {
+        type: Number,
+        require: true,
+      },
+      lastReadMessageId: {
+        type: moongose.Types.ObjectId,
+        default: null,
+      },
+    }],
+    default: [],
+  },
 }, { timestamps: true })
 
 const initialize = () => moongose.model(MODEL_NAME, schema)

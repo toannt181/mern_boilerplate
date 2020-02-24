@@ -13,9 +13,10 @@ export const ChatInputWrapper = styled.div`
   right: 40px;
 
   .chat-input {
-    margin: 0 8px;
+    margin: -8px 8px;
     color: ${({ theme }) => theme.colors.gray5};
     flex: 1;
+    font-size: ${({ theme }) => theme.size.large};
   }
 
   .btn-none {

@@ -9,20 +9,34 @@ const route = new Router()
 
 async function index(req, res, next) {
   try {
-    const { channels } = req.user
+    const { user } = req
 
-    const channelIdList = channels.map(({ _id: channelId }) => channelId)
-
-    const countUnreadNumberMessage = await model.Channel
+    let channelList = await model.Channel
       .aggregate([
-        { $match: { _id: { $in: channelIdList } } },
+        { $match: { 'members.userId': user._id } },
+        {
+          $unwind: {
+            preserveNullAndEmptyArrays: true,
+            path: '$members',
+          },
+        },
+        { $match: { 'members.userId': user._id } },
         {
           $lookup: {
             from: 'messages',
-            let: { channelId: '$_id' },
+            let: { channelId: '$_id', lastReadMessageId: '$members.lastReadMessageId' },
             as: 'messages',
             pipeline: [
-              { $match: { $expr: { $eq: ['$channelId', '$$channelId'] } } },
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: ['$channelId', '$$channelId'] },
+                      { $gt: ['$_id', '$$lastReadMessageId'] },
+                    ],
+                  },
+                },
+              },
               { $group: { _id: '$channelId', unreadMessageNumber: { $sum: 1 } } },
             ],
           },
@@ -35,7 +49,14 @@ async function index(req, res, next) {
         },
       ])
 
-    res.json(countUnreadNumberMessage)
+    channelList = channelList.map(({ messages, ...channel }) => {
+      return {
+        ...channel,
+        unreadMessageNumber: messages ? messages.unreadMessageNumber : 0,
+      }
+    })
+
+    res.json(channelList)
   } catch (error) {
     next(error)
   }
@@ -43,17 +64,16 @@ async function index(req, res, next) {
 
 async function store(req, res, next) {
   try {
+    const { user } = req
     const { name } = req.body
-    const channel = new model.Channel({ name })
-    await channel.save()
-
     const member = {
-      _id: channel._id,
+      userId: user._id,
       role: common.room.role.MANAGEMENT,
       status: common.room.status.JOINED,
     }
-    req.user.channels.push(member)
-    await req.user.save()
+    const channel = new model.Channel({ name, members: [member] })
+    await channel.save()
+
     res.json({ success: true })
   } catch (error) {
     next(error)
@@ -80,8 +100,10 @@ async function invite(req, res, next) {
     if (!user) throw new Error('404')
 
     const channelId = mongoose.Types.ObjectId(id)
+    const channel = await model.Channel.findOne({ _id: channelId })
 
-    const hasInvited = user.channels.some((channel) => channel._id.toString() === id.toString())
+    const hasInvited = channel.members
+      .some((member) => member.userId.toString() === user._id.toString())
 
     if (hasInvited) {
       res.json({ success: true })
@@ -89,12 +111,12 @@ async function invite(req, res, next) {
     }
 
     const member = {
-      _id: channelId,
+      userId: user._id,
       role: common.room.role.MANAGEMENT,
       status: common.room.status.PENDING,
     }
-    user.channels.push(member)
-    await user.save()
+    channel.members.push(member)
+    await channel.save()
     await createNewMessage({
       channelId,
       userId: user._id,
@@ -148,16 +170,20 @@ async function join(req, res, next) {
 
 async function updateLastReadMessage(req, res, next) {
   try {
+    const { user } = req
     const { id } = req.params
-    const { channels } = req.user
     const { lastReadMessageId } = req.body
 
-    const channelIndex = channels.find((channel) => channel.id.toString() === id.toString())
+    const channel = await model.Channel.findOne({ _id: id, 'members.userId': user._id })
 
-    if (channelIndex === -1) throw new Error('403')
-    req.user.channels[channelIndex].lastReadMessageId = lastReadMessageId
+    if (!channel) throw new Error('403')
+    channel.members.forEach((member) => {
+      if (member.userId.toString() === user._id.toString()) {
+        member.lastReadMessageId = mongoose.Types.ObjectId(lastReadMessageId) // eslint-disable-line
+      }
+    })
 
-    await req.user.save()
+    await channel.save()
 
     res.json({ success: true })
   } catch (error) {
@@ -170,7 +196,7 @@ route.post('/', store)
 route.delete('/:id', destroy)
 route.post('/:id/invite', invite)
 route.post('/:id/kickout', kickout)
-route.post('/:id/last-read-Message', updateLastReadMessage)
+route.post('/:id/last-read-message', updateLastReadMessage)
 route.post('/:id/join', join)
 route.use('/:id/messages', messageController)
 
