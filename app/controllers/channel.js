@@ -49,9 +49,12 @@ async function index(req, res, next) {
         },
       ])
 
-    channelList = channelList.map(({ messages, ...channel }) => {
+    channelList = channelList.map(({ messages, members, ...channel }) => {
       return {
         ...channel,
+        lastReadMessageId: members.lastReadMessageId,
+        status: members.status,
+        role: members.role,
         unreadMessageNumber: messages ? messages.unreadMessageNumber : 0,
       }
     })

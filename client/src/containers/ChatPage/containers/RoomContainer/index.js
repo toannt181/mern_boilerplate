@@ -43,7 +43,7 @@ const RoomContainer = (props) => {
   const onScrollAtBottom = useCallback(() => {
     const lastMessage = last(messages)
 
-    if (!lastMessage || (currentChannel && currentChannel.lastReadMessageId === lastMessage._id)) return
+    if (!currentChannel || !lastMessage || currentChannel.lastReadMessageId === lastMessage._id) return
     const payload = {
       channelId: currentChannel._id,
       lastReadMessageId: lastMessage._id,
