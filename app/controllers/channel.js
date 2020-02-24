@@ -97,7 +97,7 @@ async function invite(req, res, next) {
     await user.save()
     await createNewMessage({
       channelId,
-      createdBy: user._id,
+      userId: user._id,
       type: common.message.type.INVITE_MESSAGE,
     })
 

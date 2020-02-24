@@ -31,9 +31,11 @@ async function index(req, res, next) {
         {
           $lookup: {
             from: 'users',
-            localField: 'createdBy',
-            foreignField: '_id',
+            let: { userId: '$userId' },
             as: 'user',
+            pipeline: [
+              { $match: { $expr: { $eq: ['$_id', '$$userId'] } } },
+            ],
           },
         },
       ])
@@ -46,6 +48,7 @@ async function index(req, res, next) {
         user: tempUser.info,
       }
     })
+
     res.json(messagesWithUser)
   } catch (error) {
     next(error)

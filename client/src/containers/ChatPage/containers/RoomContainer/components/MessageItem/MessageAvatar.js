@@ -8,7 +8,7 @@ const MessageAvatar = ({ user, onClick }) => (
     background={user.thumbnail}
     onClick={onClick}
   >
-    {user.name[0]}
+    {user.name && user.name[0]}
   </LetterAvatar>
 )
 

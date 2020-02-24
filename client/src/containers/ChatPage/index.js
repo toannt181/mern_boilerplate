@@ -1,46 +1,41 @@
-import React, { useCallback, useEffect, useState, memo, useMemo } from 'react'
+import React, { useCallback, useEffect, useState, memo, useMemo, useRef } from 'react'
 import { connect } from 'react-redux'
 import { Route, withRouter } from 'react-router-dom'
-// import find from 'lodash/find'
 
 import { actions as appActions } from 'slices/appSlice'
 import { actions as userActions, selectors as userSelectors } from 'slices/userSlice'
 import ChannelContainer from './containers/ChannelContainer'
 import RoomContainer from './containers/RoomContainer'
-import ChannelModal from './ChannelModal'
 import { ChatWrapper } from './styles'
 import * as UserAPI from '../../api/UserAPI'
 import { requestNotifyPermission } from '../../utils/notification'
-import RoomHeading from './RoomHeading'
-import ChatInput from './ChatInput'
+import RoomHeading from './components/RoomHeading'
+import ChatInput from './components/ChatInput'
 import { STATUS, MESSAGE_TYPE } from 'configs/constants'
-import InviteMemberModal from './InviteMemberModal'
+import InviteMemberModal from './components/InviteMemberModal'
 
-const joinedChannel = {}
 
 function ChatPage(props) {
   const {
     user,
-    channels,
-    dispatchCreateChannel,
     dispatchFetchChannel,
     currentChannelId,
     dispatchAddMessage,
-    dispatchRequestJoinRoom,
     history,
     dispatchSetNotificationPermision,
     dispatchSendMessage,
     currentChannel,
     dispatchDeleteChannel,
-    dispatchRequestAcceptInvitedChannel,
     dispatchInviteMember,
     dispatchUpdateSingleChannel,
+    dispatchRequestJoinRoom,
+    channels,
     members,
   } = props
 
-  const [isShowChannelModal, toggleChannelModal] = useState(false)
   const [content, setContent] = useState('')
   const [isShowInviteMemberModal, toggleInviteMemberModal] = useState(false)
+  const joinedChannel = useRef([])
 
   useEffect(() => {
     dispatchFetchChannel()
@@ -50,94 +45,66 @@ function ChatPage(props) {
       })
 
     const unsubscribe = UserAPI.subscribeMessageChannel(({ message, channelId }) => {
-      if (message.createdBy === user._id && message.type === MESSAGE_TYPE.TEXT) return
+      if (message.userId === user._id && message.type === MESSAGE_TYPE.TEXT) return
       if (currentChannelId === channelId) {
         dispatchAddMessage(message)
       } else {
-        dispatchUpdateSingleChannel({
-          channelId,
-          numberNotReadMessage: '+1',
-        })
+        // dispatchUpdateSingleChannel({
+        //   channelId,
+        //   numberNotReadMessage: '+1',
+        // })
       }
       new Notification(`${message.user.name}: ${message.content}`)
     })
 
     return unsubscribe
-  }, [dispatchFetchChannel, currentChannelId, dispatchUpdateSingleChannel, user, dispatchAddMessage, dispatchSetNotificationPermision])
+  }, [currentChannelId, user])
 
+  useEffect(() => {
+    const channelListId = []
+    channels.forEach(item => {
+      if (!joinedChannel.current[item._id]) {
+        channelListId.push(item._id)
+        joinedChannel.current[item._id] = true
+      }
+    })
+    if (channelListId.length) {
+      dispatchRequestJoinRoom({ channelListId })
+    }
+  }, [channels])
 
-  // useEffect(() => {
-  //   const channelListId = []
-  //   channels.forEach(item => {
-  //     if (!joinedChannel[item._id]) {
-  //       channelListId.push(item._id)
-  //       joinedChannel[item._id] = true
-  //     }
-  //   })
-  //   if (channelListId.length) {
-  //     dispatchRequestJoinRoom({ channelListId })
-  //   }
-  // }, [channels, dispatchRequestJoinRoom])
+  const onDeleteChannel = useCallback(() => {
+    dispatchDeleteChannel(currentChannelId)
+    history.push('/channels')
+  }, [currentChannelId])
 
-  // const onAddChannel = useCallback(() => {
-  //   toggleChannelModal(state => !state)
-  // }, [toggleChannelModal])
+  const onChange = (value) => {
+    setContent(value)
+  }
 
-  // const onCreateChannel = useCallback((name) => {
-  //   dispatchCreateChannel({ name })
-  //   toggleChannelModal(false)
-  // }, [dispatchCreateChannel])
+  const onSendMessage = useCallback(() => {
+    dispatchSendMessage({ channelId: currentChannelId, content, user })
+    setContent('')
+  }, [currentChannelId, user, content])
 
-  // const onDeleteChannel = useCallback(() => {
-  //   dispatchDeleteChannel(currentChannelId)
-  //   history.push('/channels')
-  // }, [dispatchDeleteChannel, currentChannelId, history])
+  const isInvitedRoom = useMemo(() => {
+    if (!currentChannel) return false
+    return currentChannel.status === STATUS.PENDING
+  }, [currentChannel])
 
-  // const onClickChannel = useCallback((channelId) => {
-  //   if (currentChannelId !== channelId) {
-  //     history.push(`/channels/${channelId}`)
-  //   }
-  // },
-  //   [
-  //     currentChannelId,
-  //     history,
-  //   ]
-  // )
+  const onClickToggleInviteMemberModal = () => {
+    toggleInviteMemberModal(state => !state)
+  }
 
-  // const acceptInvitation = useCallback(() => {
-  //   dispatchRequestAcceptInvitedChannel(currentChannelId)
-  // },
-  //   [currentChannelId, dispatchRequestAcceptInvitedChannel]
-  // )
-
-  // const onChange = (value) => {
-  //   setContent(value)
-  // }
-
-  // const onSendMessage = useCallback(() => {
-  //   dispatchSendMessage({ channelId: currentChannelId, content, user })
-  //   setContent('')
-  // }, [dispatchSendMessage, currentChannelId, user, content])
-
-  // const isInvitedRoom = useMemo(() => {
-  //   if (!currentChannel) return false
-  //   return currentChannel.status === STATUS.PENDING
-  // }, [currentChannel])
-
-
-  // const onClickToggleInviteMemberModal = () => {
-  //   toggleInviteMemberModal(state => !state)
-  // }
-
-  // const onInviteMember = (email) => {
-  //   dispatchInviteMember({ email, channelId: currentChannelId })
-  //   onClickToggleInviteMemberModal()
-  // }
+  const onInviteMember = (email) => {
+    dispatchInviteMember({ email, channelId: currentChannelId })
+    onClickToggleInviteMemberModal()
+  }
 
   return (
     <ChatWrapper>
       <ChannelContainer />
-      {/* <div className="room">
+      <div className="room">
         {!isInvitedRoom && (
           <RoomHeading
             currentChannel={currentChannel}
@@ -150,7 +117,6 @@ function ChatPage(props) {
           render={(props) => <RoomContainer
             {...props}
             isInvitedRoom={isInvitedRoom}
-            acceptInvitation={acceptInvitation}
           />}
         />
         {!isInvitedRoom && currentChannelId && (
@@ -160,27 +126,14 @@ function ChatPage(props) {
             onChange={onChange}
           />
         )}
-        {currentChannelId && (
-          <ChatInput
-            onEnter={onSendMessage}
-            content={content}
-            onChange={onChange}
-          />
-        )}
       </div>
-      {isShowChannelModal && (
-        <ChannelModal
-          onCloseModal={onAddChannel}
-          onCreateChannel={onCreateChannel}
-        />
-      )}
       {isShowInviteMemberModal && (
         <InviteMemberModal
           members={members}
           onCloseModal={onClickToggleInviteMemberModal}
           onInviteMember={onInviteMember}
         />
-      )} */}
+      )}
     </ChatWrapper>
   )
 }
@@ -196,13 +149,11 @@ export default memo(withRouter(connect(
   }),
   {
     dispatchSetNotificationPermision: appActions.dispatchSetNotificationPermision,
-    dispatchCreateChannel: userActions.dispatchCreateChannel,
     dispatchFetchChannel: userActions.dispatchFetchChannel,
     dispatchAddMessage: userActions.dispatchAddMessage,
     dispatchRequestLeaveRoom: userActions.dispatchRequestLeaveRoom,
     dispatchSendMessage: userActions.dispatchSendMessage,
     dispatchDeleteChannel: userActions.dispatchDeleteChannel,
-    dispatchRequestAcceptInvitedChannel: userActions.dispatchRequestAcceptInvitedChannel,
     dispatchInviteMember: userActions.dispatchInviteMember,
     dispatchRequestJoinRoom: userActions.dispatchRequestJoinRoom,
     dispatchUpdateSingleChannel: userActions.dispatchUpdateSingleChannel,

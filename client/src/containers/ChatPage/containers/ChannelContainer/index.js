@@ -4,18 +4,20 @@ import { Route, withRouter } from 'react-router-dom'
 import { actions as userActions, selectors as userSelectors } from 'slices/userSlice'
 
 import { ChannelContainerWrapper } from './styles'
-import ChannelList from './ChannelList'
-import FriendList from './FriendList'
+import ChannelList from './components/ChannelList'
+import FriendList from './components/FriendList'
+import ChannelModal from './components/ChannelModal'
 
 const ChannelContainer = (props) => {
   const {
     channels = [],
     favoriteChannels = [],
-    onAddChannel = (() => { }),
     currentChannelId,
     history,
+    dispatchCreateChannel,
   } = props
 
+  const [isShowChannelModal, toggleChannelModal] = useState(false)
 
   const onClickChannel = useCallback((channelId) => {
     if (currentChannelId !== channelId) {
@@ -24,6 +26,15 @@ const ChannelContainer = (props) => {
   },
     [currentChannelId]
   )
+
+  const onAddChannel = useCallback(() => {
+    toggleChannelModal(state => !state)
+  }, [])
+
+  const onCreateChannel = useCallback((name) => {
+    dispatchCreateChannel({ name })
+    toggleChannelModal(false)
+  }, [])
 
   return (
     <ChannelContainerWrapper>
@@ -43,6 +54,12 @@ const ChannelContainer = (props) => {
       <FriendList
         title="Members"
       />
+      {isShowChannelModal && (
+        <ChannelModal
+          onCloseModal={onAddChannel}
+          onCreateChannel={onCreateChannel}
+        />
+      )}
     </ChannelContainerWrapper>
   )
 }
@@ -54,6 +71,6 @@ export default memo(withRouter(connect(
     currentChannel: userSelectors.getUserChannel(state),
   }),
   {
-    // dispatchUpdateSingleChannel: userActions.dispatchUpdateSingleChannel,
+    dispatchCreateChannel: userActions.dispatchCreateChannel,
   }
 )(ChannelContainer)))

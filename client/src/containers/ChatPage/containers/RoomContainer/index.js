@@ -9,8 +9,8 @@ import {
   RoomContainerWrapper,
 } from './styles'
 
-import MessageItem from './MessageItem'
-import InviteMessage from './InviteMessage'
+import MessageItem from './components/MessageItem'
+import InviteMessage from './components/InviteMessage'
 
 import { MINIMUN_DELAY } from 'configs/constants'
 
@@ -27,49 +27,45 @@ const RoomContainer = (props) => {
     dispatchFetchMessage,
     dispatchSelectChannel,
     isInvitedRoom = false,
-    acceptInvitation = (() => { }),
     match: { params } = {},
     dispatchLastReadMessage,
     dispatchUpdateViewUserId,
+    dispatchRequestAcceptInvitedChannel,
   } = props
 
   const wrapperRef = useRef()
 
   const onFetchMessageChannel = useCallback((channelId) => {
     dispatchFetchMessage({ channelId })
-  },
-    [
-      dispatchFetchMessage,
-    ]
-  )
+  }, [])
 
-  useEffect(() => {
-    const ref = wrapperRef.current
-    if (!ref) return
+  // useEffect(() => {
+  //   const ref = wrapperRef.current
+  //   if (!ref) return
 
-    const onScrollAtBotom = () => {
-      const lastMessage = last(messages)
+  //   const onScrollAtBotom = () => {
+  //     const lastMessage = last(messages)
 
-      if (!lastMessage || (currentChannel && currentChannel.lastReadMessageId === lastMessage._id)) return
-      const payload = {
-        channelId: currentChannelId,
-        lastReadMessageId: lastMessage._id,
-      }
-      dispatchLastReadMessage(payload)
-    }
+  //     if (!lastMessage || (currentChannel && currentChannel.lastReadMessageId === lastMessage._id)) return
+  //     const payload = {
+  //       channelId: currentChannelId,
+  //       lastReadMessageId: lastMessage._id,
+  //     }
+  //     dispatchLastReadMessage(payload)
+  //   }
 
-    const scrollHandle = throttle(() => {
-      const isScrollAtBottom = ref.scrollTop >= ref.scrollHeight - ref.clientHeight - MINIMUM_A_MESSAGE_HEIGHT
-      if (isScrollAtBottom) {
-        onScrollAtBotom()
-      }
-      ref.addEventListener('scroll', scrollHandle)
-    }, MINIMUN_DELAY)
+  //   const scrollHandle = throttle(() => {
+  //     const isScrollAtBottom = ref.scrollTop >= ref.scrollHeight - ref.clientHeight - MINIMUM_A_MESSAGE_HEIGHT
+  //     if (isScrollAtBottom) {
+  //       onScrollAtBotom()
+  //     }
+  //     ref.addEventListener('scroll', scrollHandle)
+  //   }, MINIMUN_DELAY)
 
-    scrollHandle()
+  //   scrollHandle()
 
-    return () => ref.removeEventListener('scroll', scrollHandle)
-  }, [messages, currentChannelId, currentChannel, dispatchLastReadMessage])
+  //   return () => ref.removeEventListener('scroll', scrollHandle)
+  // }, [messages, currentChannelId, currentChannel, dispatchLastReadMessage])
 
   useEffect(() => {
     const channelId = params.id
@@ -93,15 +89,30 @@ const RoomContainer = (props) => {
     dispatchUpdateViewUserId(userId)
   }
 
-  return isInvitedRoom
-    ? <InviteMessage acceptInvitation={acceptInvitation} />
-    : (
-      <RoomContainerWrapper ref={wrapperRef}>
-        <MessageList>
-          {messages.map((message, i) => <MessageItem onShowViewUserModal={() => onShowViewUserModal(message.createdBy)} key={i} message={message} position={message.createdBy === user._id ? 'right' : 'left'} />)}
-        </MessageList>
-      </RoomContainerWrapper>
-    )
+  const acceptInvitation = useCallback(() => {
+    dispatchRequestAcceptInvitedChannel(currentChannelId)
+  }, [currentChannelId])
+
+  return (
+    <>
+      {isInvitedRoom
+        ? <InviteMessage acceptInvitation={acceptInvitation} />
+        : (
+          <RoomContainerWrapper ref={wrapperRef}>
+            <MessageList>
+              {messages.map((message, i) => (
+                <MessageItem
+                  onShowViewUserModal={() => onShowViewUserModal(message.userId)}
+                  key={i}
+                  message={message}
+                  position={message.userId === user._id ? 'right' : 'left'}
+                />
+              ))}
+            </MessageList>
+          </RoomContainerWrapper>
+        )}
+    </>
+  )
 }
 
 export default memo(connect(
@@ -116,5 +127,6 @@ export default memo(connect(
     dispatchSelectChannel: userActions.dispatchSelectChannel,
     dispatchLastReadMessage: userActions.dispatchLastReadMessage,
     dispatchUpdateViewUserId: appActions.dispatchUpdateViewUserId,
+    dispatchRequestAcceptInvitedChannel: userActions.dispatchRequestAcceptInvitedChannel,
   }
 )(RoomContainer))
