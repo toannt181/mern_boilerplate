@@ -27,7 +27,7 @@ function ChatPage(props) {
     currentChannel,
     dispatchDeleteChannel,
     dispatchInviteMember,
-    dispatchUpdateSingleChannel,
+    dispatchNewUnreadMessage,
     dispatchRequestJoinRoom,
     channels,
     members,
@@ -49,10 +49,10 @@ function ChatPage(props) {
       if (currentChannelId === channelId) {
         dispatchAddMessage(message)
       } else {
-        // dispatchUpdateSingleChannel({
-        //   channelId,
-        //   numberNotReadMessage: '+1',
-        // })
+        dispatchNewUnreadMessage({
+          channelId,
+          unreadMessage: 1,
+        })
       }
       new Notification(`${message.user.name}: ${message.content}`)
     })
@@ -156,6 +156,6 @@ export default memo(withRouter(connect(
     dispatchDeleteChannel: userActions.dispatchDeleteChannel,
     dispatchInviteMember: userActions.dispatchInviteMember,
     dispatchRequestJoinRoom: userActions.dispatchRequestJoinRoom,
-    dispatchUpdateSingleChannel: userActions.dispatchUpdateSingleChannel,
+    dispatchNewUnreadMessage: userActions.dispatchNewUnreadMessage,
   }
 )(ChatPage)))

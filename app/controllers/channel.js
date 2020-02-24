@@ -151,18 +151,20 @@ async function kickout(req, res, next) {
 async function join(req, res, next) {
   try {
     const { id } = req.params
-    const { _id, channels } = req.user
+    const { user } = req
 
-    const channelIndex = channels.find((channel) => channel.id.toString() === id.toString())
-
-    if (channelIndex === -1) throw new Error('403')
-
-    req.user.channels[channelIndex].status = common.room.status.JOINED
-    await req.user.save()
-
+    const channel = await model.Channel.findOne({ _id: id, 'members.userId': user._id })
+    if (!channel) throw new Error('403')
+    channel.members
+      .forEach((member) => {
+        if (member.userId.toString() === user._id.toString()) {
+          member.status = common.room.status.JOINED // eslint-disable-line
+        }
+      })
+    await channel.save()
     await createNewMessage({
       channelId: id,
-      createdBy: _id,
+      userId: user._id,
       type: common.message.type.JOIN_MESSAGE,
     })
     res.json({ success: true })

@@ -63,6 +63,15 @@ const slice = createSlice({
         return channel
       })
     },
+    dispatchNewUnreadMessage(state, action) {
+      const { channelId, unreadMessage } = action.payload
+      state.channels = state.channels.map(channel => {
+        if (channel._id === channelId) {
+          return { ...channel, unreadMessageNumber: channel.unreadMessageNumber + unreadMessage }
+        }
+        return channel
+      })
+    },
   },
 })
 

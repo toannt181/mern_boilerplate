@@ -79,7 +79,7 @@ function* watchUpdateLastReadMessage(action) {
     yield put(userActions.dispatchUpdateSingleChannel({
       channelId,
       lastReadMessageId,
-      numberNotReadMessage: 0,
+      unreadMessageNumber: 0,
     }))
   } catch { }
 }
