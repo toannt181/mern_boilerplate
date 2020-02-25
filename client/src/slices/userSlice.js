@@ -72,6 +72,7 @@ const slice = createSlice({
         return channel
       })
     },
+    dispatchPostFavoriteChannel() { },
   },
 })
 
@@ -84,8 +85,25 @@ const getUserChannel = createSelector(
   }
 )
 
+const filterFavoriteChannel = createSelector(
+  baseSelector,
+  (state) => {
+    const commonChannels = []
+    const favoriteChannels = []
+    state.channels.forEach((channel) => {
+      if (channel.isFavorite) {
+        favoriteChannels.push(channel)
+        return
+      }
+      commonChannels.push(channel)
+    })
+    return { commonChannels, favoriteChannels }
+  }
+)
+
 export const selectors = {
   getUserChannel,
+  filterFavoriteChannel,
 }
 
 export const { actions, reducer } = slice

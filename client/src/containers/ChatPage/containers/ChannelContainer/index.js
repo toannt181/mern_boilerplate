@@ -10,10 +10,9 @@ import ChannelModal from './components/ChannelModal'
 
 const ChannelContainer = (props) => {
   const {
-    channels = [],
-    favoriteChannels = [],
     currentChannelId,
     history,
+    filteredChannel: { commonChannels, favoriteChannels },
     dispatchCreateChannel,
   } = props
 
@@ -46,7 +45,7 @@ const ChannelContainer = (props) => {
       />
       <ChannelList
         title="Channels"
-        channels={channels}
+        channels={commonChannels}
         onAddChannel={onAddChannel}
         onClickChannel={onClickChannel}
         currentChannelId={currentChannelId}
@@ -66,8 +65,8 @@ const ChannelContainer = (props) => {
 
 export default memo(withRouter(connect(
   state => ({
-    channels: state.user.channels,
     currentChannelId: state.user.currentChannelId,
+    filteredChannel: userSelectors.filterFavoriteChannel(state),
     currentChannel: userSelectors.getUserChannel(state),
   }),
   {

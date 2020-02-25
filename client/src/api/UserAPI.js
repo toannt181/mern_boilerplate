@@ -61,6 +61,10 @@ export function updateLastReadMessage({ channelId, lastReadMessageId }) {
   return Request.post({ url: `channels/${channelId}/last-read-message`, data: { lastReadMessageId } })
 }
 
+export function postFavoritChannel({ channelId, isFavorite }) {
+  return Request.post({ url: `channels/${channelId}/favorite`, data: { isFavorite } })
+}
+
 export function requestJoinRoom({ channelListId }) {
   socket.emit('join', { channelListId })
 }

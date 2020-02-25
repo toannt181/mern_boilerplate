@@ -44,17 +44,20 @@ const RoomHeading = (props) => {
     currentChannel = null,
     deleteChannel,
     onInviteMember = (() => { }),
+    onFavoriteChannel = (() => { }),
   } = props
 
   const [isShowMenu, toggleMenu] = useState(false)
 
   const onClickEllipse = () => toggleMenu(state => !state)
 
+  const onClickFavoriteButton = () => onFavoriteChannel(!currentChannel.isFavorite)
+
   return currentChannel && (
     <RoomHeadingWrapper className="d-center">
       <h3 className="title is-1">#{currentChannel.name}</h3>
       <div className="ml-auto d-center">
-        <button className="btn-none is-circle is-big"><i className="fa fa-star-o" aria-hidden="true" /></button>
+        <button className="btn-none is-circle is-big" onClick={onClickFavoriteButton}><i className={currentChannel.isFavorite ? 'fa fa-star' : 'fa fa-star-o'} aria-hidden="true" /></button>
         <button className="btn-none is-circle is-big" onClick={onInviteMember}><i className="fa fa-plus" aria-hidden="true" /></button>
         <Dropdown
           isActive={isShowMenu}

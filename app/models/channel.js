@@ -25,6 +25,10 @@ const schema = new moongose.Schema({
         type: moongose.Types.ObjectId,
         default: null,
       },
+      isFavorite: {
+        type: Boolean,
+        default: false,
+      },
     }],
     default: [],
   },

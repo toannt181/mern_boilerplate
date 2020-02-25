@@ -29,6 +29,7 @@ function ChatPage(props) {
     dispatchInviteMember,
     dispatchNewUnreadMessage,
     dispatchRequestJoinRoom,
+    dispatchPostFavoriteChannel,
     channels,
     members,
   } = props
@@ -101,6 +102,10 @@ function ChatPage(props) {
     onClickToggleInviteMemberModal()
   }
 
+  const onFavoriteChannel = (isFavorite) => {
+    dispatchPostFavoriteChannel({ isFavorite, channelId: currentChannelId })
+  }
+
   return (
     <ChatWrapper>
       <ChannelContainer />
@@ -110,6 +115,7 @@ function ChatPage(props) {
             currentChannel={currentChannel}
             deleteChannel={onDeleteChannel}
             onInviteMember={onClickToggleInviteMemberModal}
+            onFavoriteChannel={onFavoriteChannel}
           />
         )}
         <Route
@@ -157,5 +163,6 @@ export default memo(withRouter(connect(
     dispatchInviteMember: userActions.dispatchInviteMember,
     dispatchRequestJoinRoom: userActions.dispatchRequestJoinRoom,
     dispatchNewUnreadMessage: userActions.dispatchNewUnreadMessage,
+    dispatchPostFavoriteChannel: userActions.dispatchPostFavoriteChannel,
   }
 )(ChatPage)))

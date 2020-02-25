@@ -55,6 +55,7 @@ async function index(req, res, next) {
         lastReadMessageId: members.lastReadMessageId,
         status: members.status,
         role: members.role,
+        isFavorite: members.isFavorite,
         unreadMessageNumber: messages ? messages.unreadMessageNumber : 0,
       }
     })
@@ -132,16 +133,19 @@ async function invite(req, res, next) {
   }
 }
 
-async function kickout(req, res, next) {
+async function favorite(req, res, next) {
   try {
-    const { userId } = req.body
+    const { user } = req
+    const { isFavorite } = req.body
     const { id } = req.params
     const channel = await model.Channel.findById(id)
-    const memberIndex = channel.members.findIndex((item) => item._id.toString() === userId)
-    if (memberIndex !== -1) {
-      channel.members.splice(memberIndex, 1)
-      await channel.save()
-    }
+    channel.members
+      .forEach((member) => {
+        if (member.userId.toString() === user._id.toString()) {
+          member.isFavorite = isFavorite // eslint-disable-line
+        }
+      })
+    await channel.save()
     res.json(channel)
   } catch (error) {
     next(error)
@@ -200,7 +204,7 @@ route.get('/', index)
 route.post('/', store)
 route.delete('/:id', destroy)
 route.post('/:id/invite', invite)
-route.post('/:id/kickout', kickout)
+route.post('/:id/favorite', favorite)
 route.post('/:id/last-read-message', updateLastReadMessage)
 route.post('/:id/join', join)
 route.use('/:id/messages', messageController)

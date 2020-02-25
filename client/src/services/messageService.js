@@ -91,6 +91,17 @@ function* watchFetchViewUserInfo(action) {
   } catch { }
 }
 
+function* watchPostFavoriteChannel(action) {
+  try {
+    const { channelId, isFavorite } = action.payload
+    yield UserAPI.postFavoritChannel(action.payload)
+    yield put(userActions.dispatchUpdateSingleChannel({
+      channelId,
+      isFavorite,
+    }))
+  } catch { }
+}
+
 export default function* sagas() {
   yield takeEvery(userActions.dispatchFetchChannel.type, watchFetchChannel)
   yield takeEvery(userActions.dispatchCreateChannel.type, watchCreateChannel)
@@ -104,5 +115,6 @@ export default function* sagas() {
   yield takeEvery(userActions.dispatchInviteMember.type, watchdInviteMember)
   yield takeEvery(userActions.dispatchFetchMemberList.type, watchFetchMemberList)
   yield takeEvery(userActions.dispatchLastReadMessage.type, watchUpdateLastReadMessage)
+  yield takeEvery(userActions.dispatchPostFavoriteChannel.type, watchPostFavoriteChannel)
   yield takeEvery(appActions.dispatchFetchViewUserInfo.type, watchFetchViewUserInfo)
 }
