@@ -25,7 +25,7 @@ async function signup(req, res, next) {
 
 function login(req, res) {
   const { name, email, _id } = req.user
-  const accessToken = jwt.sign({ name, email, _id }, 'secret', { expiresIn: 60 * 15 * 100 })
+  const accessToken = jwt.sign({ name, email, _id }, 'secret', { expiresIn: 60 * 60 * 10 })
   const refreshToken = jwt.sign({ name, email, _id }, 'secret', { expiresIn: 60 * 60 * 24 * 30 })
 
   res.json({ accessToken, refreshToken })

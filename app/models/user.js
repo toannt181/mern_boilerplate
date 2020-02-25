@@ -66,8 +66,8 @@ const schema = new moongose.Schema({
 schema.pre('save', async function (next) {
   if (!this.avatar) {
     this.avatar = randomColor()
+    this.password = await bcrypt.hash(this.password, SALT_ROUND)
   }
-  this.password = await bcrypt.hash(this.password, SALT_ROUND)
   next()
 })
 
